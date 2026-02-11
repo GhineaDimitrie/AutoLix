@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista masini</title>
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+
+            background-image: url("/images/login.jpg");
+            background-size: cover;
+            background-position: center;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            padding: 25px;
+
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.3);
+
+            color: white;
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        /* LOGOUT */
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+
+        /* MESSAGES */
+        .message-success {
+            background: rgba(0,255,0,0.2);
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .message-error {
+            background: rgba(255,0,0,0.2);
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        /* FILTER BAR */
+        .filter-form {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .filter-form input {
+            padding: 6px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+        }
+
+        .filter-form button,
+        .filter-form a {
+            padding: 6px 12px;
+            border-radius: 5px;
+            border: none;
+            background-color: #2fa4f5;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .filter-form a {
+            background-color: #7f8c8d;
+        }
+
+        /* ACTION BAR */
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .btn-add {
+            background-color: #27ae60;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+
+        .btn-add:hover {
+            background-color: #1e8449;
+        }
+
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.95);
+            color: black;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background-color: #2fa4f5;
+            color: white;
+            padding: 8px;
+        }
+
+        td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        .actions a, .actions button {
+            padding: 5px 8px;
+            border-radius: 4px;
+            border: none;
+            margin: 2px;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+        }
+
+        .actions a {
+            background-color: #3498db;
+        }
+
+        .actions button {
+            background-color: #e74c3c;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- LOGOUT -->
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="logout-btn">Logout</button>
+    </form>
+
+    <!-- TITLE -->
+    <h1>Lista masini</h1>
+
+    <!-- MESSAGES -->
+    <div th:if="${param.success}" class="message-success">
+        Autentificare reusita!
+    </div>
+
+    <div th:if="${successMessage}" th:text="${successMessage}" class="message-success"></div>
+    <div th:if="${errorMessage}" th:text="${errorMessage}" class="message-error"></div>
+
+    <!-- FILTER FORM -->
+    <form th:action="@{/masini}" method="get" class="filter-form">
+        <input type="text" name="marca" placeholder="Marca">
+        <input type="text" name="culoarea" placeholder="Culoare">
+        <input type="text" name="combustibil" placeholder="Combustibil">
+
+        <button type="submit">Filtreaza</button>
+        <a th:href="@{/masini}">Reset</a>
+    </form>
+
+    <!-- ACTION BAR -->
+    <div class="action-bar">
+        <div sec:authorize="hasRole('EDITOR')">
+            <a th:href="@{/masini/add}" class="btn-add">+ Adauga masina</a>
+        </div>
+
+        <div sec:authorize="hasRole('ADMIN')">
+            <a th:href="@{/admin/users}" class="btn-add">Admin Panel</a>
+        </div>
+    </div>
+
+    <!-- TABLE -->
+    <table>
+        <thead>
+        <tr>
+            <th>Nr inmatriculare</th>
+            <th>Marca</th>
+            <th>Model</th>
+            <th>Culoare</th>
+            <th>Cilindree</th>
+            <th>Combustibil</th>
+            <th>Putere</th>
+            <th>Cuplu</th>
+            <th>Portbagaj</th>
+            <th>Pret</th>
+            <th sec:authorize="hasRole('EDITOR')">Actiuni</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="masina : ${masini}">
+            <td th:text="${masina.nr_inmatriculare}"></td>
+            <td th:text="${masina.marca}"></td>
+            <td th:text="${masina.modelul}"></td>
+            <td th:text="${masina.culoarea}"></td>
+            <td th:text="${masina.capacitatea_cilindrica}"></td>
+            <td th:text="${masina.combustibil}"></td>
+            <td th:text="${masina.puterea}"></td>
+            <td th:text="${masina.cuplul}"></td>
+            <td th:text="${masina.volumul_portbagajului}"></td>
+            <td th:text="${masina.pretul}"></td>
+
+            <td sec:authorize="hasRole('EDITOR')" class="actions">
+                <a th:href="@{/masini/edit/{nr}(nr=${masina.nr_inmatriculare})}">Edit</a>
+
+                <form th:action="@{/masini/delete/{nr}(nr=${masina.nr_inmatriculare})}"
+                      method="post" style="display:inline">
+                    <button type="submit"
+                            onclick="return confirm('Sigur vrei sa stergi masina?')">
+                        Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Editare masina</title>
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+
+            background-image: url("/images/login.jpg");
+            background-size: cover;
+            background-position: center;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 400px;
+            padding: 30px;
+
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+
+            border-radius: 12px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.3);
+            color: white;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+
+            border-radius: 5px;
+            border: none;
+            outline: none;
+        }
+
+        .error {
+            color: #ff4d4d;
+            font-size: 12px;
+        }
+
+        .btn-group {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        button {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-save {
+            background-color: #2fa4f5;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background-color: #1c8ed6;
+        }
+
+        .btn-back {
+            background-color: #7f8c8d;
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+        }
+
+        .btn-back:hover {
+            background-color: #636e72;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Editeaza masina</h1>
+
+    <form th:action="@{/masini/edit}" th:object="${masina}" method="post">
+
+        <label>Nr inmatriculare</label>
+        <span class="error"
+              th:if="${#fields.hasErrors('nr_inmatriculare')}"
+              th:errors="*{nr_inmatriculare}"></span>
+        <input type="text" th:field="*{nr_inmatriculare}" readonly />
+
+        <label>Marca</label>
+        <span class="error"
+              th:if="${#fields.hasErrors('marca')}"
+              th:errors="*{marca}"></span>
+        <input type="text" th:field="*{marca}" />
+
+        <label>Model</label>
+        <span class="error"
+              th:if="${#fields.hasErrors('modelul')}"
+              th:errors="*{modelul}"></span>
+        <input type="text" th:field="*{modelul}" />
+
+        <label>Culoare</label>
+        <span class="error"
+              th:if="${#fields.hasErrors('culoarea')}"
+              th:errors="*{culoarea}"></span>
+        <input type="text" th:field="*{culoarea}" />
+
+        <label>Capacitate cilindrica (cm³)</label>
+        <span class="error"
+              th:if="${#fields.hasErrors('capacitatea_cilindrica')}"
+              th:errors="*{capacitatea_cilindrica}"></span>
+        <input type="number" th:field="*{capacitatea_cilindrica}" />
+
+        <label>Combustibil</label>
+        <span class="error"
+              th:if="${#fields.hasErrors('combustibil')}"
+              th:errors="*{combustibil}"></span>
+        <input type="text" th:field="*{combustibil}" />
+
+        <label>Putere (CP)</label>
+        <span class="error"
+              th:if="${#fields.hasErrors('puterea')}"
+              th:errors="*{puterea}"></span>
+        <input type="number" th:field="*{puterea}" />
+
+        <label>Cuplu (Nm)</label>
+        <span class="error"
+              th:if="${#fields.hasErrors('cuplul')}"
+              th:errors="*{cuplul}"></span>
+        <input type="number" th:field="*{cuplul}" />
+
+        <label>Volum portbagaj (L)</label>
+        <span class="error"
+              th:if="${#fields.hasErrors('volumul_portbagajului')}"
+              th:errors="*{volumul_portbagajului}"></span>
+        <input type="number" th:field="*{volumul_portbagajului}" />
+
+        <label>Pret</label>
+        <span class="error"
+              th:if="${#fields.hasErrors('pretul')}"
+              th:errors="*{pretul}"></span>
+        <input type="number" step="0.01" th:field="*{pretul}" />
+
+        <div class="btn-group">
+            <a th:href="@{/masini}" class="btn-back">Inapoi</a>
+            <button type="submit" class="btn-save">Salveaza modificarile</button>
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+</html>

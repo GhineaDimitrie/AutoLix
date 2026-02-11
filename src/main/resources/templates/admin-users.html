@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Administrare utilizatori</title>
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+
+            background-image: url("/images/login.jpg");
+            background-size: cover;
+            background-position: center;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 600px;
+            padding: 25px;
+
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+
+            border-radius: 12px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.3);
+            color: white;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.95);
+            color: black;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background-color: #2fa4f5;
+            color: white;
+            padding: 8px;
+        }
+
+        td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-bottom: 15px;
+
+            background-color: #7f8c8d;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+
+        .btn-back:hover {
+            background-color: #636e72;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a th:href="@{/masini}" class="btn-back">⬅ Inapoi la masini</a>
+
+    <h2>Administrare utilizatori</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Rol</th>
+            <th>Actiuni</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="u : ${utilizatori}">
+            <td th:text="${u.id_utilizator}"></td>
+            <td th:text="${u.username}"></td>
+            <td th:text="${u.rol}"></td>
+            <td>
+                <form th:action="@{/admin/delete/{id}(id=${u.id_utilizator})}" method="post"
+                      onsubmit="return confirm('Sigur vrei sa stergi acest utilizator?')">
+                    <button type="submit">Sterge</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

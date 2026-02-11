@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Acces interzis</title>
+
+    <style>
+        body {
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .box {
+            text-align: center;
+            border: 1px solid #ccc;
+            padding: 30px 40px;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            color: #c0392b;
+            margin-bottom: 10px;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 18px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        a:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>Nu ai acces la această pagină</h2>
+    <p>Nu ai drepturile necesare pentru a accesa această secțiune.</p>
+
+    <a th:href="@{/masini}">Înapoi la lista de mașini</a>
+</div>
+
+</body>
+</html>
