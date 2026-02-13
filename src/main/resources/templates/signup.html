@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sign up</title>
+    <style>
+        body {
+            height: 100vh; margin: 0;
+            display: flex; justify-content: center; align-items: center;
+            font-family: Arial, sans-serif;
+            background-image: url("/images/login.jpg");
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+        }
+
+        .card {
+            width: 380px;
+            padding: 40px 30px;
+            text-align: center;
+
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+
+            border-radius: 12px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.3);
+            color: white;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+
+            background-color: #2fa4f5;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .error {
+            color: #ff4d4d;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        a { color: white; text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Let's get started!</h2>
+
+    <form th:action="@{/signup}" th:object="${form}" method="post">
+
+        <input type="text" th:field="*{nume}" placeholder="Nume (optional)">
+
+        <input type="text" th:field="*{username}" placeholder="Username" required>
+        <div class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+
+        <input type="password" th:field="*{password}" placeholder="Password" required>
+        <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+
+        <input type="password" th:field="*{confirmPassword}" placeholder="Confirm Password" required>
+        <div class="error" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
+
+        <button type="submit">Sign up</button>
+    </form>
+
+    <div style="margin-top: 16px; font-size: 13px;">
+        Already have an account? <a th:href="@{/login}">Login</a>
+    </div>
+</div>
+
+</body>
+</html>

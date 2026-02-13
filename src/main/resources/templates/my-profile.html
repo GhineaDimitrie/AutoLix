@@ -1,0 +1,212 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>My Profile</title>
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+
+            background-image: url("/images/login.jpg");
+            background-size: cover;
+            background-position: center;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            padding: 25px;
+
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.3);
+
+            color: white;
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        /* TOP BUTTONS */
+        .top-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .left-actions, .right-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-link {
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            background-color: #2fa4f5;
+            display: inline-block;
+        }
+
+        .btn-link:hover {
+            background-color: #1e88e5;
+        }
+
+        .btn-secondary {
+            background-color: #7f8c8d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #6c7a7b;
+        }
+
+        .btn-success {
+            background-color: #27ae60;
+        }
+
+        .btn-success:hover {
+            background-color: #1e8449;
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        /* GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 15px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.95);
+            color: #111;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #111;
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: 800;
+            color: #2fa4f5;
+            margin-bottom: 10px;
+        }
+
+        .meta {
+            font-size: 14px;
+            color: #333;
+            margin: 4px 0;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 999px;
+            font-size: 12px;
+            background: rgba(47,164,245,0.15);
+            color: #1e88e5;
+            margin-top: 8px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .empty {
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>My Profile</h1>
+
+    <div class="top-actions">
+        <div class="left-actions">
+            <a class="btn-link btn-secondary" th:href="@{/marketplace}">Marketplace</a>
+            <a class="btn-link btn-success" th:href="@{/masini/add}">Add Listing</a>
+        </div>
+
+        <div class="right-actions">
+            <form th:action="@{/logout}" method="post" style="margin:0;">
+                <button type="submit" class="btn-link btn-danger">Logout</button>
+            </form>
+        </div>
+    </div>
+
+    <div th:if="${#lists.isEmpty(masini)}" class="empty">
+        Nu ai anunțuri încă.
+    </div>
+
+    <div class="grid" th:if="${not #lists.isEmpty(masini)}">
+        <div class="card" th:each="m : ${masini}">
+            <div class="card-title" th:text="${m.marca} + ' ' + ${m.modelul}">Marca Model</div>
+            <div class="price" th:text="${m.pretul} + ' €'">0 €</div>
+
+            <div class="meta" th:text="'Nr înmatriculare: ' + ${m.nr_inmatriculare}">Nr</div>
+            <div class="meta" th:text="'Culoare: ' + ${m.culoarea}">Culoare</div>
+            <div class="meta" th:text="'Combustibil: ' + ${m.combustibil}">Combustibil</div>
+            <div class="meta" th:text="'Putere: ' + ${m.puterea} + ' CP'">Putere</div>
+            <div class="meta" th:text="'Cuplu: ' + ${m.cuplul} + ' Nm'">Cuplu</div>
+
+            <span class="tag" th:text="${m.capacitatea_cilindrica} + ' cm³'">cm³</span>
+
+            <div class="card-actions">
+                <a class="btn-link" th:href="@{'/masini/edit/' + ${m.nr_inmatriculare}}">Edit</a>
+
+                <form th:action="@{'/masini/delete/' + ${m.nr_inmatriculare}}"
+                      method="post" style="margin:0;"
+                      onsubmit="return confirm('Sigur ștergi anunțul?');">
+                    <button type="submit" class="btn-link btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

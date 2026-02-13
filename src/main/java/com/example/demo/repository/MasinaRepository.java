@@ -12,5 +12,6 @@ public interface  MasinaRepository extends JpaRepository<Masina,String> {
     List<Masina> findByCuloarea(String culoarea);
     List<Masina> findByCombustibil(String combustibil);
     List<Masina> findByMarcaAndCuloareaAndCombustibil(String marca,String culoarea,String combustibil);
+    List<Masina> findByUtilizatorUsername(String username);
 
 }

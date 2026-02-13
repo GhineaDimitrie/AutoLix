@@ -19,15 +19,15 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/images/**").permitAll()
 
-
+                        .requestMatchers("/","/marketplace","/images/**","/login", "/signup", "/signup/**").permitAll()
+                        .requestMatchers("/my-profile/**").hasAnyRole("USER","ADMIN","EDITOR")
                         // USER + EDITOR pot vedea lista și filtra
-                        .requestMatchers("/masini", "/masini/filtru").hasAnyRole("USER", "EDITOR","ADMIN")
+                        .requestMatchers("/masini", "/masini/filtru").hasAnyRole( "EDITOR","ADMIN")
 
                         // doar EDITOR poate face CRUD
                         .requestMatchers("/masini/add", "/masini/edit/**", "/masini/delete/**")
-                        .hasRole("EDITOR")
+                        .hasAnyRole("EDITOR","USER")
 
                         // doar ADMIN (opțional)
                         .requestMatchers("/admin/**").hasRole("ADMIN")
@@ -37,7 +37,7 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/masini?success=true", true)
+                        .defaultSuccessUrl("/marketplace", true)
                         .permitAll()
                 )
 

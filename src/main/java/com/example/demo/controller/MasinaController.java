@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Masina;
+import com.example.demo.entity.Utilizator;
 import com.example.demo.repository.MasinaRepository;
+import com.example.demo.repository.UtilizatorRepository;
 import com.example.demo.service.MasinaService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -10,12 +12,21 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
+
 @Controller
 public class MasinaController {
     private final MasinaService masinaService;
+    private final UtilizatorRepository utilizatorRepository;
+    private final MasinaRepository masinaRepository;
 
-    public MasinaController(MasinaService masinaService) {
+
+    public MasinaController(MasinaService masinaService,UtilizatorRepository utilizatorRepository,MasinaRepository masinaRepository) {
         this.masinaService = masinaService;
+        this.utilizatorRepository = utilizatorRepository;
+        this.masinaRepository=masinaRepository;
+
+
 
     }
 
@@ -35,14 +46,17 @@ public class MasinaController {
 
     // SALVARE MASINA
     @PostMapping("/masini/add")
-    public String saveMasina(@Valid @ModelAttribute Masina masina, BindingResult bindingResult) {
+    public String saveMasina(@Valid @ModelAttribute Masina masina, BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasErrors()) {
             return "adauga-masini";
 
         }
+        String username=principal.getName();
+        Utilizator user =utilizatorRepository.findByUsername(principal.getName());
+        masina.setUtilizator(user);
 
         masinaService.saveMasina(masina);
-        return "redirect:/masini";
+        return "redirect:/my-profile";
     }
 
 
@@ -86,6 +100,20 @@ public class MasinaController {
     public String accessDenied() {
         return "access-denied";
     }
+
+    @GetMapping({"/", "/marketplace"})
+    public String marketplace(Model model) {
+        model.addAttribute("masini", masinaRepository.findAll());
+        return "marketplace";
+    }
+
+    @GetMapping("/my-profile")
+    public String myProfile(Model model, Principal principal) {
+        String username = principal.getName();
+        model.addAttribute("masini", masinaRepository.findByUtilizatorUsername(username));
+        return "my-profile";
+    }
+
 
 
 

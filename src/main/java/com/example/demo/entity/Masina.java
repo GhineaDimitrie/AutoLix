@@ -1,14 +1,12 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import jakarta.persistence.Id;
 
 
 @Getter @Setter
@@ -19,8 +17,9 @@ import jakarta.persistence.Id;
 public class Masina {
     @Id @NotBlank(message = "Nu ati introdus nr de inmatriculare!")
     private String nr_inmatriculare;
-
-    private Long id_utilizator;
+    @ManyToOne
+    @JoinColumn(name="id_utilizator")
+    private  Utilizator utilizator;
     @NotBlank(message = "Nu ati introdus marca masinii!")
     private String marca;
     @NotBlank(message = "Nu ati introdus modelul masinii!")
