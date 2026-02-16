@@ -4,14 +4,17 @@ import com.example.demo.entity.Masina;
 import com.example.demo.entity.Utilizator;
 import com.example.demo.repository.MasinaRepository;
 import com.example.demo.repository.UtilizatorRepository;
+import com.example.demo.service.FileStorageService;
 import com.example.demo.service.MasinaService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.security.Principal;
 
 @Controller
@@ -19,12 +22,15 @@ public class MasinaController {
     private final MasinaService masinaService;
     private final UtilizatorRepository utilizatorRepository;
     private final MasinaRepository masinaRepository;
+    private final FileStorageService fileStorageService;
 
 
-    public MasinaController(MasinaService masinaService,UtilizatorRepository utilizatorRepository,MasinaRepository masinaRepository) {
+    public MasinaController(MasinaService masinaService, UtilizatorRepository utilizatorRepository, MasinaRepository masinaRepository, FileStorageService fileStorageService) {
         this.masinaService = masinaService;
         this.utilizatorRepository = utilizatorRepository;
         this.masinaRepository=masinaRepository;
+        this.fileStorageService = fileStorageService;
+
 
 
 
@@ -46,14 +52,22 @@ public class MasinaController {
 
     // SALVARE MASINA
     @PostMapping("/masini/add")
-    public String saveMasina(@Valid @ModelAttribute Masina masina, BindingResult bindingResult, Principal principal) {
+    public String saveMasina(@Valid @ModelAttribute Masina masina,
+                             BindingResult bindingResult,
+                             @RequestParam(value="imageFile",required=false)MultipartFile imageFile,
+                             Principal principal) throws IOException
+    {
+        System.out.println("imageFile name=" + (imageFile != null ? imageFile.getName() : "null"));
         if (bindingResult.hasErrors()) {
             return "adauga-masini";
 
         }
         String username=principal.getName();
+
         Utilizator user =utilizatorRepository.findByUsername(principal.getName());
         masina.setUtilizator(user);
+        String filename = fileStorageService.storeImage(imageFile);
+        masina.setImageName(filename);
 
         masinaService.saveMasina(masina);
         return "redirect:/my-profile";

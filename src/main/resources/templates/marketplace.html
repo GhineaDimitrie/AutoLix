@@ -196,7 +196,7 @@
         <div class="nav-left">
             <!-- logo clickable -->
             <a th:href="@{/marketplace}" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
-                <img src="/images/logo.png" alt="AutoLix Logo" class="logo">
+                <img src="/images/logo3.png" alt="AutoLix Logo" class="logo">
                 <span class="brand">AutoLix</span>
             </a>
         </div>
@@ -242,6 +242,12 @@
 
     <div class="grid" th:if="${not #lists.isEmpty(masini)}">
         <div class="card" th:each="m : ${masini}">
+
+            <img th:if="${m.imageName != null}"
+                 th:src="@{'/uploads/' + ${m.imageName}}"
+                 style="width:100%; height:180px; object-fit:cover; border-radius:8px; margin-bottom:10px;">
+
+
             <div class="card-title" th:text="${m.marca} + ' ' + ${m.modelul}">Marca Model</div>
             <div class="price" th:text="${m.pretul} + ' €'">0 €</div>
 

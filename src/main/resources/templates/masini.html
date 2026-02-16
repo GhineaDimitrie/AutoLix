@@ -52,9 +52,25 @@
             border-radius: 6px;
             cursor: pointer;
         }
+        .market-btn {
+            position: absolute;
+            top: 20px;
+            left: 25px;
+
+            background-color: #2fa4f5;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none
+        }
 
         .logout-btn:hover {
             background-color: #c0392b;
+        }
+        .market-btn:hover {
+            background-color:#1e88e5;
         }
 
         /* MESSAGES */
@@ -182,6 +198,11 @@
         <button type="submit" class="logout-btn">Logout</button>
     </form>
 
+    <a th:href="@{/marketplace}" class="market-btn">Marketplace</a>
+
+
+
+
     <!-- TITLE -->
     <h1>Lista masini</h1>
 
@@ -208,6 +229,8 @@
         <div sec:authorize="hasRole('EDITOR')">
             <a th:href="@{/masini/add}" class="btn-add">+ Adauga masina</a>
         </div>
+
+
 
         <div sec:authorize="hasRole('ADMIN')">
             <a th:href="@{/admin/users}" class="btn-add">Admin Panel</a>

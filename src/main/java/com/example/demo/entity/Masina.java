@@ -38,7 +38,7 @@ public class Masina {
     private Integer volumul_portbagajului;
    @NotNull (message = "Nu ati introdus pretul!")@Positive(message = "Ati introdus o valoare negativa!")
     private Double pretul;
-
+    private String imageName;
 
 
 
