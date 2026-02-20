@@ -7,6 +7,7 @@ import com.example.demo.repository.UtilizatorRepository;
 import com.example.demo.service.FileStorageService;
 import com.example.demo.service.MasinaService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,14 +41,48 @@ public class MasinaController {
     }
 
     @GetMapping("/masini")
-    public String showMasini(Model model,@RequestParam(required = false) String marca,@RequestParam(required = false) String culoarea,@RequestParam(required = false) String combustibil,Double pretul,Integer anul,Integer puterea) {
+    public String showMasini(
+            Model model,
+            @RequestParam(required = false) String marca,
+            @RequestParam(required = false) String culoarea,
+            @RequestParam(required = false) String combustibil,
+            @RequestParam(required = false) Double pretMin,
+            @RequestParam(required = false) Double pretMax,
+            @RequestParam(required = false) Integer anMin,
+            @RequestParam(required = false) Integer anMax,
+            @RequestParam(required = false) Integer putMin,
+            @RequestParam(required = false) Integer putMax,
+            @RequestParam(required = false) String modelul,
+            @RequestParam(required = false) Double kmMin,
+            @RequestParam(required = false) Double kmMax,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "9") int size
+    ) {
+        Page<Masina> masiniPage = masinaService.filtrarePagini(
+                marca, modelul, pretMin, pretMax, combustibil, culoarea,
+                anMin, anMax, putMin, putMax,
+                kmMin, kmMax,
+                page, size
+        );
 
-        model.addAttribute("masini", masinaService.filtrare(marca,culoarea,combustibil,pretul,anul,puterea));
+        model.addAttribute("masiniPage", masiniPage);
+        model.addAttribute("masini", masiniPage.getContent());
+
+        model.addAttribute("marca", marca);
+        model.addAttribute("culoarea", culoarea);
+        model.addAttribute("combustibil", combustibil);
+        model.addAttribute("pretMin", pretMin);
+        model.addAttribute("pretMax", pretMax);
+        model.addAttribute("anMin", anMin);
+        model.addAttribute("anMax", anMax);
+        model.addAttribute("putMin", putMin);
+        model.addAttribute("putMax", putMax);
+        model.addAttribute("modelul", modelul);
+        model.addAttribute("kmMin", kmMin);
+        model.addAttribute("kmMax", kmMax);
 
         return "masini";
     }
-
-
     @GetMapping("/masini/add")
     public String showAddForm(Model model) {
         model.addAttribute("masina", new Masina());
@@ -135,9 +170,47 @@ public class MasinaController {
     }
 
     @GetMapping({"/", "/marketplace"})
-    public String showMasiniMarket(Model model,@RequestParam(required = false) String marca,@RequestParam(required = false) String culoarea,@RequestParam(required = false) String combustibil,Double pretul,Integer anul,Integer puterea) {
+    public String showMasiniMarket(
+            Model model,
+            @RequestParam(required = false) String marca,
+            @RequestParam(required = false) String culoarea,
+            @RequestParam(required = false) String combustibil,
+            @RequestParam(required = false) Double pretMin,
+            @RequestParam(required = false) Double pretMax,
+            @RequestParam(required = false) Integer anMin,
+            @RequestParam(required = false) Integer anMax,
+            @RequestParam(required = false) Integer putMin,
+            @RequestParam(required = false) Integer putMax,
+            @RequestParam(required = false) String modelul,
+            @RequestParam(required = false) Double kmMin,
+            @RequestParam(required = false) Double kmMax,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "9") int size
+    ) {
+        Page<Masina> masiniPage = masinaService.filtrarePagini(
+                marca, modelul, pretMin, pretMax, combustibil, culoarea,
+                anMin, anMax, putMin, putMax,
+                kmMin, kmMax,
+                page, size
+        );
 
-        model.addAttribute("masini", masinaService.filtrare(marca,culoarea,combustibil,pretul,anul,puterea));
+        model.addAttribute("masiniPage", masiniPage);
+        model.addAttribute("masini", masiniPage.getContent());
+
+        model.addAttribute("marca", marca);
+        model.addAttribute("culoarea", culoarea);
+        model.addAttribute("combustibil", combustibil);
+        model.addAttribute("pretMin", pretMin);
+        model.addAttribute("pretMax", pretMax);
+
+        model.addAttribute("anMin", anMin);
+        model.addAttribute("anMax", anMax);
+        model.addAttribute("putMin", putMin);
+        model.addAttribute("putMax", putMax);
+
+        model.addAttribute("modelul", modelul);
+        model.addAttribute("kmMin", kmMin);
+        model.addAttribute("kmMax", kmMax);
 
         return "marketplace";
     }

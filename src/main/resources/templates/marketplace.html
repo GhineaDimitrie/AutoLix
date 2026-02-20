@@ -377,6 +377,44 @@
     letter-spacing: 0.2px;
     color: rgba(255,255,255,0.75);
 }
+        /* RANGE (min/max în aceeași casetă) */
+.range {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.range .filter-control {
+  padding: 10px 12px;
+}
+
+.range input {
+  width: 100%;
+}
+
+/* Ca butoanele să stea frumos și să nu "plutească" */
+.filter-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+/* mic polish: aliniere mai bună a grid-ului */
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  gap: 14px 16px;
+  align-items: end; /* etichetele + input-urile se aliniază uniform */
+}
+
+/* responsive: pe ecrane mici range-ul devine 1 coloană */
+@media (max-width: 560px) {
+  .range {
+    grid-template-columns: 1fr;
+  }
+}
 
     </style>
 </head>
@@ -437,61 +475,85 @@
         <form th:action="@{/marketplace}" method="get">
 
             <div class="filter-grid">
+
                 <div class="filter-group">
                     <label>Marcă</label>
                     <div class="filter-control">
-                        <input type="text" name="marca" placeholder="Oricare">
+                        <input type="text" name="marca" placeholder="Oricare" th:value="${marca}">
                     </div>
                 </div>
 
                 <div class="filter-group">
                     <label>Model</label>
                     <div class="filter-control">
-                        <input type="text" name="modelul" placeholder="Oricare">
+                        <input type="text" name="modelul" placeholder="Oricare" th:value="${modelul}">
                     </div>
                 </div>
 
                 <div class="filter-group">
                     <label>Preț</label>
-                    <div class="filter-control">
-                        <input type="text" name="pretul" placeholder="Oricare">
+                    <div class="range">
+                        <div class="filter-control">
+                            <input type="number" step="1" name="pretMin" placeholder="Min" th:value="${pretMin}">
+                        </div>
+                        <div class="filter-control">
+                            <input type="number" step="1" name="pretMax" placeholder="Max" th:value="${pretMax}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label>Kilometraj</label>
+                    <div class="range">
+                        <div class="filter-control">
+                            <input type="number" step="1" name="kmMin" placeholder="Min" th:value="${kmMin}">
+                        </div>
+                        <div class="filter-control">
+                            <input type="number" step="1" name="kmMax" placeholder="Max" th:value="${kmMax}">
+                        </div>
                     </div>
                 </div>
 
                 <div class="filter-group">
                     <label>Combustibil</label>
                     <div class="filter-control">
-                        <input type="text" name="combustibil" placeholder="Oricare">
+                        <input type="text" name="combustibil" placeholder="Oricare" th:value="${combustibil}">
                     </div>
                 </div>
 
                 <div class="filter-group">
                     <label>Culoare</label>
                     <div class="filter-control">
-                        <input type="text" name="culoarea" placeholder="Oricare">
+                        <input type="text" name="culoarea" placeholder="Oricare" th:value="${culoarea}">
                     </div>
                 </div>
 
                 <div class="filter-group">
                     <label>Putere</label>
-                    <div class="filter-control">
-                        <input type="text" name="puterea" placeholder="Oricare">
+                    <div class="range">
+                        <div class="filter-control">
+                            <input type="number" step="1" name="putMin" placeholder="Min" th:value="${putMin}">
+                        </div>
+                        <div class="filter-control">
+                            <input type="number" step="1" name="putMax" placeholder="Max" th:value="${putMax}">
+                        </div>
                     </div>
                 </div>
 
                 <div class="filter-group">
-                    <label>Anul</label>
-                    <div class="filter-control">
-                        <input type="text" name="anul" placeholder="Oricare">
+                    <label>An</label>
+                    <div class="range">
+                        <div class="filter-control">
+                            <input type="number" step="1" name="anMin" placeholder="Min" th:value="${anMin}">
+                        </div>
+                        <div class="filter-control">
+                            <input type="number" step="1" name="anMax" placeholder="Max" th:value="${anMax}">
+                        </div>
                     </div>
                 </div>
 
-                <div class="filter-group">
-                    <label>Extra</label>
-                    <div class="filter-control">
-                        <input type="text" name="extra" placeholder="Oricare">
-                    </div>
-                </div>
+
+
             </div>
 
             <div class="filter-actions">
@@ -536,6 +598,51 @@
                 <a class="btn-small" th:href="@{'/listing/' + ${m.nr_inmatriculare}}">View details</a>
             </div>
         </div>
+    </div>
+    <div th:if="${masiniPage != null && masiniPage.totalPages > 1}"
+         style="margin-top:16px; display:flex; gap:12px; justify-content:center; align-items:center; flex-wrap:wrap;">
+
+        <a class="btn-small"
+           th:if="${masiniPage.hasPrevious()}"
+           th:href="@{/marketplace(
+        page=${masiniPage.number - 1},
+        size=${masiniPage.size},
+        marca=${marca},
+        modelul=${modelul},
+        combustibil=${combustibil},
+        culoarea=${culoarea},
+        anul=${anul},
+        puterea=${puterea},
+        pretMin=${pretMin},
+        pretMax=${pretMax},
+        kmMin=${kmMin},
+        kmMax=${kmMax}
+     )}">
+            Previous
+        </a>
+
+        <span th:text="'Pagina ' + ${masiniPage.number + 1} + ' / ' + ${masiniPage.totalPages}"
+              style="font-weight:700;"></span>
+
+        <a class="btn-small"
+           th:if="${masiniPage.hasNext()}"
+           th:href="@{/marketplace(
+        page=${masiniPage.number + 1},
+        size=${masiniPage.size},
+        marca=${marca},
+        modelul=${modelul},
+        combustibil=${combustibil},
+        culoarea=${culoarea},
+        anul=${anul},
+        puterea=${puterea},
+        pretMin=${pretMin},
+        pretMax=${pretMax},
+        kmMin=${kmMin},
+        kmMax=${kmMax}
+     )}">
+            Next
+        </a>
+
     </div>
 
 </div>
