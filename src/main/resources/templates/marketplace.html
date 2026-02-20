@@ -10,11 +10,9 @@
             margin: 0;
             min-height: 100vh;
             font-family: "Segoe UI", Arial, sans-serif;
-
             background-image: url("/images/login.jpg");
             background-size: cover;
             background-position: center;
-
             display: flex;
             justify-content: center;
             align-items: center;
@@ -24,17 +22,14 @@
             width: 90%;
             max-width: 1200px;
             padding: 25px;
+            padding-top: 85px;
 
             background: rgba(255,255,255,0.15);
             backdrop-filter: blur(10px);
             border-radius: 12px;
             box-shadow: 0 0 25px rgba(0,0,0,0.3);
-
             color: white;
             position: relative;
-
-            /* spațiu sub navbar */
-            padding-top: 85px;
         }
 
         /* NAVBAR */
@@ -56,10 +51,11 @@
             border-radius: 12px 12px 0 0;
         }
 
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .nav-left a {
+            display:flex;
+            align-items:center;
+            gap:12px;
+            text-decoration:none;
         }
 
         .logo {
@@ -73,7 +69,6 @@
             font-weight: 700;
             letter-spacing: 0.3px;
             color: white;
-            text-decoration: none;
         }
 
         .nav-right {
@@ -104,6 +99,19 @@
             background-color: #6c7a7b;
         }
 
+        .nav-link-green {
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: white;
+            background-color:#27ae60;
+            display: inline-block;
+            font-size: 14px;
+        }
+        .nav-link-green:hover {
+            background-color:#1f8f4d;
+        }
+
         .nav-btn {
             padding: 8px 14px;
             border-radius: 6px;
@@ -122,7 +130,138 @@
             margin: 0 0 18px 0;
         }
 
-        /* GRID */
+        /* ADVANCED FILTER (layout ca în exemplu) */
+        .advanced-filter {
+            background: rgba(20, 24, 35, 0.9);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            padding: 22px 22px 18px 22px;
+            margin: 10px 0 22px 0;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(180px, 1fr));
+            gap: 14px 16px;
+        }
+
+        @media (max-width: 1050px) {
+            .filter-grid {
+                grid-template-columns: repeat(2, minmax(180px, 1fr));
+            }
+        }
+
+        @media (max-width: 560px) {
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .filter-group label {
+            font-size: 12.5px;
+            font-weight: 700;
+            opacity: 0.95;
+        }
+
+        .filter-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.18);
+            background: rgba(255,255,255,0.06);
+        }
+
+        .filter-control input,
+        .filter-control select {
+            width: 100%;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: white;
+            font-size: 14px;
+        }
+
+        .filter-control input::placeholder {
+            color: rgba(255,255,255,0.65);
+        }
+
+        .filter-control:focus-within {
+            border-color: rgba(47,164,245,0.9);
+            box-shadow: 0 0 0 3px rgba(47,164,245,0.18);
+        }
+
+        .filter-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .filter-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            user-select: none;
+        }
+
+        .toggle input {
+            width: 16px;
+            height: 16px;
+            accent-color: #2fa4f5;
+        }
+
+        .filter-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: #ff3c00;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .filter-btn:hover {
+            background-color: #e63200;
+        }
+
+        .filter-reset {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .filter-reset:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        /* GRID listings */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
@@ -142,7 +281,6 @@
             font-size: 18px;
             font-weight: 700;
             margin-bottom: 6px;
-            color: #111;
         }
 
         .price {
@@ -175,15 +313,71 @@
             text-align: center;
         }
 
-         .nav-link-green {
-            padding: 8px 14px;
-            border-radius: 6px;
+        .card-actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-small {
+            padding: 7px 12px;
+            border-radius: 8px;
             text-decoration: none;
             color: white;
-            background-color:#27ae60;
+            background-color: #2fa4f5;
+            font-size: 13px;
             display: inline-block;
-            font-size: 14px;
         }
+        .btn-small:hover {
+            background-color: #1e88e5;
+        }
+
+        .brand-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+}
+
+.logo {
+    height: 44px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+
+    /* premium look */
+    filter: drop-shadow(0 6px 14px rgba(0,0,0,0.35));
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.05;
+}
+
+.brand-name {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 0.6px;
+    color: #ffffff;
+
+    /* micro contrast */
+    text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+}
+
+.brand-accent {
+    color: #2fa4f5; /* păstrează culoarea ta de brand */
+}
+
+.brand-tagline {
+    margin-top: 3px;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    color: rgba(255,255,255,0.75);
+}
+
     </style>
 </head>
 
@@ -194,26 +388,28 @@
     <!-- NAVBAR -->
     <div class="navbar">
         <div class="nav-left">
-            <!-- logo clickable -->
-            <a th:href="@{/marketplace}" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
+            <a th:href="@{/marketplace}" class="brand-link">
                 <img src="/images/logo3.png" alt="AutoLix Logo" class="logo">
-                <span class="brand">AutoLix</span>
+                <div class="brand-text">
+                    <div class="brand-name">Auto<span class="brand-accent">Lix</span></div>
+                    <div class="brand-tagline">Marketplace auto • anunțuri verificate</div>
+                </div>
             </a>
         </div>
 
-        <div class="nav-right">
-                    <div sec:authorize="hasAnyRole('ADMIN','EDITOR')">
-                         <a class="nav-link" th:href="@{/masini}">Database</a>
-                     </div>
 
+        <div class="nav-right">
+            <div sec:authorize="hasAnyRole('ADMIN','EDITOR')">
+                <a class="nav-link" th:href="@{/masini}">Database</a>
+            </div>
 
             <a class="nav-link" th:href="@{/marketplace}">Marketplace</a>
 
-            <a class="nav-link "
+            <a class="nav-link"
                sec:authorize="isAuthenticated()"
                th:href="@{/my-profile}">My Profile</a>
 
-            <a class="nav-link-green "
+            <a class="nav-link-green"
                sec:authorize="isAuthenticated()"
                th:href="@{/masini/add}">+ Add Listing</a>
 
@@ -236,6 +432,83 @@
 
     <h1>Marketplace</h1>
 
+    <!-- ADVANCED FILTER -->
+    <div class="advanced-filter">
+        <form th:action="@{/marketplace}" method="get">
+
+            <div class="filter-grid">
+                <div class="filter-group">
+                    <label>Marcă</label>
+                    <div class="filter-control">
+                        <input type="text" name="marca" placeholder="Oricare">
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label>Model</label>
+                    <div class="filter-control">
+                        <input type="text" name="modelul" placeholder="Oricare">
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label>Preț</label>
+                    <div class="filter-control">
+                        <input type="text" name="pretul" placeholder="Oricare">
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label>Combustibil</label>
+                    <div class="filter-control">
+                        <input type="text" name="combustibil" placeholder="Oricare">
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label>Culoare</label>
+                    <div class="filter-control">
+                        <input type="text" name="culoarea" placeholder="Oricare">
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label>Putere</label>
+                    <div class="filter-control">
+                        <input type="text" name="puterea" placeholder="Oricare">
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label>Anul</label>
+                    <div class="filter-control">
+                        <input type="text" name="anul" placeholder="Oricare">
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label>Extra</label>
+                    <div class="filter-control">
+                        <input type="text" name="extra" placeholder="Oricare">
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-actions">
+                <div class="filter-left">
+
+
+                </div>
+
+                <div class="filter-right">
+                    <a class="filter-reset" th:href="@{/marketplace}">↺ Resetează</a>
+                    <button type="submit" class="filter-btn">Caută</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
     <div th:if="${#lists.isEmpty(masini)}" class="empty">
         Nu există anunțuri încă.
     </div>
@@ -247,17 +520,21 @@
                  th:src="@{'/uploads/' + ${m.imageName}}"
                  style="width:100%; height:180px; object-fit:cover; border-radius:8px; margin-bottom:10px;">
 
+            <div class="card-title" th:text="${m.marca} + ' ' + ${m.modelul}"></div>
+            <div class="price" th:text="${#numbers.formatInteger(m.pretul, 0, 'POINT')} + ' €'"></div>
 
-            <div class="card-title" th:text="${m.marca} + ' ' + ${m.modelul}">Marca Model</div>
-            <div class="price" th:text="${m.pretul} + ' €'">0 €</div>
 
-            <div class="meta" th:text="'Nr înmatriculare: ' + ${m.nr_inmatriculare}">Nr</div>
-            <div class="meta" th:text="'Culoare: ' + ${m.culoarea}">Culoare</div>
-            <div class="meta" th:text="'Combustibil: ' + ${m.combustibil}">Combustibil</div>
-            <div class="meta" th:text="'Putere: ' + ${m.puterea} + ' CP'">Putere</div>
-            <div class="meta" th:text="'Cuplu: ' + ${m.cuplul} + ' Nm'">Cuplu</div>
+            <div class="meta" th:text="'Kilometraj: ' + ${#numbers.formatInteger(m.kilometraj, 0, 'POINT')} + ' km'"></div>
+            <div class="meta" th:text="'Putere: ' + ${m.puterea} + ' CP'"></div>
+            <div class="meta" th:text="'Culoare: ' + ${m.culoarea}"></div>
+            <div class="meta" th:text="'Combustibil: ' + ${m.combustibil}"></div>
+            <div class="meta" th:text="'Cuplu: ' + ${m.cuplul} + ' Nm'"></div>
 
-            <span class="tag" th:text="${m.capacitatea_cilindrica} + ' cm³'">cm³</span>
+            <span class="tag" th:text="${m.anul}"></span>
+
+            <div class="card-actions">
+                <a class="btn-small" th:href="@{'/listing/' + ${m.nr_inmatriculare}}">View details</a>
+            </div>
         </div>
     </div>
 

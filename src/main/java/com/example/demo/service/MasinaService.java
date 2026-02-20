@@ -39,19 +39,26 @@ public class MasinaService {
         return false;
     }
 
-    public List<Masina> filtrare(String marca, String culoarea, String combustibil) {
+    public List<Masina> filtrare(String marca, String culoarea, String combustibil,Double pretul,Integer anul,Integer puterea) {
         boolean hasMarca = marca != null && !marca.isBlank();
         boolean hasCuloarea = culoarea != null && !culoarea.isBlank();
         boolean hasCombustibil = combustibil != null && !combustibil.isBlank();
+        boolean hasPretul = pretul!= null;
+        boolean hasAnul = anul != null ;
+        boolean hasPuterea = puterea != null ;
 
         // You MUST 'return' the result of the repository call!
-        if (hasMarca && hasCuloarea && hasCombustibil) {
-            return repository.findByMarcaAndCuloareaAndCombustibil(marca, culoarea, combustibil);
+        if (hasMarca && hasCuloarea && hasCombustibil && hasPretul && hasAnul && hasPuterea) {
+            return repository.findByMarcaAndCuloareaAndCombustibilAndPretulAndAnulAndPuterea(marca, culoarea, combustibil, pretul, anul, puterea);
         }
 
         if (hasMarca) return repository.findByMarca(marca);
         if (hasCuloarea) return repository.findByCuloarea(culoarea);
         if (hasCombustibil) return repository.findByCombustibil(combustibil);
+        if (hasPretul) return repository.findByPretul(String.valueOf(pretul));
+        if (hasAnul) return repository.findByAnul(anul);
+        if (hasPuterea) return repository.findByPuterea(puterea);
+
 
         // If no filters are applied, only then return everything
         return repository.findAll();

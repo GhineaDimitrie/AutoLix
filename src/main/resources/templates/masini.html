@@ -242,6 +242,8 @@
         <thead>
         <tr>
             <th>Nr inmatriculare</th>
+            <th>Anul</th>
+            <th>Kilometraj</th>
             <th>Marca</th>
             <th>Model</th>
             <th>Culoare</th>
@@ -251,6 +253,7 @@
             <th>Cuplu</th>
             <th>Portbagaj</th>
             <th>Pret</th>
+
             <th sec:authorize="hasRole('EDITOR')">Actiuni</th>
         </tr>
         </thead>
@@ -258,6 +261,8 @@
         <tbody>
         <tr th:each="masina : ${masini}">
             <td th:text="${masina.nr_inmatriculare}"></td>
+            <td th:text="${masina.anul}"></td>
+            <td th:text="${masina.kilometraj}"></td>
             <td th:text="${masina.marca}"></td>
             <td th:text="${masina.modelul}"></td>
             <td th:text="${masina.culoarea}"></td>

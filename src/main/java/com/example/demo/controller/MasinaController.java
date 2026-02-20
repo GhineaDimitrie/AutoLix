@@ -16,6 +16,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Controller
 public class MasinaController {
@@ -37,12 +40,13 @@ public class MasinaController {
     }
 
     @GetMapping("/masini")
-    public String showMasini(Model model,@RequestParam(required = false) String marca,@RequestParam(required = false) String culoarea,@RequestParam(required = false) String combustibil) {
+    public String showMasini(Model model,@RequestParam(required = false) String marca,@RequestParam(required = false) String culoarea,@RequestParam(required = false) String combustibil,Double pretul,Integer anul,Integer puterea) {
 
-        model.addAttribute("masini", masinaService.filtrare(marca,culoarea,combustibil));
+        model.addAttribute("masini", masinaService.filtrare(marca,culoarea,combustibil,pretul,anul,puterea));
 
         return "masini";
     }
+
 
     @GetMapping("/masini/add")
     public String showAddForm(Model model) {
@@ -54,24 +58,39 @@ public class MasinaController {
     @PostMapping("/masini/add")
     public String saveMasina(@Valid @ModelAttribute Masina masina,
                              BindingResult bindingResult,
-                             @RequestParam(value="imageFile",required=false)MultipartFile imageFile,
-                             Principal principal) throws IOException
-    {
-        System.out.println("imageFile name=" + (imageFile != null ? imageFile.getName() : "null"));
+                             @RequestParam(value="imageFiles", required=false) MultipartFile[] imageFiles,
+                             Principal principal) throws IOException {
+
         if (bindingResult.hasErrors()) {
             return "adauga-masini";
-
         }
-        String username=principal.getName();
 
-        Utilizator user =utilizatorRepository.findByUsername(principal.getName());
+        Utilizator user = utilizatorRepository.findByUsername(principal.getName());
         masina.setUtilizator(user);
-        String filename = fileStorageService.storeImage(imageFile);
-        masina.setImageName(filename);
+
+        // 1) salvezi fiecare fișier și strângi filenames
+        List<String> filenames = new ArrayList<>();
+
+        if (imageFiles != null) {
+            for (MultipartFile f : imageFiles) {
+                if (f == null || f.isEmpty()) continue;
+                String fn = fileStorageService.storeImage(f);
+                if (fn != null) filenames.add(fn);
+            }
+        }
+
+        // 2) setezi poza principală (optional, dar util ca fallback)
+        if (!filenames.isEmpty()) {
+            masina.setImageName(filenames.get(0));
+        }
+
+        // 3) setezi CSV-ul în câmpul unic
+        masina.setImageNames(String.join(",", filenames));
 
         masinaService.saveMasina(masina);
         return "redirect:/my-profile";
     }
+
 
 
     @GetMapping("/masini/edit/{nr_inmatriculare}")
@@ -116,8 +135,10 @@ public class MasinaController {
     }
 
     @GetMapping({"/", "/marketplace"})
-    public String marketplace(Model model) {
-        model.addAttribute("masini", masinaRepository.findAll());
+    public String showMasiniMarket(Model model,@RequestParam(required = false) String marca,@RequestParam(required = false) String culoarea,@RequestParam(required = false) String combustibil,Double pretul,Integer anul,Integer puterea) {
+
+        model.addAttribute("masini", masinaService.filtrare(marca,culoarea,combustibil,pretul,anul,puterea));
+
         return "marketplace";
     }
 
@@ -127,6 +148,23 @@ public class MasinaController {
         model.addAttribute("masini", masinaRepository.findByUtilizatorUsername(username));
         return "my-profile";
     }
+    @GetMapping("/listing/{nr_inmatriculare}")
+    public String listing(@PathVariable String nr_inmatriculare, Model model){
+        Masina m = masinaService.getMasina(nr_inmatriculare);
+        List<String> images= Collections.emptyList();
+        String csv = m.getImageNames();
+        if (csv != null && !csv.isBlank()) {
+            images = java.util.Arrays.stream(csv.split(","))
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .toList();
+        }
+
+        model.addAttribute("m", m);
+        model.addAttribute("images", images);
+        return "listing";
+    }
+
 
 
 

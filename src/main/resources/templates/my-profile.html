@@ -183,16 +183,22 @@
 
     <div class="grid" th:if="${not #lists.isEmpty(masini)}">
         <div class="card" th:each="m : ${masini}">
+            <img th:if="${m.imageName != null}"
+                 th:src="@{'/uploads/' + ${m.imageName}}"
+                 style="width:100%; height:180px; object-fit:cover; border-radius:8px; margin-bottom:10px;">
             <div class="card-title" th:text="${m.marca} + ' ' + ${m.modelul}">Marca Model</div>
-            <div class="price" th:text="${m.pretul} + ' €'">0 €</div>
+            <div class="price" th:text="${#numbers.formatInteger(m.pretul, 0, 'POINT')} + ' €'"></div>
 
-            <div class="meta" th:text="'Nr înmatriculare: ' + ${m.nr_inmatriculare}">Nr</div>
-            <div class="meta" th:text="'Culoare: ' + ${m.culoarea}">Culoare</div>
-            <div class="meta" th:text="'Combustibil: ' + ${m.combustibil}">Combustibil</div>
-            <div class="meta" th:text="'Putere: ' + ${m.puterea} + ' CP'">Putere</div>
-            <div class="meta" th:text="'Cuplu: ' + ${m.cuplul} + ' Nm'">Cuplu</div>
 
-            <span class="tag" th:text="${m.capacitatea_cilindrica} + ' cm³'">cm³</span>
+
+            <div class="meta" th:text="'Kilometraj: ' + ${#numbers.formatInteger(m.kilometraj, 0, 'POINT')} + ' km'"></div>
+            <div class="meta" th:text="'Putere: ' + ${m.puterea} + ' CP'"></div>
+            <div class="meta" th:text="'Culoare: ' + ${m.culoarea}"></div>
+            <div class="meta" th:text="'Combustibil: ' + ${m.combustibil}"></div>
+            <div class="meta" th:text="'Cuplu: ' + ${m.cuplul} + ' Nm'"></div>
+
+
+            <span class="tag" th:text="${m.anul}"></span>
 
             <div class="card-actions">
                 <a class="btn-link" th:href="@{'/masini/edit/' + ${m.nr_inmatriculare}}">Edit</a>

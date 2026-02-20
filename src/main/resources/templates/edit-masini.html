@@ -106,6 +106,18 @@
               th:errors="*{nr_inmatriculare}"></span>
         <input type="text" th:field="*{nr_inmatriculare}" readonly />
 
+        <label>Anul</label>
+        <span class="error"
+              th:if="${#fields.hasErrors('anul')}"
+              th:errors="*{anul}"></span>
+        <input type="text" th:field="*{anul}" />
+
+        <label>Kilometraj</label>
+        <span class="error"
+              th:if="${#fields.hasErrors('kilometraj')}"
+              th:errors="*{kilometraj}"></span>
+        <input type="text" th:field="*{kilometraj}" />
+
         <label>Marca</label>
         <span class="error"
               th:if="${#fields.hasErrors('marca')}"
@@ -160,7 +172,7 @@
               th:errors="*{pretul}"></span>
         <input type="number" step="0.01" th:field="*{pretul}" />
 
-        <input type="file" name="imageFile" accept="image/*" required>
+        <input type="file" name="imageFiles" accept="image/*" multiple required>
         <div class="btn-group">
             <a th:href="@{/masini}" class="btn-back">Inapoi</a>
             <button type="submit" class="btn-save">Salveaza modificarile</button>

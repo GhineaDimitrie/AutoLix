@@ -38,7 +38,14 @@ public class Masina {
     private Integer volumul_portbagajului;
    @NotNull (message = "Nu ati introdus pretul!")@Positive(message = "Ati introdus o valoare negativa!")
     private Double pretul;
+
     private String imageName;
+    @Column(length = 4000)
+    private String imageNames;
+    @NotNull (message = "Nu ati introdus anul!")@Positive(message = "Ati introdus o valoare negativa!")
+    private Integer anul;
+    @NotNull (message = "Nu ati introdus nr de kilometrii!")@Positive(message = "Ati introdus o valoare negativa!")
+    private Double kilometraj;
 
 
 
