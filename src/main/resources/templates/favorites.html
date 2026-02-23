@@ -1,0 +1,454 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>My Favorites</title>
+
+    <style>
+        body{
+          margin:0;
+          font-family:"Segoe UI", Arial, sans-serif;
+          background-image: url("/images/login.jpg");
+          background-size: cover;
+          background-position: center;
+          min-height:100vh;
+          color:white;
+        }
+
+        /* NAVBAR (fixed) */
+        .navbar {
+          position: fixed;
+          top: 0; left: 0; right: 0;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 14px 22px;
+          box-sizing: border-box;
+          background: rgba(0,0,0,0.35);
+          backdrop-filter: blur(10px);
+          border-bottom: 1px solid rgba(255,255,255,0.10);
+          z-index: 1000;
+        }
+
+        .brand-link {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          text-decoration: none;
+        }
+
+        .logo {
+          height: 44px;
+          width: auto;
+          object-fit: contain;
+          display: block;
+          filter: drop-shadow(0 6px 14px rgba(0,0,0,0.35));
+        }
+
+        .brand-text {
+          display: flex;
+          flex-direction: column;
+          line-height: 1.05;
+        }
+
+        .brand-name {
+          font-size: 18px;
+          font-weight: 900;
+          letter-spacing: 0.6px;
+          color: #ffffff;
+          text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+        }
+
+        .brand-accent { color: #2fa4f5; }
+
+        .brand-tagline {
+          margin-top: 3px;
+          font-size: 11.5px;
+          font-weight: 600;
+          letter-spacing: 0.2px;
+          color: rgba(255,255,255,0.75);
+        }
+
+        .nav-right {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+
+        .nav-link {
+          padding: 8px 14px;
+          border-radius: 6px;
+          text-decoration: none;
+          color: white;
+          background-color: #2fa4f5;
+          display: inline-block;
+          font-size: 14px;
+        }
+        .nav-link:hover { background-color: #1e88e5; }
+
+        .nav-link.secondary { background-color: #7f8c8d; }
+        .nav-link.secondary:hover { background-color: #6c7a7b; }
+
+        .nav-link-green {
+          padding: 8px 14px;
+          border-radius: 6px;
+          text-decoration: none;
+          color: white;
+          background-color:#27ae60;
+          display: inline-block;
+          font-size: 14px;
+        }
+        .nav-link-green:hover { background-color:#1f8f4d; }
+
+        .nav-btn {
+          padding: 8px 14px;
+          border-radius: 6px;
+          border: none;
+          cursor: pointer;
+          color: white;
+          background-color: #e74c3c;
+          font-size: 14px;
+        }
+        .nav-btn:hover { background-color: #c0392b; }
+
+        /* GLASS CONTAINER */
+        .container{
+          width:90%;
+          max-width:1100px;
+          margin:40px auto;
+          padding:25px;
+          padding-top:85px; /* space for navbar */
+          background: rgba(255,255,255,0.10);
+          backdrop-filter: blur(10px);
+          border-radius: 12px;
+          box-shadow: 0 0 25px rgba(0,0,0,0.35);
+          position:relative;
+        }
+
+        h1{
+          font-size:32px;
+          font-weight:900;
+          margin:0 0 10px 0;
+        }
+
+        /* SUBHEADER */
+        .subhead{
+          display:flex;
+          justify-content:space-between;
+          align-items:flex-end;
+          gap:12px;
+          margin:0 0 18px 0;
+          flex-wrap:wrap;
+        }
+        .subtitle{
+          color: rgba(255,255,255,0.75);
+          font-size: 14px;
+          margin-top: 6px;
+        }
+        .count{
+          margin-top: 6px;
+          font-weight: 800;
+          color: rgba(255,255,255,0.92);
+        }
+        .chip{
+          text-decoration:none;
+          color:white;
+          background: rgba(47,164,245,0.20);
+          border: 1px solid rgba(47,164,245,0.45);
+          padding: 10px 14px;
+          border-radius: 999px;
+          font-weight: 800;
+          display:inline-block;
+        }
+        .chip:hover{
+          background: rgba(47,164,245,0.30);
+        }
+
+        /* EMPTY STATE */
+        .empty{
+          background: rgba(0,0,0,0.25);
+          border: 1px solid rgba(255,255,255,0.12);
+          border-radius: 14px;
+          padding: 24px;
+          text-align: center;
+        }
+        .empty-title{
+          font-size: 20px;
+          font-weight: 900;
+        }
+        .empty-text{
+          margin-top: 8px;
+          color: rgba(255,255,255,0.75);
+          margin-bottom: 14px;
+        }
+
+        /* CARDS */
+        .card{
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+
+          background: rgba(255,255,255,0.08);
+          border: 1px solid rgba(255,255,255,0.12);
+          backdrop-filter: blur(10px);
+
+          border-radius: 16px;
+          padding: 18px;
+          margin-bottom: 14px;
+
+          box-shadow: 0 10px 28px rgba(0,0,0,0.25);
+          transition: transform .12s ease, border-color .12s ease, background .12s ease;
+          gap: 14px;
+        }
+
+        .card:hover{
+          transform: translateY(-2px);
+          border-color: rgba(47,164,245,0.45);
+          background: rgba(255,255,255,0.10);
+        }
+
+        .left{
+          display:flex;
+          gap:18px;
+          align-items:center;
+          flex: 1;
+          min-width: 260px;
+        }
+
+        .car-img{
+          width:130px;
+          height:88px;
+          object-fit:cover;
+          border-radius:12px;
+          flex-shrink: 0;
+          box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+        }
+
+        .info h3{
+          margin:0;
+          font-size:20px;
+          font-weight:900;
+          color: white;
+          text-shadow: 0 2px 10px rgba(0,0,0,0.25);
+        }
+
+        .info p{
+          margin:6px 0 10px 0;
+          font-size:14px;
+          color: rgba(255,255,255,0.78);
+        }
+
+        .price{
+          font-size:20px;
+          font-weight:900;
+          margin-bottom: 10px;
+        }
+
+        .actions{
+          display:flex;
+          align-items:center;
+          gap: 10px;
+          flex-wrap: wrap;
+          justify-content: flex-end;
+        }
+
+        .btn{
+          background:#6c2bd9;
+          border:none;
+          padding:10px 16px;
+          border-radius:10px;
+          color:white;
+          font-weight:800;
+          cursor:pointer;
+          text-decoration:none;
+          display:inline-block;
+          white-space: nowrap;
+        }
+        .btn:hover{ background:#5b21b6; }
+
+        .btn-danger{
+          background: rgba(231,76,60,0.88);
+        }
+        .btn-danger:hover{
+          background: rgba(231,76,60,1);
+        }
+
+        @media (max-width: 720px){
+          .card{ flex-direction: column; align-items: stretch; }
+          .actions{ justify-content: flex-start; }
+          .left{ min-width: unset; }
+          .car-img{ width: 100%; height: 180px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="nav-left">
+        <a th:href="@{/marketplace}" class="brand-link">
+            <img src="/images/logo3.png" alt="AutoLix Logo" class="logo">
+            <div class="brand-text">
+                <div class="brand-name">Auto<span class="brand-accent">Lix</span></div>
+                <div class="brand-tagline">Marketplace auto • anunțuri verificate</div>
+            </div>
+        </a>
+    </div>
+
+    <div class="nav-right">
+        <div sec:authorize="hasAnyRole('ADMIN','EDITOR')">
+            <a class="nav-link" th:href="@{/masini}">Database</a>
+        </div>
+
+        <a class="nav-link" th:href="@{/marketplace}">Marketplace</a>
+
+        <a class="nav-link"
+           sec:authorize="isAuthenticated()"
+           th:href="@{/my-profile}">My Profile</a>
+
+        <a class="nav-link"
+           sec:authorize="isAuthenticated()"
+           th:href="@{/favorites}">Favorites</a>
+
+        <a class="nav-link-green"
+           sec:authorize="isAuthenticated()"
+           th:href="@{/masini/add}">+ Sell now</a>
+
+        <a class="nav-link"
+           sec:authorize="isAnonymous()"
+           th:href="@{/login}">Login</a>
+
+        <a class="nav-link secondary"
+           sec:authorize="isAnonymous()"
+           th:href="@{/signup}">Sign up</a>
+
+        <form sec:authorize="isAuthenticated()"
+              th:action="@{/logout}"
+              method="post"
+              style="margin:0;">
+            <button type="submit" class="nav-btn">Logout</button>
+        </form>
+    </div>
+</div>
+
+<div class="container">
+    <h1>Favoritele mele</h1>
+
+    <div class="subhead">
+        <div>
+            <div class="subtitle">Anunțurile pe care le-ai salvat pentru mai târziu.</div>
+            <div class="count" th:text="'Total: ' + ${#lists.size(favorites)}">Total: 0</div>
+        </div>
+        <div>
+            <a class="chip" th:href="@{/marketplace}">+ Adaugă mai multe</a>
+        </div>
+    </div>
+
+    <!-- EMPTY -->
+    <div th:if="${#lists.isEmpty(favorites)}" class="empty">
+        <div class="empty-title">Încă n-ai favorite</div>
+        <div class="empty-text">Salvează anunțuri din marketplace și le găsești aici instant.</div>
+        <a class="btn" th:href="@{/marketplace}">Mergi la Marketplace</a>
+    </div>
+
+    <!-- LIST -->
+    <div th:if="${not #lists.isEmpty(favorites)}">
+        <div th:each="fav : ${favorites}" class="card">
+
+            <div class="left">
+                <img class="car-img"
+                     th:src="${fav.masina.imageName != null ?
+                 '/uploads/' + fav.masina.imageName :
+                 '/images/no-image.png'}" />
+
+                <div class="info">
+                    <h3 th:text="${fav.masina.marca + ' ' + fav.masina.modelul}">Marca Model</h3>
+
+                    <p>
+                        <span th:text="${fav.masina.anul}">2020</span> •
+                        <span th:text="${#numbers.formatInteger(fav.masina.kilometraj,0,'POINT')}">0</span> km •
+                        <span th:text="${fav.masina.puterea}">0</span> CP
+                    </p>
+
+                    <div class="price"
+                         th:text="${#numbers.formatInteger(fav.masina.pretul,0,'POINT') + ' EUR'}">
+                        0 EUR
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <a class="btn"
+                   th:href="@{/listing/{nr}(nr=${fav.masina.nr_inmatriculare})}">
+                    Vezi anunț
+                </a>
+
+                <button class="btn btn-danger"
+                        type="button"
+                        th:attr="data-nr=${fav.masina.nr_inmatriculare}"
+                        onclick="removeFav(this)">
+                    Remove
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Remove = toggle off + remove card from DOM
+    function removeFav(btn){
+      const nr = btn.getAttribute("data-nr");
+      if(!nr) return;
+
+      btn.disabled = true;
+
+      fetch(`/favorites/toggle/${encodeURIComponent(nr)}`, {
+        method: "POST",
+        headers: { "Accept": "application/json" }
+      })
+      .then(r => {
+        if(!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      })
+      .then(data => {
+        // daca acum nu mai e favorite, scoatem cardul
+        if(!data.favorite){
+          const card = btn.closest(".card");
+          card?.remove();
+
+          // update counter
+          const countEl = document.querySelector(".count");
+          if(countEl){
+            const m = countEl.textContent.match(/\d+/);
+            if(m){
+              const n = Math.max(0, parseInt(m[0], 10) - 1);
+              countEl.textContent = "Total: " + n;
+            }
+          }
+
+          // daca nu mai exista carduri, arata empty state
+          const hasCards = document.querySelectorAll(".card").length > 0;
+          if(!hasCards){
+            const listWrap = document.querySelector('[th\\:if="${not #lists.isEmpty(favorites)}"]');
+            const empty = document.querySelector(".empty");
+            if(empty) empty.style.display = "block";
+          }
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert("Nu s-a putut elimina din favorite. (Ești logat?)");
+      })
+      .finally(() => {
+        btn.disabled = false;
+      });
+    }
+</script>
+
+</body>
+</html>

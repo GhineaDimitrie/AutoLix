@@ -1,9 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Adauga masina</title>
+    <title>Adaugă mașină</title>
 
     <style>
+        :root{
+            --glass: rgba(255,255,255,0.14);
+            --glass-strong: rgba(255,255,255,0.20);
+            --border: rgba(255,255,255,0.22);
+            --text: rgba(255,255,255,0.95);
+            --muted: rgba(255,255,255,0.70);
+            --danger: #ff4d4d;
+            --primary: #2fa4f5;
+            --primary-hover: #1c8ed6;
+            --shadow: 0 18px 40px rgba(0,0,0,0.35);
+            --radius: 16px;
+        }
+
+        * { box-sizing: border-box; }
+
         body {
             margin: 0;
             min-height: 100vh;
@@ -16,78 +31,233 @@
             display: flex;
             justify-content: center;
             align-items: center;
+
+            padding: 28px;
+            color: var(--text);
         }
 
         .container {
-            width: 400px;
-            padding: 30px;
+            width: min(980px, 100%);
+            padding: 28px;
 
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(10px);
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
 
-            border-radius: 12px;
-            box-shadow: 0 0 25px rgba(0,0,0,0.3);
-            color: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
         }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-top: 10px;
-        }
-
-        input {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-
-            border-radius: 5px;
-            border: none;
-            outline: none;
-        }
-
-        .error {
-            color: #ff4d4d;
-            font-size: 12px;
-        }
-
-        .btn-group {
-            margin-top: 20px;
+        .header {
             display: flex;
             justify-content: space-between;
+            align-items: flex-start;
+            gap: 18px;
+            margin-bottom: 18px;
         }
 
-        button {
-            padding: 8px 16px;
-            border-radius: 6px;
+        .title-wrap h1{
+            margin: 0;
+            font-size: 28px;
+            letter-spacing: 0.2px;
+        }
+
+        .title-wrap p{
+            margin: 6px 0 0 0;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .badge{
+            padding: 10px 12px;
+            border-radius: 999px;
+            background: rgba(0,0,0,0.18);
+            border: 1px solid rgba(255,255,255,0.18);
+            color: var(--muted);
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        form{
+            margin-top: 14px;
+        }
+
+        .grid{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px 16px;
+        }
+
+        .field{
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field.full{
+            grid-column: 1 / -1;
+        }
+
+        label{
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .control{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            padding: 12px 12px;
+            border-radius: 12px;
+
+            background: rgba(0,0,0,0.20);
+            border: 1px solid rgba(255,255,255,0.16);
+            transition: border-color .15s ease, transform .05s ease, background .15s ease;
+        }
+
+        .control:focus-within{
+            border-color: rgba(47,164,245,0.75);
+            background: rgba(0,0,0,0.26);
+        }
+
+        .icon{
+            width: 18px;
+            height: 18px;
+            opacity: 0.85;
+            flex: 0 0 18px;
+        }
+
+        input{
+            width: 100%;
             border: none;
-            cursor: pointer;
+            outline: none;
+            background: transparent;
+            color: var(--text);
             font-size: 14px;
         }
 
-        .btn-save {
-            background-color: #2fa4f5;
-            color: white;
+        input::placeholder{
+            color: rgba(255,255,255,0.45);
         }
 
-        .btn-save:hover {
-            background-color: #1c8ed6;
+        .hint{
+            font-size: 12px;
+            color: rgba(255,255,255,0.60);
+            margin-top: 2px;
         }
 
-        .btn-back {
-            background-color: #7f8c8d;
-            color: white;
+        .error {
+            color: var(--danger);
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        /* Upload */
+        .upload{
+            padding: 14px;
+            border-radius: 14px;
+            background: rgba(0,0,0,0.18);
+            border: 1px dashed rgba(255,255,255,0.25);
+        }
+
+        .upload-row{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .upload strong{
+            display: block;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .upload small{
+            color: rgba(255,255,255,0.65);
+        }
+
+        .file-btn{
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.18);
+            background: rgba(255,255,255,0.08);
+            color: var(--text);
+            cursor: pointer;
+            user-select: none;
+            transition: background .15s ease, transform .05s ease;
+        }
+
+        .file-btn:hover{
+            background: rgba(255,255,255,0.12);
+        }
+        .file-btn:active{
+            transform: translateY(1px);
+        }
+
+        input[type="file"]{
+            display: none;
+        }
+
+        .file-name{
+            margin-top: 10px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.70);
+        }
+
+        /* Buttons */
+        .btn-group {
+            margin-top: 18px;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn{
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.18);
             text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text);
+            background: rgba(255,255,255,0.08);
+            transition: background .15s ease, transform .05s ease, border-color .15s ease;
         }
 
-        .btn-back:hover {
-            background-color: #636e72;
+        .btn:hover{
+            background: rgba(255,255,255,0.12);
+        }
+        .btn:active{ transform: translateY(1px); }
+
+        .btn-primary{
+            background: rgba(47,164,245,0.95);
+            border-color: rgba(47,164,245,0.95);
+        }
+        .btn-primary:hover{
+            background: rgba(28,142,214,0.95);
+            border-color: rgba(28,142,214,0.95);
+        }
+
+        .btn-danger-outline{
+            border-color: rgba(255,77,77,0.45);
+        }
+
+        /* Responsive */
+        @media (max-width: 860px){
+            .grid{ grid-template-columns: 1fr; }
+            .badge{ display: none; }
         }
     </style>
 </head>
@@ -96,92 +266,176 @@
 
 <div class="container">
 
-    <h1>Adauga masina</h1>
+    <div class="header">
+        <div class="title-wrap">
+            <h1>Adaugă mașină</h1>
+            <p>Completează detaliile corect. Câmpurile numerice sunt validate mai ușor și îți scad șansele de erori la salvare.</p>
+        </div>
+        <div class="badge">Marketplace • Add listing</div>
+    </div>
 
     <form th:action="@{/masini/add}" method="post" enctype="multipart/form-data" th:object="${masina}">
 
-        <label>Nr inmatriculare</label>
-        <span class="error"
-              th:if="${#fields.hasErrors('nr_inmatriculare')}"
-              th:errors="*{nr_inmatriculare}"></span>
-        <input type="text" th:field="*{nr_inmatriculare}" />
+        <div class="grid">
 
-        <label>Anul</label>
-        <span class="error"
-              th:if="${#fields.hasErrors('anul')}"
-              th:errors="*{anul}"></span>
-        <input type="text" th:field="*{anul}" />
+            <div class="field">
+                <label>Nr înmatriculare</label>
+                <div class="control">
+                    <span class="icon">🔤</span>
+                    <input type="text" th:field="*{nr_inmatriculare}" placeholder="ex: TM 12 ABC"/>
+                </div>
+                <span class="error" th:if="${#fields.hasErrors('nr_inmatriculare')}" th:errors="*{nr_inmatriculare}"></span>
+                <div class="hint">Folosește formatul exact din acte.</div>
+            </div>
 
-        <label>Kilometraj</label>
-        <span class="error"
-              th:if="${#fields.hasErrors('kilometraj')}"
-              th:errors="*{kilometraj}"></span>
-        <input type="text" th:field="*{kilometraj}" />
+            <div class="field">
+                <label>Anul</label>
+                <div class="control">
+                    <span class="icon">📅</span>
+                    <input type="number" min="1950" max="2100" th:field="*{anul}" placeholder="ex: 2017"/>
+                </div>
+                <span class="error" th:if="${#fields.hasErrors('anul')}" th:errors="*{anul}"></span>
+                <div class="hint">Doar numere (ex: 2017).</div>
+            </div>
 
-        <label>Marca</label>
-        <span class="error"
-              th:if="${#fields.hasErrors('marca')}"
-              th:errors="*{marca}"></span>
-        <input type="text" th:field="*{marca}" />
+            <div class="field">
+                <label>Kilometraj</label>
+                <div class="control">
+                    <span class="icon">🧭</span>
+                    <input type="number" min="0" step="1" th:field="*{kilometraj}" placeholder="ex: 152000"/>
+                </div>
+                <span class="error" th:if="${#fields.hasErrors('kilometraj')}" th:errors="*{kilometraj}"></span>
+            </div>
 
-        <label>Model</label>
-        <span class="error"
-              th:if="${#fields.hasErrors('modelul')}"
-              th:errors="*{modelul}"></span>
-        <input type="text" th:field="*{modelul}" />
+            <div class="field">
+                <label>Preț</label>
+                <div class="control">
+                    <span class="icon">💶</span>
+                    <input type="number" min="0" step="0.01" th:field="*{pretul}" placeholder="ex: 8450.00"/>
+                </div>
+                <span class="error" th:if="${#fields.hasErrors('pretul')}" th:errors="*{pretul}"></span>
+            </div>
 
-        <label>Culoare</label>
-        <span class="error"
-              th:if="${#fields.hasErrors('culoarea')}"
-              th:errors="*{culoarea}"></span>
-        <input type="text" th:field="*{culoarea}" />
+            <div class="field">
+                <label>Marca</label>
+                <div class="control">
+                    <span class="icon">🏷️</span>
+                    <input type="text" th:field="*{marca}" placeholder="ex: Volkswagen"/>
+                </div>
+                <span class="error" th:if="${#fields.hasErrors('marca')}" th:errors="*{marca}"></span>
+            </div>
 
-        <label>Capacitate cilindrica (cm³)</label>
-        <span class="error"
-              th:if="${#fields.hasErrors('capacitatea_cilindrica')}"
-              th:errors="*{capacitatea_cilindrica}"></span>
-        <input type="number" th:field="*{capacitatea_cilindrica}" />
+            <div class="field">
+                <label>Model</label>
+                <div class="control">
+                    <span class="icon">🚗</span>
+                    <input type="text" th:field="*{modelul}" placeholder="ex: Golf 7"/>
+                </div>
+                <span class="error" th:if="${#fields.hasErrors('modelul')}" th:errors="*{modelul}"></span>
+            </div>
 
-        <label>Combustibil</label>
-        <span class="error"
-              th:if="${#fields.hasErrors('combustibil')}"
-              th:errors="*{combustibil}"></span>
-        <input type="text" th:field="*{combustibil}" />
+            <div class="field">
+                <label>Culoare</label>
+                <div class="control">
+                    <span class="icon">🎨</span>
+                    <input type="text" th:field="*{culoarea}" placeholder="ex: Negru"/>
+                </div>
+                <span class="error" th:if="${#fields.hasErrors('culoarea')}" th:errors="*{culoarea}"></span>
+            </div>
 
-        <label>Putere (CP)</label>
-        <span class="error"
-              th:if="${#fields.hasErrors('puterea')}"
-              th:errors="*{puterea}"></span>
-        <input type="number" th:field="*{puterea}" />
+            <div class="field">
+                <label>Combustibil</label>
+                <div class="control">
+                    <span class="icon">⛽</span>
+                    <input type="text" th:field="*{combustibil}" placeholder="ex: Diesel / Benzină / Hibrid"/>
+                </div>
+                <span class="error" th:if="${#fields.hasErrors('combustibil')}" th:errors="*{combustibil}"></span>
+            </div>
 
-        <label>Cuplu (Nm)</label>
-        <span class="error"
-              th:if="${#fields.hasErrors('cuplul')}"
-              th:errors="*{cuplul}"></span>
-        <input type="number" th:field="*{cuplul}" />
+            <div class="field">
+                <label>Capacitate cilindrică (cm³)</label>
+                <div class="control">
+                    <span class="icon">🧩</span>
+                    <input type="number" min="0" step="1" th:field="*{capacitatea_cilindrica}" placeholder="ex: 1968"/>
+                </div>
+                <span class="error" th:if="${#fields.hasErrors('capacitatea_cilindrica')}" th:errors="*{capacitatea_cilindrica}"></span>
+            </div>
 
-        <label>Volum portbagaj (L)</label>
-        <span class="error"
-              th:if="${#fields.hasErrors('volumul_portbagajului')}"
-              th:errors="*{volumul_portbagajului}"></span>
-        <input type="number" th:field="*{volumul_portbagajului}" />
+            <div class="field">
+                <label>Putere (CP)</label>
+                <div class="control">
+                    <span class="icon">⚡</span>
+                    <input type="number" min="0" step="1" th:field="*{puterea}" placeholder="ex: 150"/>
+                </div>
+                <span class="error" th:if="${#fields.hasErrors('puterea')}" th:errors="*{puterea}"></span>
+            </div>
 
-        <label>Pret</label>
-        <span class="error"
-              th:if="${#fields.hasErrors('pretul')}"
-              th:errors="*{pretul}"></span>
-        <input type="number" step="0.01" th:field="*{pretul}" />
+            <div class="field">
+                <label>Cuplu (Nm)</label>
+                <div class="control">
+                    <span class="icon">🔧</span>
+                    <input type="number" min="0" step="1" th:field="*{cuplul}" placeholder="ex: 340"/>
+                </div>
+                <span class="error" th:if="${#fields.hasErrors('cuplul')}" th:errors="*{cuplul}"></span>
+            </div>
 
-        <input type="file" name="imageFiles" accept="image/*" multiple required>
+            <div class="field">
+                <label>Volum portbagaj (L)</label>
+                <div class="control">
+                    <span class="icon">🧳</span>
+                    <input type="number" min="0" step="1" th:field="*{volumul_portbagajului}" placeholder="ex: 380"/>
+                </div>
+                <span class="error" th:if="${#fields.hasErrors('volumul_portbagajului')}" th:errors="*{volumul_portbagajului}"></span>
+            </div>
+
+            <div class="field full">
+                <label>Fotografii</label>
+                <div class="upload">
+                    <div class="upload-row">
+                        <div>
+                            <strong>Încarcă poze (multiple)</strong>
+                            <small>Recomandat: 6–12 poze. Prima poză poate fi folosită ca thumbnail.</small>
+                        </div>
+
+                        <label class="file-btn" for="imageFiles">
+                            <span>📷</span>
+                            <span>Alege fișiere</span>
+                        </label>
+                        <input id="imageFiles" type="file" name="imageFiles" accept="image/*" multiple>
+                    </div>
+
+                    <div id="fileName" class="file-name">Niciun fișier selectat.</div>
+                </div>
+            </div>
+
+        </div>
 
         <div class="btn-group">
-            <a th:href="@{/marketplace}" class="btn-back">Inapoi</a>
-            <button type="submit" class="btn-save">Salveaza</button>
+            <a th:href="@{/marketplace}" class="btn btn-danger-outline">⬅ Înapoi</a>
+            <button type="submit" class="btn btn-primary">✅ Salvează</button>
         </div>
 
     </form>
 
 </div>
+
+<script>
+    const fileInput = document.getElementById('imageFiles');
+    const fileName = document.getElementById('fileName');
+
+    if (fileInput) {
+        fileInput.addEventListener('change', () => {
+            const files = Array.from(fileInput.files || []);
+            if (!files.length) {
+                fileName.textContent = 'Niciun fișier selectat.';
+                return;
+            }
+            const names = files.slice(0, 4).map(f => f.name);
+            const extra = files.length > 4 ? ` (+${files.length - 4} altele)` : '';
+            fileName.textContent = `${files.length} fișier(e): ${names.join(', ')}${extra}`;
+        });
+    }
+</script>
 
 </body>
 </html>

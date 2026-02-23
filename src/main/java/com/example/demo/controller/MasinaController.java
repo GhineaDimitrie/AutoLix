@@ -2,12 +2,14 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Masina;
 import com.example.demo.entity.Utilizator;
+import com.example.demo.repository.FavoriteRepository;
 import com.example.demo.repository.MasinaRepository;
 import com.example.demo.repository.UtilizatorRepository;
 import com.example.demo.service.FileStorageService;
 import com.example.demo.service.MasinaService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,16 +30,18 @@ public class MasinaController {
     private final MasinaRepository masinaRepository;
     private final FileStorageService fileStorageService;
 
+    private final FavoriteRepository favoriteRepository;
 
-    public MasinaController(MasinaService masinaService, UtilizatorRepository utilizatorRepository, MasinaRepository masinaRepository, FileStorageService fileStorageService) {
+
+
+    public MasinaController(MasinaService masinaService, UtilizatorRepository utilizatorRepository, MasinaRepository masinaRepository, FileStorageService fileStorageService, FavoriteRepository favoriteRepository) {
         this.masinaService = masinaService;
         this.utilizatorRepository = utilizatorRepository;
         this.masinaRepository=masinaRepository;
         this.fileStorageService = fileStorageService;
 
 
-
-
+        this.favoriteRepository = favoriteRepository;
     }
 
     @GetMapping("/masini")
@@ -136,12 +140,51 @@ public class MasinaController {
     }
 
     @PostMapping("/masini/edit")
-    public String updateMasina( @Valid @ModelAttribute Masina masina,BindingResult bindingResult) {
+    public String updateMasina(@Valid @ModelAttribute("masina") Masina masina,
+                               BindingResult bindingResult,
+                               @RequestParam(value="imageFiles", required=false) MultipartFile[] imageFiles)
+            throws IOException {
+
         if (bindingResult.hasErrors()) {
             return "edit-masini";
         }
-        masinaService.saveMasina(masina);
-        return "redirect:/masini";
+
+        Masina existing = masinaService.getMasina(masina.getNr_inmatriculare());
+
+        // copiem campurile editabile
+        existing.setAnul(masina.getAnul());
+        existing.setKilometraj(masina.getKilometraj());
+        existing.setMarca(masina.getMarca());
+        existing.setModelul(masina.getModelul());
+        existing.setCuloarea(masina.getCuloarea());
+        existing.setCapacitatea_cilindrica(masina.getCapacitatea_cilindrica());
+        existing.setCombustibil(masina.getCombustibil());
+        existing.setPuterea(masina.getPuterea());
+        existing.setCuplul(masina.getCuplul());
+        existing.setVolumul_portbagajului(masina.getVolumul_portbagajului());
+        existing.setPretul(masina.getPretul());
+
+        // daca NU urci poze noi -> pastrezi pozele vechi
+        boolean hasNew = false;
+        List<String> filenames = new ArrayList<>();
+
+        if (imageFiles != null) {
+            for (MultipartFile f : imageFiles) {
+                if (f == null || f.isEmpty()) continue;
+                hasNew = true;
+                String fn = fileStorageService.storeImage(f);
+                if (fn != null) filenames.add(fn);
+            }
+        }
+
+        if (hasNew && !filenames.isEmpty()) {
+            existing.setImageName(filenames.get(0));
+            existing.setImageNames(String.join(",", filenames));
+        }
+        // altfel nu atingi imageName/imageNames
+
+        masinaService.saveMasina(existing);
+        return "redirect:/my-profile";
     }
 
     @PostMapping("masini/delete/{nr_inmatriculare}")
@@ -185,7 +228,7 @@ public class MasinaController {
             @RequestParam(required = false) Double kmMin,
             @RequestParam(required = false) Double kmMax,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "9") int size
+            @RequestParam(defaultValue = "9") int size,Principal principal
     ) {
         Page<Masina> masiniPage = masinaService.filtrarePagini(
                 marca, modelul, pretMin, pretMax, combustibil, culoarea,
@@ -212,6 +255,17 @@ public class MasinaController {
         model.addAttribute("kmMin", kmMin);
         model.addAttribute("kmMax", kmMax);
 
+        java.util.Set<String> favoriteNrs = java.util.Collections.emptySet();
+
+        if (principal != null) {
+            Utilizator u = utilizatorRepository.findByUsername(principal.getName());
+            favoriteNrs = favoriteRepository.findAllByUserId(u.getId_utilizator())
+                    .stream()
+                    .map(f -> f.getMasina().getNr_inmatriculare())
+                    .collect(java.util.stream.Collectors.toSet());
+        }
+
+        model.addAttribute("favoriteNrs", favoriteNrs);
         return "marketplace";
     }
 
@@ -222,7 +276,7 @@ public class MasinaController {
         return "my-profile";
     }
     @GetMapping("/listing/{nr_inmatriculare}")
-    public String listing(@PathVariable String nr_inmatriculare, Model model){
+    public String listing(@PathVariable String nr_inmatriculare, Model model, CsrfToken csrfToken,Principal principal) {
         Masina m = masinaService.getMasina(nr_inmatriculare);
         List<String> images= Collections.emptyList();
         String csv = m.getImageNames();
@@ -233,8 +287,18 @@ public class MasinaController {
                     .toList();
         }
 
+        boolean isFavorite=false;
+        if(principal!=null)
+        {
+            Utilizator u=utilizatorRepository.findByUsername(principal.getName());
+            isFavorite=favoriteRepository.existsFav(u.getId_utilizator(),nr_inmatriculare);
+        }
+
         model.addAttribute("m", m);
         model.addAttribute("images", images);
+        model.addAttribute("_csrf", csrfToken);
+        model.addAttribute("isFavorite", isFavorite);
+
         return "listing";
     }
 

@@ -14,6 +14,7 @@ public class Utilizator {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id_utilizator;
     private String nume;
     @Column(nullable=false,unique=true)

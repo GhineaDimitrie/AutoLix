@@ -416,6 +416,42 @@
   }
 }
 
+        /* Favorite button in cards */
+.fav-btn {
+    border: 1px solid rgba(47,164,245,0.35);
+    background: rgba(255,255,255,0.65);
+    color: #0f2a44;
+    padding: 7px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    transition: transform 0.08s ease, background 0.15s ease, border-color 0.15s ease;
+    user-select: none;
+    backdrop-filter: blur(8px);
+}
+
+.fav-btn:hover {
+    transform: translateY(-1px);
+    background: rgba(255,255,255,0.85);
+    border-color: rgba(47,164,245,0.65);
+}
+
+.fav-btn:active {
+    transform: translateY(0px);
+}
+
+.fav-btn.is-fav {
+    background: rgba(47,164,245,0.14);
+    border-color: rgba(47,164,245,0.9);
+    color: #1e88e5;
+}
+
+.fav-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
     </style>
 </head>
 
@@ -449,7 +485,7 @@
 
             <a class="nav-link-green"
                sec:authorize="isAuthenticated()"
-               th:href="@{/masini/add}">+ Add Listing</a>
+               th:href="@{/masini/add}">+ Sell now</a>
 
             <a class="nav-link"
                sec:authorize="isAnonymous()"
@@ -596,7 +632,21 @@
 
             <div class="card-actions">
                 <a class="btn-small" th:href="@{'/listing/' + ${m.nr_inmatriculare}}">View details</a>
+                <div sec:authorize="isAuthenticated()">
+                <button type="button"
+                        class="fav-btn"
+                        th:classappend="${favoriteNrs != null and favoriteNrs.contains(m.nr_inmatriculare)} ? ' is-fav' : ''"
+                        th:attr="data-nr=${m.nr_inmatriculare}"
+                        th:text="${favoriteNrs != null and favoriteNrs.contains(m.nr_inmatriculare)} ? '♥ Favorite' : '♡ Favorite'"
+                        onclick="toggleFavCard(this)">
+                    ♡ Favorite
+                </button>
+                </div>
             </div>
+
+
+
+
         </div>
     </div>
     <div th:if="${masiniPage != null && masiniPage.totalPages > 1}"
@@ -646,6 +696,39 @@
     </div>
 
 </div>
+
+<script>
+    function setFavBtnState(btn, isFav) {
+      btn.classList.toggle("is-fav", !!isFav);
+      btn.textContent = isFav ? "♥ Favorite" : "♡ Favorite";
+    }
+
+    function toggleFavCard(btn) {
+      const nr = btn.getAttribute("data-nr");
+      if (!nr) return;
+
+      btn.disabled = true;
+
+      fetch(`/favorites/toggle/${encodeURIComponent(nr)}`, {
+        method: "POST",
+        headers: { "Accept": "application/json" }
+      })
+      .then(r => {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      })
+      .then(data => {
+        setFavBtnState(btn, data.favorite);
+      })
+      .catch(err => {
+        console.error(err);
+        alert("Nu s-a putut salva la favorite. (Ești logat?)");
+      })
+      .finally(() => {
+        btn.disabled = false;
+      });
+    }
+</script>
 
 </body>
 </html>

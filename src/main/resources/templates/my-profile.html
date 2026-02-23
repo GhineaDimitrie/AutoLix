@@ -6,6 +6,9 @@
     <title>My Profile</title>
 
     <style>
+        /* =========================
+           GLOBAL
+           ========================= */
         body {
             margin: 0;
             min-height: 100vh;
@@ -18,35 +21,76 @@
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            padding: 25px;
-
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            box-shadow: 0 0 25px rgba(0,0,0,0.3);
 
             color: white;
+        }
+
+        /* =========================
+           CONTAINER (glass + spacing)
+           ========================= */
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            padding: 26px;
+            padding-top: 22px;
+
+            background: rgba(255,255,255,0.14);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            box-shadow:
+                0 18px 60px rgba(0,0,0,0.35),
+                inset 0 1px 0 rgba(255,255,255,0.10);
+
             position: relative;
+            overflow: hidden;
         }
 
+        /* subtle highlight band */
+        .container:before{
+            content:"";
+            position:absolute;
+            inset:-1px;
+            border-radius: 16px;
+            background: radial-gradient(900px 220px at 35% 0%,
+                    rgba(47,164,245,0.20),
+                    rgba(108,43,217,0.12),
+                    transparent 68%);
+            z-index: 0;
+            pointer-events:none;
+        }
+
+        /* keep content above the highlight layer */
+        .container > * { position: relative; z-index: 1; }
+
+        /* =========================
+           HEADER
+           ========================= */
         h1 {
-            text-align: center;
-            margin-bottom: 15px;
+            text-align: left;
+            margin: 0 0 14px 0;
+            font-size: 28px;
+            font-weight: 950;
+            letter-spacing: 0.3px;
+            text-shadow: 0 2px 14px rgba(0,0,0,0.35);
         }
 
-        /* TOP BUTTONS */
+        /* =========================
+           TOP ACTIONS (more premium)
+           ========================= */
         .top-actions {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
-            margin-bottom: 15px;
+
+            margin-bottom: 18px;
+            padding: 14px 14px;
+            border-radius: 14px;
+
+            background: rgba(0,0,0,0.18);
+            border: 1px solid rgba(255,255,255,0.12);
+            box-shadow: 0 10px 28px rgba(0,0,0,0.25);
         }
 
         .left-actions, .right-actions {
@@ -56,104 +100,198 @@
             flex-wrap: wrap;
         }
 
+        /* =========================
+           BUTTONS (consistent system)
+           ========================= */
         .btn-link {
-            padding: 8px 14px;
-            border-radius: 6px;
-            border: none;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.14);
             cursor: pointer;
             text-decoration: none;
             color: white;
-            background-color: #2fa4f5;
-            display: inline-block;
+
+            background: rgba(47,164,245,0.22);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            font-weight: 850;
+            font-size: 13.5px;
+            line-height: 1;
+            transition: transform .12s ease, background .12s ease, border-color .12s ease, box-shadow .12s ease;
+            user-select: none;
+            white-space: nowrap;
         }
 
         .btn-link:hover {
-            background-color: #1e88e5;
+            transform: translateY(-1px);
+            background: rgba(47,164,245,0.32);
+            border-color: rgba(47,164,245,0.55);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+        }
+
+        .btn-link:active {
+            transform: translateY(0px);
         }
 
         .btn-secondary {
-            background-color: #7f8c8d;
+            background: rgba(127,140,141,0.25);
         }
 
         .btn-secondary:hover {
-            background-color: #6c7a7b;
+            background: rgba(127,140,141,0.35);
+            border-color: rgba(255,255,255,0.18);
         }
 
         .btn-success {
-            background-color: #27ae60;
+            background: linear-gradient(135deg, rgba(39,174,96,0.70), rgba(31,143,77,0.62));
+            border-color: rgba(255,255,255,0.16);
         }
 
         .btn-success:hover {
-            background-color: #1e8449;
+            background: linear-gradient(135deg, rgba(39,174,96,0.82), rgba(31,143,77,0.74));
+            border-color: rgba(255,255,255,0.22);
         }
 
         .btn-danger {
-            background-color: #e74c3c;
+            background: rgba(231,76,60,0.85);
+            border-color: rgba(255,255,255,0.14);
         }
 
         .btn-danger:hover {
-            background-color: #c0392b;
+            background: rgba(231,76,60,1);
+            border-color: rgba(255,255,255,0.22);
         }
 
-        /* GRID */
+        /* =========================
+           GRID
+           ========================= */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(295px, 1fr));
+            gap: 16px;
         }
 
+        /* =========================
+           CARD (premium, logical)
+           ========================= */
         .card {
-            background: rgba(255,255,255,0.95);
-            color: #111;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            background: rgba(255,255,255,0.96);
+            color: #0f172a;
+            border-radius: 16px;
+            padding: 14px;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.22);
             overflow: hidden;
             position: relative;
+
+            border: 1px solid rgba(15, 23, 42, 0.06);
+            transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 22px 55px rgba(0,0,0,0.26);
+            border-color: rgba(47,164,245,0.25);
+        }
+
+        /* image polish - keep your inline style, but add small enhancements */
+        .card img {
+            box-shadow: 0 12px 28px rgba(0,0,0,0.18);
         }
 
         .card-title {
             font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 6px;
-            color: #111;
+            font-weight: 950;
+            margin: 10px 0 4px 0;
+            color: #0b1220;
+            letter-spacing: 0.2px;
         }
 
         .price {
             font-size: 20px;
-            font-weight: 800;
-            color: #2fa4f5;
-            margin-bottom: 10px;
+            font-weight: 950;
+            color: #1e88e5;
+            margin: 6px 0 12px 0;
         }
 
         .meta {
-            font-size: 14px;
-            color: #333;
+            font-size: 13.5px;
+            color: rgba(15,23,42,0.80);
             margin: 4px 0;
         }
 
+        /* nicer "year" badge */
         .tag {
-            display: inline-block;
-            padding: 3px 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
             border-radius: 999px;
             font-size: 12px;
-            background: rgba(47,164,245,0.15);
+            font-weight: 850;
+            background: rgba(47,164,245,0.14);
             color: #1e88e5;
-            margin-top: 8px;
+            margin-top: 10px;
+            border: 1px solid rgba(47,164,245,0.22);
+        }
+        .tag:before{
+            content: "•";
+            opacity: 0.45;
         }
 
+        /* actions = clear hierarchy */
         .card-actions {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             flex-wrap: wrap;
-            margin-top: 12px;
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(15,23,42,0.10);
         }
 
+        /* make action buttons look good on white card */
+        .card .btn-link{
+            border-radius: 12px;
+            padding: 9px 12px;
+            border: 1px solid rgba(15,23,42,0.10);
+            background: rgba(47,164,245,0.12);
+            color: #0f2a44;
+            box-shadow: none;
+        }
+        .card .btn-link:hover{
+            background: rgba(47,164,245,0.18);
+            border-color: rgba(47,164,245,0.30);
+            transform: translateY(-1px);
+        }
+        .card .btn-danger{
+            background: rgba(231,76,60,0.14);
+            color: #b42318;
+            border-color: rgba(231,76,60,0.22);
+        }
+        .card .btn-danger:hover{
+            background: rgba(231,76,60,0.20);
+            border-color: rgba(231,76,60,0.35);
+        }
+
+        /* =========================
+           EMPTY STATE (more meaningful)
+           ========================= */
         .empty {
-            background: rgba(255,255,255,0.15);
-            border-radius: 10px;
-            padding: 12px;
+            background: rgba(0,0,0,0.16);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 14px;
+            padding: 16px;
             text-align: center;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.22);
+        }
+
+        /* small responsive polish */
+        @media (max-width: 700px){
+            h1 { font-size: 24px; }
+            .container { padding: 18px; }
+            .top-actions { padding: 12px; }
         }
     </style>
 </head>
@@ -166,37 +304,47 @@
 
     <div class="top-actions">
         <div class="left-actions">
-            <a class="btn-link btn-secondary" th:href="@{/marketplace}">Marketplace</a>
-            <a class="btn-link btn-success" th:href="@{/masini/add}">Add Listing</a>
+            <a class="btn-link btn-secondary" th:href="@{/marketplace}">
+                ← Marketplace
+            </a>
+            <a class="btn-link btn-success" th:href="@{/masini/add}">
+                + Add Listing
+            </a>
+            <a class="btn-link" th:href="@{/favorites}" sec:authorize="isAuthenticated()">
+                ♥ Favorites
+            </a>
         </div>
 
         <div class="right-actions">
             <form th:action="@{/logout}" method="post" style="margin:0;">
-                <button type="submit" class="btn-link btn-danger">Logout</button>
+                <button type="submit" class="btn-link btn-danger">
+                    Logout
+                </button>
             </form>
         </div>
     </div>
 
     <div th:if="${#lists.isEmpty(masini)}" class="empty">
         Nu ai anunțuri încă.
+        <div style="margin-top:10px;">
+            <a class="btn-link btn-success" th:href="@{/masini/add}">+ Creează primul anunț</a>
+        </div>
     </div>
 
     <div class="grid" th:if="${not #lists.isEmpty(masini)}">
         <div class="card" th:each="m : ${masini}">
             <img th:if="${m.imageName != null}"
                  th:src="@{'/uploads/' + ${m.imageName}}"
-                 style="width:100%; height:180px; object-fit:cover; border-radius:8px; margin-bottom:10px;">
+                 style="width:100%; height:180px; object-fit:cover; border-radius:12px; margin-bottom:10px;">
+
             <div class="card-title" th:text="${m.marca} + ' ' + ${m.modelul}">Marca Model</div>
             <div class="price" th:text="${#numbers.formatInteger(m.pretul, 0, 'POINT')} + ' €'"></div>
-
-
 
             <div class="meta" th:text="'Kilometraj: ' + ${#numbers.formatInteger(m.kilometraj, 0, 'POINT')} + ' km'"></div>
             <div class="meta" th:text="'Putere: ' + ${m.puterea} + ' CP'"></div>
             <div class="meta" th:text="'Culoare: ' + ${m.culoarea}"></div>
             <div class="meta" th:text="'Combustibil: ' + ${m.combustibil}"></div>
             <div class="meta" th:text="'Cuplu: ' + ${m.cuplul} + ' Nm'"></div>
-
 
             <span class="tag" th:text="${m.anul}"></span>
 

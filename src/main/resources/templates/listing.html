@@ -3,6 +3,9 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8" />
+    <meta name="_csrf" th:content="${_csrf != null ? _csrf.token : ''}">
+    <meta name="_csrf_header" th:content="${_csrf != null ? _csrf.headerName : ''}">
+
     <title>Listing</title>
 
     <style>
@@ -483,12 +486,20 @@
                 <div class="primary-action">
                     <a th:href="${sellerEmail != null ? 'mailto:' + sellerEmail + '?subject=' + (m.marca + ' ' + m.modelul) : '#'}"
                        style="text-decoration:none;">
-                        <button class="btn-primary" type="button">✉ Scrie un e-mail</button>
+                        <button class="btn-primary" type="button">✉ Contact</button>
                     </a>
 
                     <div class="btn-row">
-                        <button class="btn-outline" type="button" onclick="toggleFav()">♡ Parcare</button>
-                        <button class="btn-outline" type="button" onclick="shareListing()">⤴ Partajează</button>
+
+                        <button class="btn-outline"
+                                type="button"
+                                onclick="toggleFav()"
+                                id="favBtn"
+                                th:attr="data-nr=${m.nr_inmatriculare}, data-fav=${isFavorite}"
+                                th:text="${isFavorite} ? '♥ In Favorites' : '♡ Favorites'">
+                            ♡ Favorites
+                        </button>
+                        <button class="btn-outline" type="button" onclick="shareListing()">⤴Share</button>
                     </div>
 
                     <div style="margin-top:10px; color:rgba(255,255,255,0.65); font-size:12.5px;">
@@ -593,9 +604,27 @@
       }
     }
 
-    function toggleFav() {
-      alert("Funcția de favorite: leag-o la endpoint-ul tău.");
-    }
+   function toggleFav() {
+  const btn = document.getElementById("favBtn");
+  const nr = btn.getAttribute("data-nr");
+
+  fetch(`/favorites/toggle/${encodeURIComponent(nr)}`, {
+    method: "POST",
+    headers: { "Accept": "application/json" }
+  })
+  .then(r => {
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return r.json();
+  })
+  .then(data => {
+    btn.dataset.fav = data.favorite ? "true" : "false";
+  btn.textContent = data.favorite ? "♥ In Favorites" : "♡ Favorites";
+  })
+  .catch(err => {
+    console.error(err);
+    alert("Nu s-a putut salva la favorite.");
+  });
+}
 </script>
 </body>
 </html>
