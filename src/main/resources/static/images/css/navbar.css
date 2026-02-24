@@ -1,0 +1,93 @@
+﻿
+        /* NAVBAR */
+        .navbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 14px 22px;
+            box-sizing: border-box;
+
+            background: rgba(0,0,0,0.25);
+            backdrop-filter: blur(8px);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .nav-left a {
+            display:flex;
+            align-items:center;
+            gap:12px;
+            text-decoration:none;
+        }
+
+        .logo {
+            height: 42px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .brand {
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            color: white;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: white;
+            background-color: #2fa4f5;
+            display: inline-block;
+            font-size: 14px;
+        }
+
+        .nav-link:hover {
+            background-color: #1e88e5;
+        }
+
+        .nav-link.secondary {
+            background-color: #7f8c8d;
+        }
+        .nav-link.secondary:hover {
+            background-color: #6c7a7b;
+        }
+
+        .nav-link-green {
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: white;
+            background-color:#27ae60;
+            display: inline-block;
+            font-size: 14px;
+        }
+        .nav-link-green:hover {
+            background-color:#1f8f4d;
+        }
+
+        .nav-btn {
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            color: white;
+            background-color: #e74c3c;
+            font-size: 14px;
+        }
+        .nav-btn:hover {
+            background-color: #c0392b;
+        }

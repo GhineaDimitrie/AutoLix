@@ -1,0 +1,33 @@
+﻿<div th:fragment="navbar">
+    <div class="navbar">
+        <div class="nav-left">
+            <a th:href="@{/marketplace}" class="brand-link">
+                <img src="/images/logo3.png" alt="AutoLix Logo" class="logo">
+                <div class="brand-text">
+                    <div class="brand-name">Auto<span class="brand-accent">Lix</span></div>
+                    <div class="brand-tagline">Marketplace auto • anunțuri verificate</div>
+                </div>
+            </a>
+        </div>
+
+        <div class="nav-right">
+            <div sec:authorize="hasAnyRole('ADMIN','EDITOR')">
+                <a class="nav-link" th:href="@{/masini}">Database</a>
+            </div>
+
+            <a class="nav-link" th:href="@{/marketplace}">Marketplace</a>
+
+            <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/my-profile}">My Profile</a>
+
+            <a class="nav-link-green" sec:authorize="isAuthenticated()" th:href="@{/masini/add}">+ Sell now</a>
+
+            <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/login}">Login</a>
+
+            <a class="nav-link secondary" sec:authorize="isAnonymous()" th:href="@{/signup}">Sign up</a>
+
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" style="margin:0;">
+                <button type="submit" class="nav-btn">Logout</button>
+            </form>
+        </div>
+    </div>
+</div>
