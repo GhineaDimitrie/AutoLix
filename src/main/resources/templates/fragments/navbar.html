@@ -1,4 +1,6 @@
-﻿<div th:fragment="navbar">
+﻿<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<div th:fragment="navbar">
     <div class="navbar">
         <div class="nav-left">
             <a th:href="@{/marketplace}" class="brand-link">
@@ -12,12 +14,27 @@
 
         <div class="nav-right">
             <div sec:authorize="hasAnyRole('ADMIN','EDITOR')">
-                <a class="nav-link" th:href="@{/masini}">Database</a>
+                <a class="nav-link icon-btn" th:href="@{/masini}" title="Database">
+                    <i class="fa-solid fa-database"></i>
+                </a>
             </div>
+
+            <a class="nav-link icon-btn"
+               sec:authorize="isAuthenticated()"
+               th:href="@{/favorites}"
+               title="Favorites">
+                <i class="fa-regular fa-heart"></i>
+            </a>
+
 
             <a class="nav-link" th:href="@{/marketplace}">Marketplace</a>
 
-            <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/my-profile}">My Profile</a>
+            <a class="nav-link icon-btn"
+               sec:authorize="isAuthenticated()"
+               th:href="@{/my-profile}"
+               title="My Profile">
+                <i class="fa-solid fa-user"></i>
+            </a>
 
             <a class="nav-link-green" sec:authorize="isAuthenticated()" th:href="@{/masini/add}">+ Sell now</a>
 

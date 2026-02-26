@@ -1,4 +1,5 @@
 package com.example.demo.service;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import com.example.demo.entity.Masina;
 import com.example.demo.repository.MasinaRepository;
@@ -14,33 +15,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Service
-public class MasinaService
-{
+public class MasinaService {
     private final MasinaRepository repository;
 
-    public  MasinaService(MasinaRepository repository) {
-        this.repository = repository;
+    public MasinaService(MasinaRepository masinaRepository) {
+        this.repository = masinaRepository;
     }
 
-    public List<Masina> getMasini()
-    {
+    public List<Masina> getMasini() {
         return repository.findAll();
     }
-    public void saveMasina(Masina masina)
-    {
+
+    public void saveMasina(Masina masina) {
         repository.save(masina);
     }
 
 
-    public Masina getMasina(String nr_inmatriculare)
-    {
+    public Masina getMasina(String nr_inmatriculare) {
         return repository.findById(nr_inmatriculare).orElse(null);
     }
 
 
-    public boolean deleteMasina(String nr_inmatriculare)
-    {
-        if(repository.existsById(nr_inmatriculare)) {
+    public boolean deleteMasina(String nr_inmatriculare) {
+        if (repository.existsById(nr_inmatriculare)) {
             repository.deleteById(nr_inmatriculare);
             return true;
         }
@@ -61,10 +58,11 @@ public class MasinaService
             Integer putMax,
             Double kmMin,
             Double kmMax,
+            Sort sort,
             int page,
             int size
     ) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, sort == null ? Sort.unsorted() : sort);
 
         Specification<Masina> spec = (root, query, cb) -> cb.conjunction();
 
@@ -120,6 +118,8 @@ public class MasinaService
     }
 
 
+    public List<Masina> getMarketplaceMasini(Sort sort) {
+        return repository.findAll(sort);
 
-
+    }
 }
