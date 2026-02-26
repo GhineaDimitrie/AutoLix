@@ -9,6 +9,7 @@ import com.example.demo.service.FileStorageService;
 import com.example.demo.service.MasinaService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,13 +61,14 @@ public class MasinaController {
             @RequestParam(required = false) Double kmMin,
             @RequestParam(required = false) Double kmMax,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "9") int size
+            @RequestParam(defaultValue = "9") int size,@RequestParam(required = false) String sort
     ) {
+        Sort s = sortFromParam(sort); // <- ADAUGĂ
         Page<Masina> masiniPage = masinaService.filtrarePagini(
                 marca, modelul, pretMin, pretMax, combustibil, culoarea,
                 anMin, anMax, putMin, putMax,
-                kmMin, kmMax,
-                page, size
+                kmMin, kmMax,s
+                ,page, size
         );
 
         model.addAttribute("masiniPage", masiniPage);
@@ -84,6 +86,7 @@ public class MasinaController {
         model.addAttribute("modelul", modelul);
         model.addAttribute("kmMin", kmMin);
         model.addAttribute("kmMax", kmMax);
+        model.addAttribute("sort", sort);
 
         return "masini";
     }
@@ -228,12 +231,16 @@ public class MasinaController {
             @RequestParam(required = false) Double kmMin,
             @RequestParam(required = false) Double kmMax,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "9") int size,Principal principal
+            @RequestParam(defaultValue = "9") int size,Principal principal,@RequestParam(required = false) String sort
     ) {
+
+        Sort s = sortFromParam(sort);
+
+
         Page<Masina> masiniPage = masinaService.filtrarePagini(
                 marca, modelul, pretMin, pretMax, combustibil, culoarea,
                 anMin, anMax, putMin, putMax,
-                kmMin, kmMax,
+                kmMin, kmMax,s,
                 page, size
         );
 
@@ -254,6 +261,7 @@ public class MasinaController {
         model.addAttribute("modelul", modelul);
         model.addAttribute("kmMin", kmMin);
         model.addAttribute("kmMax", kmMax);
+        model.addAttribute("sort", sort);
 
         java.util.Set<String> favoriteNrs = java.util.Collections.emptySet();
 
@@ -268,6 +276,8 @@ public class MasinaController {
         model.addAttribute("favoriteNrs", favoriteNrs);
         return "marketplace";
     }
+
+
 
     @GetMapping("/my-profile")
     public String myProfile(Model model, Principal principal) {
@@ -307,7 +317,23 @@ public class MasinaController {
 
 
 
+    private Sort sortFromParam(String sort)
+    {
+        if (sort == null || sort.isBlank()) return Sort.unsorted();
 
+        return switch (sort) {
+            case "price_asc"  -> Sort.by("pretul").ascending();
+            case "price_desc" -> Sort.by("pretul").descending();
+            case "year_asc" -> Sort.by("anul").ascending();
+            case "year_desc" -> Sort.by("anul").descending();
+            case "km_asc" -> Sort.by("kilometraj").ascending();
+            case "km_desc" -> Sort.by("kilometraj").descending();
+            case"pwr_asc" -> Sort.by("puterea").ascending();
+            case "pwr_desc" -> Sort.by("puterea").descending();
+
+            default -> Sort.unsorted();
+        };
+    }
 
 
 

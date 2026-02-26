@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <meta charset="UTF-8">
     <title>Marketplace</title>
 
@@ -130,7 +131,7 @@
             margin: 0 0 18px 0;
         }
 
-        /* ADVANCED FILTER (layout ca în exemplu) */
+        /* ADVANCED FILTER */
         .advanced-filter {
             background: rgba(20, 24, 35, 0.9);
             backdrop-filter: blur(12px);
@@ -138,12 +139,16 @@
             padding: 22px 22px 18px 22px;
             margin: 10px 0 22px 0;
             box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+
+            /* IMPORTANT: ancoră pt sortare în colț */
+            position: relative;
         }
 
         .filter-grid {
             display: grid;
             grid-template-columns: repeat(4, minmax(180px, 1fr));
             gap: 14px 16px;
+            align-items: end;
         }
 
         @media (max-width: 1050px) {
@@ -200,34 +205,62 @@
             box-shadow: 0 0 0 3px rgba(47,164,245,0.18);
         }
 
+        /* RANGE (min/max în aceeași casetă) */
+        .range {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .range .filter-control {
+            padding: 10px 12px;
+        }
+
+        .range input {
+            width: 100%;
+        }
+
+        @media (max-width: 560px) {
+            .range {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* === SORTARE FIX ÎN COLȚ STÂNGA-JOS (MODIFICAREA TA) === */
+        .sort-box {
+            position: absolute;
+            left: 22px;   /* același ca padding-left din .advanced-filter */
+            bottom: 18px; /* același ca padding-bottom din .advanced-filter */
+            width: 280px;
+        }
+
+        .sort-box .filter-control {
+            padding: 10px 12px;
+        }
+
+        /* Acțiuni: ținem dreapta + lăsăm spațiu pt sortare */
         .filter-actions {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             flex-wrap: wrap;
             margin-top: 16px;
+
+            padding-left: 310px; /* 280px + gap ca să nu se suprapună */
+            min-height: 54px;
         }
 
-        .filter-left {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-
-        .toggle {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            user-select: none;
-        }
-
-        .toggle input {
-            width: 16px;
-            height: 16px;
-            accent-color: #2fa4f5;
+        @media (max-width: 900px) {
+            .sort-box {
+                position: static;
+                width: 100%;
+                margin-top: 14px;
+            }
+            .filter-actions {
+                padding-left: 0;
+                justify-content: space-between;
+            }
         }
 
         .filter-right {
@@ -333,125 +366,132 @@
             background-color: #1e88e5;
         }
 
-        .brand-link {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
+        /* Favorite button in cards */
+        .fav-btn {
+            border: 1px solid rgba(47,164,245,0.35);
+            background: rgba(255,255,255,0.65);
+            color: #0f2a44;
+            padding: 7px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            transition: transform 0.08s ease, background 0.15s ease, border-color 0.15s ease;
+            user-select: none;
+            backdrop-filter: blur(8px);
+        }
+
+        .fav-btn:hover {
+            transform: translateY(-1px);
+            background: rgba(255,255,255,0.85);
+            border-color: rgba(47,164,245,0.65);
+        }
+
+        .fav-btn:active {
+            transform: translateY(0px);
+        }
+
+        .fav-btn.is-fav {
+            background: rgba(47,164,245,0.14);
+            border-color: rgba(47,164,245,0.9);
+            color: #1e88e5;
+        }
+
+        .fav-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        /* ancoră pentru poziționare */
+.advanced-filter{ position: relative; }
+
+/* sortare în colț stânga-jos */
+.sort-box{
+  position: absolute;
+  left: 22px;
+  bottom: 18px;
+  width: 280px;
 }
 
-.logo {
-    height: 44px;
-    width: auto;
-    object-fit: contain;
-    display: block;
-
-    /* premium look */
-    filter: drop-shadow(0 6px 14px rgba(0,0,0,0.35));
+/* label mic, premium */
+.sort-label{
+  display:block;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .2px;
+  color: rgba(255,255,255,0.85);
+  margin: 0 0 6px 2px;
 }
 
-.brand-text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.05;
-}
-
-.brand-name {
-    font-size: 18px;
-    font-weight: 900;
-    letter-spacing: 0.6px;
-    color: #ffffff;
-
-    /* micro contrast */
-    text-shadow: 0 2px 10px rgba(0,0,0,0.35);
-}
-
-.brand-accent {
-    color: #2fa4f5; /* păstrează culoarea ta de brand */
-}
-
-.brand-tagline {
-    margin-top: 3px;
-    font-size: 11.5px;
-    font-weight: 600;
-    letter-spacing: 0.2px;
-    color: rgba(255,255,255,0.75);
-}
-        /* RANGE (min/max în aceeași casetă) */
-.range {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.range .filter-control {
-  padding: 10px 12px;
-}
-
-.range input {
+/* wrapper pt icon */
+.sort-select{
+  position: relative;
   width: 100%;
 }
 
-/* Ca butoanele să stea frumos și să nu "plutească" */
-.filter-actions {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 14px;
-  margin-top: 16px;
+/* IMPORTANT: nu transparent! + forțăm dark UI */
+.sort-select select{
+  width: 100%;
+  height: 44px;
+  padding: 10px 42px 10px 14px;
+  border-radius: 12px;
+
+  background: rgba(18, 22, 32, 0.95);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.14);
+  outline: none;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  /* scoate săgeata default */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  /* ajută mult pe Windows/Chrome */
+  color-scheme: dark;
 }
 
-/* mic polish: aliniere mai bună a grid-ului */
-.filter-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(180px, 1fr));
-  gap: 14px 16px;
-  align-items: end; /* etichetele + input-urile se aliniază uniform */
+.sort-select select:focus{
+  border-color: rgba(47,164,245,0.9);
+  box-shadow: 0 0 0 3px rgba(47,164,245,0.18);
 }
 
-/* responsive: pe ecrane mici range-ul devine 1 coloană */
-@media (max-width: 560px) {
-  .range {
-    grid-template-columns: 1fr;
+/* icon dropdown */
+.sort-select i{
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: rgba(255,255,255,0.75);
+  font-size: 14px;
+}
+
+/* Opțiuni (atenție: pe Windows uneori tot OS decide) */
+.sort-select select option{
+  background: #111827;
+  color: #fff;
+}
+
+/* lăsăm spațiu pt sortare, ca să nu se suprapună cu butoanele */
+.filter-actions{
+  padding-left: 310px;
+  min-height: 54px;
+}
+
+/* pe ecrane mici: sortarea devine normală (nu absolute) */
+@media (max-width: 900px){
+  .sort-box{
+    position: static;
+    width: 100%;
+    margin-top: 14px;
+  }
+  .filter-actions{
+    padding-left: 0;
+    justify-content: space-between;
   }
 }
-
-        /* Favorite button in cards */
-.fav-btn {
-    border: 1px solid rgba(47,164,245,0.35);
-    background: rgba(255,255,255,0.65);
-    color: #0f2a44;
-    padding: 7px 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 700;
-    transition: transform 0.08s ease, background 0.15s ease, border-color 0.15s ease;
-    user-select: none;
-    backdrop-filter: blur(8px);
-}
-
-.fav-btn:hover {
-    transform: translateY(-1px);
-    background: rgba(255,255,255,0.85);
-    border-color: rgba(47,164,245,0.65);
-}
-
-.fav-btn:active {
-    transform: translateY(0px);
-}
-
-.fav-btn.is-fav {
-    background: rgba(47,164,245,0.14);
-    border-color: rgba(47,164,245,0.9);
-    color: #1e88e5;
-}
-
-.fav-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
     </style>
 </head>
 
@@ -489,7 +529,25 @@
                         <div class="filter-control">
                             <input type="number" step="1" name="pretMin" placeholder="Min" th:value="${pretMin}">
                         </div>
-                        <div class="filter-control">
+                        <div class="filter-control"><div class="sort-box">
+                            <label class="sort-label">Sortare</label>
+
+                            <div class="sort-select">
+                                <select name="sort" onchange="this.form.submit()">
+                                    <option value="" th:selected="${sort == null || sort == ''}">Alege...</option>
+                                    <option value="price_asc" th:selected="${sort == 'price_asc'}">Preț (low → high)</option>
+                                    <option value="price_desc" th:selected="${sort == 'price_desc'}">Preț (high → low)</option>
+                                    <option value="year_asc" th:selected="${sort == 'year_asc'}">An (vechi → nou)</option>
+                                    <option value="year_desc" th:selected="${sort == 'year_desc'}">An (nou → vechi)</option>
+                                    <option value="km_asc" th:selected="${sort == 'km_asc'}">KM (low → high)</option>
+                                    <option value="km_desc" th:selected="${sort == 'km_desc'}">KM (high → low)</option>
+                                    <option value="pwr_asc" th:selected="${sort == 'pwr_asc'}">Putere (low → high)</option>
+                                    <option value="pwr_desc" th:selected="${sort == 'pwr_desc'}">Putere (high → low)</option>
+                                </select>
+
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                        </div>
                             <input type="number" step="1" name="pretMax" placeholder="Max" th:value="${pretMax}">
                         </div>
                     </div>
@@ -545,16 +603,31 @@
                     </div>
                 </div>
 
+            </div>
 
+            <!-- SORTARE (colț stânga jos) -->
+            <!-- SORTARE (colț stânga jos) -->
+            <div class="sort-box">
+                <label class="sort-label">Sortare</label>
 
+                <div class="sort-select">
+                    <select name="sort" onchange="this.form.submit()">
+                        <option value="" th:selected="${sort == null || sort == ''}">Alege…</option>
+                        <option value="price_asc" th:selected="${sort == 'price_asc'}">Preț (low → high)</option>
+                        <option value="price_desc" th:selected="${sort == 'price_desc'}">Preț (high → low)</option>
+                        <option value="year_asc" th:selected="${sort == 'year_asc'}">An (vechi → nou)</option>
+                        <option value="year_desc" th:selected="${sort == 'year_desc'}">An (nou → vechi)</option>
+                        <option value="km_asc" th:selected="${sort == 'km_asc'}">KM (low → high)</option>
+                        <option value="km_desc" th:selected="${sort == 'km_desc'}">KM (high → low)</option>
+                        <option value="pwr_asc" th:selected="${sort == 'pwr_asc'}">Putere (low → high)</option>
+                        <option value="pwr_desc" th:selected="${sort == 'pwr_desc'}">Putere (high → low)</option>
+                    </select>
+
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
             </div>
 
             <div class="filter-actions">
-                <div class="filter-left">
-
-
-                </div>
-
                 <div class="filter-right">
                     <a class="filter-reset" th:href="@{/marketplace}">↺ Resetează</a>
                     <button type="submit" class="filter-btn">Caută</button>
@@ -578,7 +651,6 @@
             <div class="card-title" th:text="${m.marca} + ' ' + ${m.modelul}"></div>
             <div class="price" th:text="${#numbers.formatInteger(m.pretul, 0, 'POINT')} + ' €'"></div>
 
-
             <div class="meta" th:text="'Kilometraj: ' + ${#numbers.formatInteger(m.kilometraj, 0, 'POINT')} + ' km'"></div>
             <div class="meta" th:text="'Putere: ' + ${m.puterea} + ' CP'"></div>
             <div class="meta" th:text="'Culoare: ' + ${m.culoarea}"></div>
@@ -589,42 +661,42 @@
 
             <div class="card-actions">
                 <a class="btn-small" th:href="@{'/listing/' + ${m.nr_inmatriculare}}">View details</a>
+
                 <div sec:authorize="isAuthenticated()">
-                <button type="button"
-                        class="fav-btn"
-                        th:classappend="${favoriteNrs != null and favoriteNrs.contains(m.nr_inmatriculare)} ? ' is-fav' : ''"
-                        th:attr="data-nr=${m.nr_inmatriculare}"
-                        th:text="${favoriteNrs != null and favoriteNrs.contains(m.nr_inmatriculare)} ? '♥ Favorite' : '♡ Favorite'"
-                        onclick="toggleFavCard(this)">
-                    ♡ Favorite
-                </button>
+                    <button type="button"
+                            class="fav-btn"
+                            th:classappend="${favoriteNrs != null and favoriteNrs.contains(m.nr_inmatriculare)} ? ' is-fav' : ''"
+                            th:attr="data-nr=${m.nr_inmatriculare}"
+                            th:text="${favoriteNrs != null and favoriteNrs.contains(m.nr_inmatriculare)} ? '♥ Favorite' : '♡ Favorite'"
+                            onclick="toggleFavCard(this)">
+                        ♡ Favorite
+                    </button>
                 </div>
             </div>
 
-
-
-
         </div>
     </div>
+
     <div th:if="${masiniPage != null && masiniPage.totalPages > 1}"
          style="margin-top:16px; display:flex; gap:12px; justify-content:center; align-items:center; flex-wrap:wrap;">
 
         <a class="btn-small"
            th:if="${masiniPage.hasPrevious()}"
            th:href="@{/marketplace(
-        page=${masiniPage.number - 1},
-        size=${masiniPage.size},
-        marca=${marca},
-        modelul=${modelul},
-        combustibil=${combustibil},
-        culoarea=${culoarea},
-        anul=${anul},
-        puterea=${puterea},
-        pretMin=${pretMin},
-        pretMax=${pretMax},
-        kmMin=${kmMin},
-        kmMax=${kmMax}
-     )}">
+                page=${masiniPage.number - 1},
+                size=${masiniPage.size},
+                sort=${sort},
+                marca=${marca},
+                modelul=${modelul},
+                combustibil=${combustibil},
+                culoarea=${culoarea},
+                anul=${anul},
+                puterea=${puterea},
+                pretMin=${pretMin},
+                pretMax=${pretMax},
+                kmMin=${kmMin},
+                kmMax=${kmMax}
+           )}">
             Previous
         </a>
 
@@ -634,19 +706,20 @@
         <a class="btn-small"
            th:if="${masiniPage.hasNext()}"
            th:href="@{/marketplace(
-        page=${masiniPage.number + 1},
-        size=${masiniPage.size},
-        marca=${marca},
-        modelul=${modelul},
-        combustibil=${combustibil},
-        culoarea=${culoarea},
-        anul=${anul},
-        puterea=${puterea},
-        pretMin=${pretMin},
-        pretMax=${pretMax},
-        kmMin=${kmMin},
-        kmMax=${kmMax}
-     )}">
+                page=${masiniPage.number + 1},
+                size=${masiniPage.size},
+                sort=${sort},
+                marca=${marca},
+                modelul=${modelul},
+                combustibil=${combustibil},
+                culoarea=${culoarea},
+                anul=${anul},
+                puterea=${puterea},
+                pretMin=${pretMin},
+                pretMax=${pretMax},
+                kmMin=${kmMin},
+                kmMax=${kmMax}
+           )}">
             Next
         </a>
 
@@ -656,34 +729,34 @@
 
 <script>
     function setFavBtnState(btn, isFav) {
-      btn.classList.toggle("is-fav", !!isFav);
-      btn.textContent = isFav ? "♥ Favorite" : "♡ Favorite";
+        btn.classList.toggle("is-fav", !!isFav);
+        btn.textContent = isFav ? "♥ Favorite" : "♡ Favorite";
     }
 
     function toggleFavCard(btn) {
-      const nr = btn.getAttribute("data-nr");
-      if (!nr) return;
+        const nr = btn.getAttribute("data-nr");
+        if (!nr) return;
 
-      btn.disabled = true;
+        btn.disabled = true;
 
-      fetch(`/favorites/toggle/${encodeURIComponent(nr)}`, {
-        method: "POST",
-        headers: { "Accept": "application/json" }
-      })
-      .then(r => {
-        if (!r.ok) throw new Error("HTTP " + r.status);
-        return r.json();
-      })
-      .then(data => {
-        setFavBtnState(btn, data.favorite);
-      })
-      .catch(err => {
-        console.error(err);
-        alert("Nu s-a putut salva la favorite. (Ești logat?)");
-      })
-      .finally(() => {
-        btn.disabled = false;
-      });
+        fetch(`/favorites/toggle/${encodeURIComponent(nr)}`, {
+            method: "POST",
+            headers: { "Accept": "application/json" }
+        })
+            .then(r => {
+                if (!r.ok) throw new Error("HTTP " + r.status);
+                return r.json();
+            })
+            .then(data => {
+                setFavBtnState(btn, data.favorite);
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Nu s-a putut salva la favorite. (Ești logat?)");
+            })
+            .finally(() => {
+                btn.disabled = false;
+            });
     }
 </script>
 
