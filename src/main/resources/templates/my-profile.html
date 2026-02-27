@@ -6,404 +6,114 @@
     <meta charset="UTF-8">
     <title>My Profile</title>
 
-
-
     <style>
-        /* =========================
-           GLOBAL
-           ========================= */
         body {
             margin: 0;
             min-height: 100vh;
             font-family: "Segoe UI", Arial, sans-serif;
-
             background-image: url("/images/login.jpg");
             background-size: cover;
             background-position: center;
-
             display: flex;
             justify-content: center;
             align-items: center;
-
             color: white;
         }
 
-        /* =========================
-           CONTAINER (glass + spacing)
-           IMPORTANT: padding-top mare pt navbar absolute
-           ========================= */
         .container {
-            width: 92%;
+            width: 90%;
             max-width: 1200px;
+            padding: 25px;
+            padding-top: 85px; /* same as marketplace for absolute navbar */
 
-            padding: 26px;
-            padding-top: 26px;   /* <-- FIX: spatiu pentru navbar */
-
-            background: rgba(255,255,255,0.14);
-            backdrop-filter: blur(12px);
-            border-radius: 16px;
-            box-shadow:
-                    0 18px 60px rgba(0,0,0,0.35),
-                    inset 0 1px 0 rgba(255,255,255,0.10);
-
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.3);
+            color: white;
             position: relative;
-            overflow: hidden;
         }
 
-        /* subtle highlight band */
-        .container:before{
-            content:"";
-            position:absolute;
-            inset:-1px;
-            border-radius: 16px;
-            background: radial-gradient(900px 220px at 35% 0%,
-                    rgba(47,164,245,0.20),
-                    rgba(108,43,217,0.12),
-                    transparent 68%);
-            z-index: 0;
-            pointer-events:none;
+        h1 {
+            text-align: center;
+            margin: 0 0 18px 0;
         }
 
-        /* keep content above the highlight layer */
-        .container > * { position: relative; z-index: 1; }
-
-        /* =========================
-           NAVBAR (same as marketplace)
-           ========================= */
-        .navbar {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  padding: 14px 22px;
-  box-sizing: border-box;
-
-  background: rgba(0,0,0,0.25);
-  backdrop-filter: blur(8px);
-  border-radius: 12px;
-  margin-bottom: 18px;
-}
-
-        .nav-left a {
-            display:flex;
-            align-items:center;
-            gap:12px;
-            text-decoration:none;
+        .empty {
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
         }
 
-        /* Brand (lipsisea -> de aici venea logo urias + text aiurea) */
-        .brand-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-        }
-
-        .logo {
-            height: 44px;
-            width: auto;
-            object-fit: contain;
-            display: block;
-            filter: drop-shadow(0 6px 14px rgba(0,0,0,0.35));
-        }
-
-        .brand-text {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.05;
-        }
-
-        .brand-name {
-            font-size: 18px;
-            font-weight: 900;
-            letter-spacing: 0.6px;
-            color: #ffffff;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.35);
-        }
-
-        .brand-accent {
-            color: #2fa4f5;
-        }
-
-        .brand-tagline {
-            margin-top: 3px;
-            font-size: 11.5px;
-            font-weight: 600;
-            letter-spacing: 0.2px;
-            color: rgba(255,255,255,0.75);
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .nav-link {
-            padding: 8px 14px;
-            border-radius: 6px;
+        .btn-small {
+            padding: 7px 12px;
+            border-radius: 8px;
             text-decoration: none;
             color: white;
             background-color: #2fa4f5;
+            font-size: 13px;
             display: inline-block;
-            font-size: 14px;
         }
-
-        .nav-link:hover {
-            background-color: #1e88e5;
-        }
-
-        .nav-link.secondary {
-            background-color: #7f8c8d;
-        }
-        .nav-link.secondary:hover {
-            background-color: #6c7a7b;
-        }
-
-        .nav-link-green {
-            padding: 8px 14px;
-            border-radius: 6px;
-            text-decoration: none;
-            color: white;
-            background-color:#27ae60;
-            display: inline-block;
-            font-size: 14px;
-        }
-        .nav-link-green:hover {
-            background-color:#1f8f4d;
-        }
-
-        .nav-btn {
-            padding: 8px 14px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            color: white;
-            background-color: #e74c3c;
-            font-size: 14px;
-        }
-        .nav-btn:hover {
-            background-color: #c0392b;
-        }
-
-        /* =========================
-           HEADER
-           ========================= */
-        h1 {
-            text-align: center;
-            margin: 0 0 50px 0;
-            font-size: 28px;
-            font-weight: 950;
-            letter-spacing: 0.3px;
-            text-shadow: 0 2px 14px rgba(0,0,0,0.35);
-        }
-
-        /* =========================
-           TOP ACTIONS
-           ========================= */
-        .top-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-
-            margin-bottom: 18px;
-            padding: 14px 14px;
-            border-radius: 14px;
-
-            background: rgba(0,0,0,0.18);
-            border: 1px solid rgba(255,255,255,0.12);
-            box-shadow: 0 10px 28px rgba(0,0,0,0.25);
-        }
-
-        .left-actions, .right-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        /* =========================
-           BUTTONS
-           ========================= */
-        .btn-link {
-            padding: 10px 14px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.14);
-            cursor: pointer;
-            text-decoration: none;
-            color: white;
-
-            background: rgba(47,164,245,0.22);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-
-            font-weight: 850;
-            font-size: 13.5px;
-            line-height: 1;
-            transition: transform .12s ease, background .12s ease, border-color .12s ease, box-shadow .12s ease;
-            user-select: none;
-            white-space: nowrap;
-        }
-
-        .btn-link:hover {
-            transform: translateY(-1px);
-            background: rgba(47,164,245,0.32);
-            border-color: rgba(47,164,245,0.55);
-            box-shadow: 0 12px 28px rgba(0,0,0,0.25);
-        }
-
-        .btn-link:active { transform: translateY(0px); }
-
-        .btn-secondary { background: rgba(127,140,141,0.25); }
-        .btn-secondary:hover {
-            background: rgba(127,140,141,0.35);
-            border-color: rgba(255,255,255,0.18);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, rgba(39,174,96,0.70), rgba(31,143,77,0.62));
-            border-color: rgba(255,255,255,0.16);
-        }
-        .btn-success:hover {
-            background: linear-gradient(135deg, rgba(39,174,96,0.82), rgba(31,143,77,0.74));
-            border-color: rgba(255,255,255,0.22);
-        }
+        .btn-small:hover { background-color: #1e88e5; }
 
         .btn-danger {
-            background: rgba(231,76,60,0.85);
-            border-color: rgba(255,255,255,0.14);
+            border: none;
+            cursor: pointer;
+            background: #e74c3c;
         }
-        .btn-danger:hover {
-            background: rgba(231,76,60,1);
-            border-color: rgba(255,255,255,0.22);
-        }
+        .btn-danger:hover { background: #c0392b; }
 
-        /* =========================
-           GRID
-           ========================= */
+        /* GRID listings (same style as marketplace) */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(295px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 15px;
         }
 
-        /* =========================
-           CARD
-           ========================= */
         .card {
-            background: rgba(255,255,255,0.96);
-            color: #0f172a;
-            border-radius: 16px;
-            padding: 14px;
-            box-shadow: 0 16px 40px rgba(0,0,0,0.22);
+            background: rgba(255,255,255,0.95);
+            color: #111;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             overflow: hidden;
-            position: relative;
-
-            border: 1px solid rgba(15, 23, 42, 0.06);
-            transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
         }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 22px 55px rgba(0,0,0,0.26);
-            border-color: rgba(47,164,245,0.25);
-        }
-
-        .card img { box-shadow: 0 12px 28px rgba(0,0,0,0.18); }
 
         .card-title {
             font-size: 18px;
-            font-weight: 950;
-            margin: 10px 0 4px 0;
-            color: #0b1220;
-            letter-spacing: 0.2px;
+            font-weight: 700;
+            margin-bottom: 6px;
         }
 
         .price {
             font-size: 20px;
-            font-weight: 950;
-            color: #1e88e5;
-            margin: 6px 0 12px 0;
+            font-weight: 800;
+            color: #2fa4f5;
+            margin-bottom: 10px;
         }
 
         .meta {
-            font-size: 13.5px;
-            color: rgba(15,23,42,0.80);
+            font-size: 14px;
+            color: #333;
             margin: 4px 0;
         }
 
         .tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 10px;
+            display: inline-block;
+            padding: 3px 8px;
             border-radius: 999px;
             font-size: 12px;
-            font-weight: 850;
-            background: rgba(47,164,245,0.14);
+            background: rgba(47,164,245,0.15);
             color: #1e88e5;
-            margin-top: 10px;
-            border: 1px solid rgba(47,164,245,0.22);
+            margin-top: 8px;
         }
-        .tag:before{ content: "•"; opacity: 0.45; }
 
         .card-actions {
+            margin-top: 10px;
             display: flex;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
-            margin-top: 14px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(15,23,42,0.10);
-        }
-
-        .card .btn-link{
-            border-radius: 12px;
-            padding: 9px 12px;
-            border: 1px solid rgba(15,23,42,0.10);
-            background: rgba(47,164,245,0.12);
-            color: #0f2a44;
-            box-shadow: none;
-        }
-        .card .btn-link:hover{
-            background: rgba(47,164,245,0.18);
-            border-color: rgba(47,164,245,0.30);
-            transform: translateY(-1px);
-        }
-        .card .btn-danger{
-            background: rgba(231,76,60,0.14);
-            color: #b42318;
-            border-color: rgba(231,76,60,0.22);
-        }
-        .card .btn-danger:hover{
-            background: rgba(231,76,60,0.20);
-            border-color: rgba(231,76,60,0.35);
-        }
-
-        /* =========================
-           EMPTY
-           ========================= */
-        .empty {
-            background: rgba(0,0,0,0.16);
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: 14px;
-            padding: 16px;
-            text-align: center;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.22);
-        }
-
-        @media (max-width: 700px){
-            h1 { font-size: 24px; }
-            .container { padding: 18px; padding-top: 92px; }
-            .top-actions { padding: 12px; }
         }
     </style>
 </head>
@@ -412,27 +122,26 @@
 
 <div class="container">
 
-    <!-- include navbar fragment -->
+    <!-- NAVBAR -->
     <div th:replace="~{fragments/navbar :: navbar}"></div>
 
     <h1>My Profile</h1>
 
-
-
     <div th:if="${#lists.isEmpty(masini)}" class="empty">
         Nu ai anunțuri încă.
         <div style="margin-top:10px;">
-            <a class="btn-link btn-success" th:href="@{/masini/add}">+ Creează primul anunț</a>
+            <a class="btn-small" th:href="@{/masini/add}">+ Creează primul anunț</a>
         </div>
     </div>
 
     <div class="grid" th:if="${not #lists.isEmpty(masini)}">
         <div class="card" th:each="m : ${masini}">
+
             <img th:if="${m.imageName != null}"
                  th:src="@{'/uploads/' + ${m.imageName}}"
-                 style="width:100%; height:180px; object-fit:cover; border-radius:12px; margin-bottom:10px;">
+                 style="width:100%; height:180px; object-fit:cover; border-radius:8px; margin-bottom:10px;">
 
-            <div class="card-title" th:text="${m.marca} + ' ' + ${m.modelul}">Marca Model</div>
+            <div class="card-title" th:text="${m.marca} + ' ' + ${m.modelul}"></div>
             <div class="price" th:text="${#numbers.formatInteger(m.pretul, 0, 'POINT')} + ' €'"></div>
 
             <div class="meta" th:text="'Kilometraj: ' + ${#numbers.formatInteger(m.kilometraj, 0, 'POINT')} + ' km'"></div>
@@ -444,14 +153,15 @@
             <span class="tag" th:text="${m.anul}"></span>
 
             <div class="card-actions">
-                <a class="btn-link" th:href="@{'/masini/edit/' + ${m.nr_inmatriculare}}">Edit</a>
+                <a class="btn-small" th:href="@{'/masini/edit/' + ${m.nr_inmatriculare}}">Edit</a>
 
                 <form th:action="@{'/masini/delete/' + ${m.nr_inmatriculare}}"
                       method="post" style="margin:0;"
                       onsubmit="return confirm('Sigur ștergi anunțul?');">
-                    <button type="submit" class="btn-link btn-danger">Delete</button>
+                    <button type="submit" class="btn-small btn-danger">Delete</button>
                 </form>
             </div>
+
         </div>
     </div>
 

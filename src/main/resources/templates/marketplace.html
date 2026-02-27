@@ -33,99 +33,6 @@
             position: relative;
         }
 
-        /* NAVBAR */
-        .navbar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            padding: 14px 22px;
-            box-sizing: border-box;
-
-            background: rgba(0,0,0,0.25);
-            backdrop-filter: blur(8px);
-            border-radius: 12px 12px 0 0;
-        }
-
-        .nav-left a {
-            display:flex;
-            align-items:center;
-            gap:12px;
-            text-decoration:none;
-        }
-
-        .logo {
-            height: 42px;
-            width: auto;
-            object-fit: contain;
-            display: block;
-        }
-
-        .brand {
-            font-weight: 700;
-            letter-spacing: 0.3px;
-            color: white;
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .nav-link {
-            padding: 8px 14px;
-            border-radius: 6px;
-            text-decoration: none;
-            color: white;
-            background-color: #2fa4f5;
-            display: inline-block;
-            font-size: 14px;
-        }
-
-        .nav-link:hover {
-            background-color: #1e88e5;
-        }
-
-        .nav-link.secondary {
-            background-color: #7f8c8d;
-        }
-        .nav-link.secondary:hover {
-            background-color: #6c7a7b;
-        }
-
-        .nav-link-green {
-            padding: 8px 14px;
-            border-radius: 6px;
-            text-decoration: none;
-            color: white;
-            background-color:#27ae60;
-            display: inline-block;
-            font-size: 14px;
-        }
-        .nav-link-green:hover {
-            background-color:#1f8f4d;
-        }
-
-        .nav-btn {
-            padding: 8px 14px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            color: white;
-            background-color: #e74c3c;
-            font-size: 14px;
-        }
-        .nav-btn:hover {
-            background-color: #c0392b;
-        }
-
         h1 {
             text-align: center;
             margin: 0 0 18px 0;
@@ -140,7 +47,7 @@
             margin: 10px 0 22px 0;
             box-shadow: 0 15px 40px rgba(0,0,0,0.4);
 
-            /* IMPORTANT: ancoră pt sortare în colț */
+            /* ancoră pentru sortare */
             position: relative;
         }
 
@@ -152,15 +59,10 @@
         }
 
         @media (max-width: 1050px) {
-            .filter-grid {
-                grid-template-columns: repeat(2, minmax(180px, 1fr));
-            }
+            .filter-grid { grid-template-columns: repeat(2, minmax(180px, 1fr)); }
         }
-
         @media (max-width: 560px) {
-            .filter-grid {
-                grid-template-columns: 1fr;
-            }
+            .filter-grid { grid-template-columns: 1fr; }
         }
 
         .filter-group {
@@ -212,34 +114,76 @@
             gap: 10px;
         }
 
-        .range .filter-control {
-            padding: 10px 12px;
-        }
-
-        .range input {
-            width: 100%;
-        }
-
         @media (max-width: 560px) {
-            .range {
-                grid-template-columns: 1fr;
-            }
+            .range { grid-template-columns: 1fr; }
         }
 
-        /* === SORTARE FIX ÎN COLȚ STÂNGA-JOS (MODIFICAREA TA) === */
-        .sort-box {
+        /* === SORTARE FIX ÎN COLȚ STÂNGA-JOS (SINGURUL BLOC) === */
+        .sort-box{
             position: absolute;
-            left: 22px;   /* același ca padding-left din .advanced-filter */
-            bottom: 18px; /* același ca padding-bottom din .advanced-filter */
+            left: 22px;
+            bottom: 18px;
             width: 280px;
         }
 
-        .sort-box .filter-control {
-            padding: 10px 12px;
+        .sort-label{
+            display:block;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: .2px;
+            color: rgba(255,255,255,0.85);
+            margin: 0 0 6px 2px;
         }
 
-        /* Acțiuni: ținem dreapta + lăsăm spațiu pt sortare */
-        .filter-actions {
+        .sort-select{
+            position: relative;
+            width: 100%;
+        }
+
+        .sort-select select{
+            width: 100%;
+            height: 44px;
+            padding: 10px 42px 10px 14px;
+            border-radius: 12px;
+
+            background: rgba(18, 22, 32, 0.95);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.14);
+            outline: none;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+
+            /* ajută pe Windows */
+            color-scheme: dark;
+        }
+
+        .sort-select select:focus{
+            border-color: rgba(47,164,245,0.9);
+            box-shadow: 0 0 0 3px rgba(47,164,245,0.18);
+        }
+
+        .sort-select i{
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: rgba(255,255,255,0.75);
+            font-size: 14px;
+        }
+
+        /* Placeholder să nu fie “șters” */
+        .sort-select select:invalid{
+            color: rgba(255,255,255,0.92);
+        }
+
+        /* Actions: în dreapta + spațiu pt sortare */
+        .filter-actions{
             display: flex;
             justify-content: flex-end;
             align-items: center;
@@ -247,23 +191,23 @@
             flex-wrap: wrap;
             margin-top: 16px;
 
-            padding-left: 310px; /* 280px + gap ca să nu se suprapună */
+            padding-left: 310px;
             min-height: 54px;
         }
 
-        @media (max-width: 900px) {
-            .sort-box {
+        @media (max-width: 900px){
+            .sort-box{
                 position: static;
                 width: 100%;
                 margin-top: 14px;
             }
-            .filter-actions {
+            .filter-actions{
                 padding-left: 0;
                 justify-content: space-between;
             }
         }
 
-        .filter-right {
+        .filter-right{
             display: flex;
             align-items: center;
             gap: 14px;
@@ -280,9 +224,7 @@
             cursor: pointer;
             font-size: 14px;
         }
-        .filter-btn:hover {
-            background-color: #e63200;
-        }
+        .filter-btn:hover { background-color: #e63200; }
 
         .filter-reset {
             color: rgba(255,255,255,0.85);
@@ -362,9 +304,7 @@
             font-size: 13px;
             display: inline-block;
         }
-        .btn-small:hover {
-            background-color: #1e88e5;
-        }
+        .btn-small:hover { background-color: #1e88e5; }
 
         /* Favorite button in cards */
         .fav-btn {
@@ -380,118 +320,21 @@
             user-select: none;
             backdrop-filter: blur(8px);
         }
-
         .fav-btn:hover {
             transform: translateY(-1px);
             background: rgba(255,255,255,0.85);
             border-color: rgba(47,164,245,0.65);
         }
-
-        .fav-btn:active {
-            transform: translateY(0px);
-        }
-
+        .fav-btn:active { transform: translateY(0px); }
         .fav-btn.is-fav {
             background: rgba(47,164,245,0.14);
             border-color: rgba(47,164,245,0.9);
             color: #1e88e5;
         }
-
         .fav-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
         }
-        /* ancoră pentru poziționare */
-.advanced-filter{ position: relative; }
-
-/* sortare în colț stânga-jos */
-.sort-box{
-  position: absolute;
-  left: 22px;
-  bottom: 18px;
-  width: 280px;
-}
-
-/* label mic, premium */
-.sort-label{
-  display:block;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .2px;
-  color: rgba(255,255,255,0.85);
-  margin: 0 0 6px 2px;
-}
-
-/* wrapper pt icon */
-.sort-select{
-  position: relative;
-  width: 100%;
-}
-
-/* IMPORTANT: nu transparent! + forțăm dark UI */
-.sort-select select{
-  width: 100%;
-  height: 44px;
-  padding: 10px 42px 10px 14px;
-  border-radius: 12px;
-
-  background: rgba(18, 22, 32, 0.95);
-  color: #fff;
-  border: 1px solid rgba(255,255,255,0.14);
-  outline: none;
-
-  font-size: 14px;
-  font-weight: 700;
-
-  /* scoate săgeata default */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-
-  /* ajută mult pe Windows/Chrome */
-  color-scheme: dark;
-}
-
-.sort-select select:focus{
-  border-color: rgba(47,164,245,0.9);
-  box-shadow: 0 0 0 3px rgba(47,164,245,0.18);
-}
-
-/* icon dropdown */
-.sort-select i{
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  color: rgba(255,255,255,0.75);
-  font-size: 14px;
-}
-
-/* Opțiuni (atenție: pe Windows uneori tot OS decide) */
-.sort-select select option{
-  background: #111827;
-  color: #fff;
-}
-
-/* lăsăm spațiu pt sortare, ca să nu se suprapună cu butoanele */
-.filter-actions{
-  padding-left: 310px;
-  min-height: 54px;
-}
-
-/* pe ecrane mici: sortarea devine normală (nu absolute) */
-@media (max-width: 900px){
-  .sort-box{
-    position: static;
-    width: 100%;
-    margin-top: 14px;
-  }
-  .filter-actions{
-    padding-left: 0;
-    justify-content: space-between;
-  }
-}
     </style>
 </head>
 
@@ -499,6 +342,7 @@
 
 <div class="container">
 
+    <!-- NAVBAR (nu o atingem) -->
     <div th:replace="~{fragments/navbar :: navbar}"></div>
 
     <h1>Marketplace</h1>
@@ -529,25 +373,7 @@
                         <div class="filter-control">
                             <input type="number" step="1" name="pretMin" placeholder="Min" th:value="${pretMin}">
                         </div>
-                        <div class="filter-control"><div class="sort-box">
-                            <label class="sort-label">Sortare</label>
-
-                            <div class="sort-select">
-                                <select name="sort" onchange="this.form.submit()">
-                                    <option value="" th:selected="${sort == null || sort == ''}">Alege...</option>
-                                    <option value="price_asc" th:selected="${sort == 'price_asc'}">Preț (low → high)</option>
-                                    <option value="price_desc" th:selected="${sort == 'price_desc'}">Preț (high → low)</option>
-                                    <option value="year_asc" th:selected="${sort == 'year_asc'}">An (vechi → nou)</option>
-                                    <option value="year_desc" th:selected="${sort == 'year_desc'}">An (nou → vechi)</option>
-                                    <option value="km_asc" th:selected="${sort == 'km_asc'}">KM (low → high)</option>
-                                    <option value="km_desc" th:selected="${sort == 'km_desc'}">KM (high → low)</option>
-                                    <option value="pwr_asc" th:selected="${sort == 'pwr_asc'}">Putere (low → high)</option>
-                                    <option value="pwr_desc" th:selected="${sort == 'pwr_desc'}">Putere (high → low)</option>
-                                </select>
-
-                                <i class="fa-solid fa-chevron-down"></i>
-                            </div>
-                        </div>
+                        <div class="filter-control">
                             <input type="number" step="1" name="pretMax" placeholder="Max" th:value="${pretMax}">
                         </div>
                     </div>
@@ -606,13 +432,14 @@
             </div>
 
             <!-- SORTARE (colț stânga jos) -->
-            <!-- SORTARE (colț stânga jos) -->
             <div class="sort-box">
                 <label class="sort-label">Sortare</label>
-
                 <div class="sort-select">
-                    <select name="sort" onchange="this.form.submit()">
-                        <option value="" th:selected="${sort == null || sort == ''}">Alege…</option>
+                    <select name="sort" required onchange="this.form.submit()">
+                        <option value=""
+                                th:selected="${sort == null || sort == ''}">
+                            Recommended
+                        </option>
                         <option value="price_asc" th:selected="${sort == 'price_asc'}">Preț (low → high)</option>
                         <option value="price_desc" th:selected="${sort == 'price_desc'}">Preț (high → low)</option>
                         <option value="year_asc" th:selected="${sort == 'year_asc'}">An (vechi → nou)</option>
@@ -622,7 +449,6 @@
                         <option value="pwr_asc" th:selected="${sort == 'pwr_asc'}">Putere (low → high)</option>
                         <option value="pwr_desc" th:selected="${sort == 'pwr_desc'}">Putere (high → low)</option>
                     </select>
-
                     <i class="fa-solid fa-chevron-down"></i>
                 </div>
             </div>
@@ -743,20 +569,20 @@
             method: "POST",
             headers: { "Accept": "application/json" }
         })
-            .then(r => {
-                if (!r.ok) throw new Error("HTTP " + r.status);
-                return r.json();
-            })
-            .then(data => {
-                setFavBtnState(btn, data.favorite);
-            })
-            .catch(err => {
-                console.error(err);
-                alert("Nu s-a putut salva la favorite. (Ești logat?)");
-            })
-            .finally(() => {
-                btn.disabled = false;
-            });
+        .then(r => {
+            if (!r.ok) throw new Error("HTTP " + r.status);
+            return r.json();
+        })
+        .then(data => {
+            setFavBtnState(btn, data.favorite);
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Nu s-a putut salva la favorite. (Ești logat?)");
+        })
+        .finally(() => {
+            btn.disabled = false;
+        });
     }
 </script>
 

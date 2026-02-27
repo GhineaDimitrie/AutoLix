@@ -169,23 +169,39 @@
             background-color: #ddd;
         }
 
-        .actions a, .actions button {
-            padding: 5px 8px;
-            border-radius: 4px;
-            border: none;
-            margin: 2px;
-            cursor: pointer;
-            text-decoration: none;
-            color: white;
-        }
+       .actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
 
-        .actions a {
-            background-color: #3498db;
-        }
+.actions form {
+    margin: 0;
+    display: inline-flex;
+}
 
-        .actions button {
-            background-color: #e74c3c;
-        }
+.actions a,
+.actions button {
+    padding: 5px 8px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.actions a {
+    background-color: #3498db;
+}
+
+.actions button {
+    background-color: #e74c3c;
+}
     </style>
 </head>
 

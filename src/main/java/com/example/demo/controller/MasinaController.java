@@ -319,7 +319,9 @@ public class MasinaController {
 
     private Sort sortFromParam(String sort)
     {
-        if (sort == null || sort.isBlank()) return Sort.unsorted();
+        if (sort == null || sort.isBlank())
+            return  Sort.unsorted();
+
 
         return switch (sort) {
             case "price_asc"  -> Sort.by("pretul").ascending();
