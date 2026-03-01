@@ -23,6 +23,8 @@ public class Utilizator {
     private String parola;
     @Column(nullable=false)
     private String rol;
+    @Column(nullable=true)
+    private String nrTelefon;
 
 
 

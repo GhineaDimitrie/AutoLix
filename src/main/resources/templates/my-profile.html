@@ -36,7 +36,7 @@
 
         h1 {
             text-align: center;
-            margin: 0 0 18px 0;
+            margin: 25px 0 25px 0;
         }
 
         .empty {
@@ -115,6 +115,43 @@
             gap: 8px;
             flex-wrap: wrap;
         }
+        .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 25px 0;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-title {
+    flex: 1;
+    text-align: center;
+    font-size: 40px;
+    font-weight: 600;
+}
+        .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 25px 0;
+}
+
+.header-left {
+    width: 150px;
+}
+
+.header-title {
+    text-align: center;
+    flex: 1;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+}
     </style>
 </head>
 
@@ -125,7 +162,23 @@
     <!-- NAVBAR -->
     <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-    <h1>My Profile</h1>
+    <div class="header-row">
+
+        <div class="header-left">
+            <a class="btn-small" th:href="@{/my-profile/edit-profile}">
+                <i class="fa fa-user-pen"></i> Edit Profile
+            </a>
+        </div>
+
+        <div class="header-title">
+            My Listings
+        </div>
+
+        <div style="width:150px;"></div>
+
+    </div>
+
+
 
     <div th:if="${#lists.isEmpty(masini)}" class="empty">
         Nu ai anunțuri încă.
