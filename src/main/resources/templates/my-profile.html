@@ -152,6 +152,28 @@
     font-size: 28px;
     font-weight: 600;
 }
+        .header-section {
+    margin: 25px 0;
+}
+
+.greeting {
+    text-align: center;
+    font-size: 50px;
+    font-weight: 500;
+    margin-bottom: 25px;
+}
+
+.profile-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.listings-title {
+    margin-top: 12px;
+    font-size: 28px;
+    font-weight: 600;
+}
     </style>
 </head>
 
@@ -162,19 +184,23 @@
     <!-- NAVBAR -->
     <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-    <div class="header-row">
+    <div class="header-section">
 
-        <div class="header-left">
+        <!-- Rand 1: Salut centrat -->
+        <div class="greeting">
+            Hi, <span sec:authentication="name"></span>!
+        </div>
+
+        <!-- Rand 2: Buton + titlu sub el -->
+        <div class="profile-actions">
             <a class="btn-small" th:href="@{/my-profile/edit-profile}">
                 <i class="fa fa-user-pen"></i> Edit Profile
             </a>
-        </div>
 
-        <div class="header-title">
-            My Listings
+            <div class="listings-title">
+                My Listings
+            </div>
         </div>
-
-        <div style="width:150px;"></div>
 
     </div>
 

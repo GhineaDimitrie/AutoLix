@@ -1,4 +1,4 @@
-package com.example.demo.service;
+/*package com.example.demo.service;
 import com.example.demo.entity.Utilizator;
 import com.example.demo.repository.UtilizatorRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -14,12 +14,14 @@ public class DataInitializer {
     {
         return args ->
         {
-            if(utilizatorRepository.findByUsername("Adelina")==null)
+            if(utilizatorRepository.findByUsername("Cristi")==null)
             {
                 Utilizator u1= new Utilizator();
-                u1.setUsername("Adelina");
+                u1.setUsername("Cristi");
                 u1.setParola(passwordEncoder.encode("asd"));
+                u1.setNrTelefon("0770433547");
                 u1.setRol("ADMIN");
+
                 utilizatorRepository.save(u1);
                 System.out.println("Utilizatorul 'Adelina' a fost creat!");
             }else{
@@ -32,3 +34,4 @@ public class DataInitializer {
     }
 
 }
+*/

@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.EditProfileForm;
 import com.example.demo.entity.Masina;
 import com.example.demo.entity.Utilizator;
 import com.example.demo.repository.FavoriteRepository;
@@ -7,9 +8,13 @@ import com.example.demo.repository.MasinaRepository;
 import com.example.demo.repository.UtilizatorRepository;
 import com.example.demo.service.FileStorageService;
 import com.example.demo.service.MasinaService;
+import com.example.demo.service.UtilizatorService;
 import jakarta.validation.Valid;
+import jdk.jshell.execution.Util;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,15 +36,20 @@ public class MasinaController {
     private final MasinaRepository masinaRepository;
     private final FileStorageService fileStorageService;
 
+    private final UtilizatorService utilizatorService;
     private final FavoriteRepository favoriteRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
 
-    public MasinaController(MasinaService masinaService, UtilizatorRepository utilizatorRepository, MasinaRepository masinaRepository, FileStorageService fileStorageService, FavoriteRepository favoriteRepository) {
+
+    public MasinaController(MasinaService masinaService, UtilizatorRepository utilizatorRepository, MasinaRepository masinaRepository, FileStorageService fileStorageService, FavoriteRepository favoriteRepository, UtilizatorService utilizatorService,PasswordEncoder passwordEncoder) {
         this.masinaService = masinaService;
         this.utilizatorRepository = utilizatorRepository;
         this.masinaRepository=masinaRepository;
         this.fileStorageService = fileStorageService;
+        this.utilizatorService = utilizatorService;
+        this.passwordEncoder = passwordEncoder;
 
 
         this.favoriteRepository = favoriteRepository;
@@ -336,6 +346,41 @@ public class MasinaController {
             default -> Sort.unsorted();
         };
     }
+
+
+    @GetMapping("my-profile/edit-profile")
+    public String editProfileForm(Model model,Principal principal)
+    {
+        String currentUsername=principal.getName();
+        Utilizator user=utilizatorRepository.findByUsername(currentUsername);
+
+        EditProfileForm form =new EditProfileForm();
+        form.setNume(user.getNume());
+        form.setUsername(user.getUsername());
+        form.setPhoneNumber(user.getNrTelefon());
+
+        model.addAttribute("form",form);
+        return "edit-profile";
+    }
+
+
+    @PostMapping("my-profile/edit-profile")
+    public String editProfile(@ModelAttribute("form") EditProfileForm form,Principal principal)
+    {
+        Utilizator user=utilizatorRepository.findByUsername(principal.getName());
+
+        user.setNume(form.getNume());
+        user.setUsername(form.getUsername());
+        user.setNrTelefon(form.getPhoneNumber());
+        if (form.getPassword() != null && !form.getPassword().isEmpty()) {
+            user.setParola(passwordEncoder.encode(form.getPassword()));
+        }
+
+        utilizatorService.saveUtilizator(user);
+        return "redirect:/my-profile?success";
+
+    }
+
 
 
 

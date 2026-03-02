@@ -50,6 +50,7 @@ public class AuthController {
         // 3) salvează user
         Utilizator u = new Utilizator();
         u.setUsername(form.getUsername());
+        u.setNrTelefon(form.getPhoneNumber());
         u.setParola(passwordEncoder.encode(form.getPassword()));
         u.setRol("USER"); // IMPORTANT: trebuie fără "ROLE_" la tine
         u.setNume(form.getNume());
