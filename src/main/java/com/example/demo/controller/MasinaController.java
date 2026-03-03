@@ -5,9 +5,11 @@ import com.example.demo.entity.Masina;
 import com.example.demo.entity.Utilizator;
 import com.example.demo.repository.FavoriteRepository;
 import com.example.demo.repository.MasinaRepository;
+import com.example.demo.repository.RatingRepository;
 import com.example.demo.repository.UtilizatorRepository;
 import com.example.demo.service.FileStorageService;
 import com.example.demo.service.MasinaService;
+import com.example.demo.service.RatingService;
 import com.example.demo.service.UtilizatorService;
 import jakarta.validation.Valid;
 import jdk.jshell.execution.Util;
@@ -39,17 +41,20 @@ public class MasinaController {
     private final UtilizatorService utilizatorService;
     private final FavoriteRepository favoriteRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RatingService ratingService;
 
 
 
 
-    public MasinaController(MasinaService masinaService, UtilizatorRepository utilizatorRepository, MasinaRepository masinaRepository, FileStorageService fileStorageService, FavoriteRepository favoriteRepository, UtilizatorService utilizatorService,PasswordEncoder passwordEncoder) {
+
+    public MasinaController(MasinaService masinaService, UtilizatorRepository utilizatorRepository, MasinaRepository masinaRepository, FileStorageService fileStorageService, FavoriteRepository favoriteRepository, UtilizatorService utilizatorService, PasswordEncoder passwordEncoder, RatingService ratingService) {
         this.masinaService = masinaService;
         this.utilizatorRepository = utilizatorRepository;
         this.masinaRepository=masinaRepository;
         this.fileStorageService = fileStorageService;
         this.utilizatorService = utilizatorService;
         this.passwordEncoder = passwordEncoder;
+        this.ratingService=ratingService;
 
 
         this.favoriteRepository = favoriteRepository;
@@ -298,6 +303,14 @@ public class MasinaController {
     @GetMapping("/listing/{nr_inmatriculare}")
     public String listing(@PathVariable String nr_inmatriculare, Model model, CsrfToken csrfToken,Principal principal) {
         Masina m = masinaService.getMasina(nr_inmatriculare);
+
+        model.addAttribute("medie", ratingService.getMedie(m));
+        model.addAttribute("totalVoturi", ratingService.getTotalVoturi(m));
+        if (principal != null) {
+            Utilizator user = utilizatorRepository.findByUsername(principal.getName());
+            int notaUser = ratingService.getNotaDeLaUser(user,m); // Creează metoda asta în Service
+            model.addAttribute("userRating", notaUser);
+        }
         List<String> images= Collections.emptyList();
         String csv = m.getImageNames();
         if (csv != null && !csv.isBlank()) {

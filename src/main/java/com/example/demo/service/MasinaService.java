@@ -1,4 +1,5 @@
 package com.example.demo.service;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import com.example.demo.entity.Masina;
@@ -16,15 +17,24 @@ import java.util.List;
 
 @Service
 public class MasinaService {
+
+    @Autowired
     private final MasinaRepository repository;
 
     public MasinaService(MasinaRepository masinaRepository) {
         this.repository = masinaRepository;
     }
 
+    public Masina findByNrInmatriculare(String nrInmatriculare) {
+        return repository.findById(nrInmatriculare)
+                .orElseThrow(() -> new RuntimeException("Mașina cu nr " + nrInmatriculare + " nu a fost găsită!"));
+    }
+
     public List<Masina> getMasini() {
         return repository.findAll();
     }
+
+
 
     public void saveMasina(Masina masina) {
         repository.save(masina);
@@ -34,6 +44,8 @@ public class MasinaService {
     public Masina getMasina(String nr_inmatriculare) {
         return repository.findById(nr_inmatriculare).orElse(null);
     }
+
+
 
 
     public boolean deleteMasina(String nr_inmatriculare) {
