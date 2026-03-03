@@ -278,6 +278,29 @@
             margin-top: 30px;
          }
 
+        .star-icon {
+    font-size: 32px; /* Mai mari pentru a fi ușor de apăsat */
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.2);
+    transition: all 0.2s ease;
+}
+
+.star-icon:hover {
+    transform: scale(1.2);
+    color: #ffca08;
+}
+
+.star-icon.active {
+    color: #ffca08;
+    text-shadow: 0 0 15px rgba(255, 202, 8, 0.4);
+}
+        .stars-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Spațiul dintre stele */
+    margin-bottom: 25px; /* Adaugă această linie pentru a împinge conținutul de jos mai departe */
+}
+
     </style>
 </head>
 
@@ -501,6 +524,29 @@
                     </div>
                 </div>
 
+                <div class="details" style="margin-top: 20px;">
+                    <div class="tech-title" style="margin-bottom: 15px; text-align: center;">Evaluează aceast anunț!</div>
+
+                    <div class="rating-content" id="ratingContainer" th:attr="data-nr=${m.nr_inmatriculare}" style="text-align: center; padding: 10px;">
+                        <div class="stars-wrapper" th:with="currentRating=${userRating != null ? userRating : 0}">
+                            <i th:each="i : ${#numbers.sequence(1, 5)}"
+                               th:attr="data-value=${i}"
+                               th:class="${i <= currentRating} ? 'fa-star fa-solid star-icon active' : 'fa-star fa-regular star-icon'">
+                            </i>
+                        </div>
+
+                        <div class="kv" style="display: inline-block; min-width: 200px;">
+                            <div class="k">Scor mediu</div>
+                            <div class="v">
+                                <span id="rating-medie" th:text="${#numbers.formatDecimal(medie != null ? medie : 0, 1, 1)}">0.0</span> ⭐
+                                <span style="color: rgba(255,255,255,0.5); font-weight: 400; margin-left: 5px;">
+                    (<span id="total-voturi" th:text="${totalVoturi != null ? totalVoturi : 0}">0</span> voturi)
+                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
 
             </div>
@@ -601,6 +647,81 @@
         btn.innerText = numar;
         btn.dataset.shown = "true";
     }
+}
+
+
+
+
+
+    document.querySelectorAll('.star-icon').forEach(star => {
+    star.addEventListener('click', function() {
+        const value = this.getAttribute('data-value');
+        const container = document.getElementById('ratingContainer');
+
+        // Extragere sigură a numărului de înmatriculare
+        const nrInmatr = container.getAttribute('data-nr');
+
+        // Preluare sigură CSRF (prevenim eroarea "Invalid name")
+        const csrfTokenEl = document.querySelector('meta[name="_csrf"]');
+        const csrfHeaderEl = document.querySelector('meta[name="_csrf_header"]');
+
+        const token = csrfTokenEl ? csrfTokenEl.content : "";
+        const header = csrfHeaderEl ? csrfHeaderEl.content : "";
+
+        const formData = new URLSearchParams();
+        formData.append('nrInmatriculare', nrInmatr);
+        formData.append('stele', value);
+
+        const requestHeaders = {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        };
+
+        // Adăugăm header-ul DOAR dacă numele este valid
+        if (header && token) {
+            requestHeaders[header] = token;
+        }
+
+        fetch('/api/ratings/vote', {
+            method: 'POST',
+            body: formData,
+            headers: requestHeaders
+        })
+        .then(response => {
+            if (response.status === 401) {
+                alert("Trebuie să fii logat pentru a evalua mașina!");
+                window.location.href = "/login";
+                return;
+            }
+            if (!response.ok) throw new Error("Server error: " + response.status);
+            return response.json();
+        })
+        .then(data => {
+            if (data) {
+                document.getElementById('rating-medie').innerText = data.medie.toFixed(1);
+                document.getElementById('total-voturi').innerText = data.totalVoturi;
+                updateStarColors(value);
+            }
+        })
+        .catch(err => {
+            console.error("Rating Error:", err);
+            // Dacă tot apare eroarea, verifică în consolă dacă nrInmatr e corect
+            console.log("ID Masina detectat:", nrInmatr);
+        });
+    });
+});
+
+function updateStarColors(selectedVal) {
+    document.querySelectorAll('.star-icon').forEach(s => {
+        const val = s.getAttribute('data-value');
+        if (val <= selectedVal) {
+            s.classList.replace('fa-regular', 'fa-solid');
+            s.classList.add('active');
+        } else {
+            s.classList.replace('fa-solid', 'fa-regular');
+            s.classList.remove('active');
+        }
+    });
 }
 </script>
 </body>
