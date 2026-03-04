@@ -335,6 +335,75 @@
             opacity: 0.6;
             cursor: not-allowed;
         }
+
+        .brands-container {
+    background: rgba(20, 24, 35, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.brands-title {
+    color: white;
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 25px;
+    letter-spacing: 0.5px;
+}
+
+.brands-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1px; /* Creează liniile fine de demarcație */
+    background: rgba(255, 255, 255, 0.1); /* Culoarea liniilor */
+}
+
+.brand-item {
+    background: rgba(20, 24, 35, 1);
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.brand-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-3px);
+}
+
+.brand-item img {
+    height: 70px;
+    width: auto;
+    margin-bottom: 12px;
+    object-fit: contain;
+
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.brand-item:hover img {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.brand-item span {
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+/* Responsivitate pentru ecrane mici */
+@media (max-width: 600px) {
+    .brands-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
     </style>
 </head>
 
@@ -461,6 +530,77 @@
             </div>
 
         </form>
+    </div>
+
+    <div class="brands-container">
+        <h2 class="brands-title">Popular Car Brands</h2>
+        <div class="brands-grid">
+            <a href="/marketplace?marca=Audi" class="brand-item">
+                <img src="/images/brands/audi.png" alt="Audi">
+                <span>Audi</span>
+            </a>
+            <a href="/marketplace?marca=BMW" class="brand-item">
+                <img src="/images/brands/bmw.png" alt="BMW">
+                <span>BMW</span>
+            </a>
+            <a href="/marketplace?marca=Cupra" class="brand-item">
+                <img src="/images/brands/cupra.png" alt="Cupra">
+                <span>Cupra</span>
+            </a>
+            <a href="/marketplace?marca=Ford" class="brand-item">
+                <img src="/images/brands/ford.png" alt="Ford">
+                <span>Ford</span>
+            </a>
+            <a href="/marketplace?marca=Mercedes-Benz" class="brand-item">
+                <img src="/images/brands/mercedes.png" alt="Mercedes-Benz">
+                <span>Mercedes-Benz</span>
+            </a>
+            <a href="/marketplace?marca=Opel" class="brand-item">
+                <img src="/images/brands/opel.png" alt="Opel">
+                <span>Opel</span>
+            </a>
+            <a href="/marketplace?marca=Renault" class="brand-item">
+                <img src="/images/brands/renault.png" alt="Renault">
+                <span>Renault</span>
+            </a>
+            <a href="/marketplace?marca=Skoda" class="brand-item">
+                <img src="/images/brands/skoda.png" alt="Skoda">
+                <span>Skoda</span>
+            </a>
+            <a href="/marketplace?marca=Tesla" class="brand-item">
+                <img src="/images/brands/tesla.png" alt="Tesla">
+                <span>Tesla</span>
+            </a>
+            <a href="/marketplace?marca=Toyota" class="brand-item">
+                <img src="/images/brands/toyota.png" alt="Toyota">
+                <span>Toyota</span>
+            </a>
+            <a href="/marketplace?marca=Volvo" class="brand-item">
+                <img src="/images/brands/volvo.png" alt="Volvo">
+                <span>Volvo</span>
+            </a>
+            <a href="/marketplace?marca=Volkswagen" class="brand-item">
+                <img src="/images/brands/vw.png" alt="Volkswagen">
+                <span>Volkswagen</span>
+            </a>
+
+            <a href="/marketplace?marca=Dacia" class="brand-item">
+                <img src="/images/brands/dacia.png" alt="Dacia">
+                <span>Dacia</span>
+            </a>
+            <a href="/marketplace?marca=BYD" class="brand-item">
+                <img src="/images/brands/byd.png" alt="BYD">
+                <span>BYD</span>
+            </a>
+            <a href="/marketplace?marca=Porsche" class="brand-item">
+                <img src="/images/brands/porsche.png" alt="Porsche">
+                <span>Porsche</span>
+            </a>
+            <a href="/marketplace?marca=Land Rover" class="brand-item">
+                <img src="/images/brands/land-rover.png" alt="Land Rover">
+                <span>Land Rover</span>
+            </a>
+        </div>
     </div>
 
     <div th:if="${#lists.isEmpty(masini)}" class="empty">
