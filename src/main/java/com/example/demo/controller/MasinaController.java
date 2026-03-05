@@ -395,6 +395,19 @@ public class MasinaController {
     }
 
 
+    @GetMapping("/brand/{numeMarca}")
+    public String afiseazaPaginaBrand(@PathVariable String numeMarca, Model model) {
+        // 1. Căutăm mașinile în baza de date
+        List<Masina> masiniFiltrate = masinaRepository.findByMarcaIgnoreCase(numeMarca);
+
+        // 2. Trimitem datele către Model
+        model.addAttribute("listaMasini", masiniFiltrate);
+        model.addAttribute("marcaSelectata", numeMarca.toUpperCase());
+
+        // 3. Returnăm noul template (fără secțiunea de branduri)
+        return "brand_results";
+    }
+
 
 
 

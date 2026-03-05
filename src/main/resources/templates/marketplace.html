@@ -26,11 +26,13 @@
             padding-top: 85px;
 
             background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(4px);
             border-radius: 12px;
             box-shadow: 0 0 25px rgba(0,0,0,0.3);
             color: white;
             position: relative;
+            will-change: transform;
+            transform: translateZ(0);
         }
 
         h1 {
@@ -46,6 +48,9 @@
             padding: 22px 22px 18px 22px;
             margin: 10px 0 22px 0;
             box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+
+            will-change: transform;
+    transform: translateZ(0);
 
             /* ancoră pentru sortare */
             position: relative;
@@ -250,6 +255,9 @@
             padding: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             overflow: hidden;
+
+            will-change: transform;
+    transform: translateZ(0);
         }
 
         .card-title {
@@ -504,7 +512,7 @@
             <div class="sort-box">
                 <label class="sort-label">Sortare</label>
                 <div class="sort-select">
-                    <select name="sort" required onchange="this.form.submit()">
+                    <select name="sort"  onchange="this.form.submit()">
                         <option value=""
                                 th:selected="${sort == null || sort == ''}">
                             Recommended
@@ -532,76 +540,6 @@
         </form>
     </div>
 
-    <div class="brands-container">
-        <h2 class="brands-title">Popular Car Brands</h2>
-        <div class="brands-grid">
-            <a href="/marketplace?marca=Audi" class="brand-item">
-                <img src="/images/brands/audi.png" alt="Audi">
-                <span>Audi</span>
-            </a>
-            <a href="/marketplace?marca=BMW" class="brand-item">
-                <img src="/images/brands/bmw.png" alt="BMW">
-                <span>BMW</span>
-            </a>
-            <a href="/marketplace?marca=Cupra" class="brand-item">
-                <img src="/images/brands/cupra.png" alt="Cupra">
-                <span>Cupra</span>
-            </a>
-            <a href="/marketplace?marca=Ford" class="brand-item">
-                <img src="/images/brands/ford.png" alt="Ford">
-                <span>Ford</span>
-            </a>
-            <a href="/marketplace?marca=Mercedes-Benz" class="brand-item">
-                <img src="/images/brands/mercedes.png" alt="Mercedes-Benz">
-                <span>Mercedes-Benz</span>
-            </a>
-            <a href="/marketplace?marca=Opel" class="brand-item">
-                <img src="/images/brands/opel.png" alt="Opel">
-                <span>Opel</span>
-            </a>
-            <a href="/marketplace?marca=Renault" class="brand-item">
-                <img src="/images/brands/renault.png" alt="Renault">
-                <span>Renault</span>
-            </a>
-            <a href="/marketplace?marca=Skoda" class="brand-item">
-                <img src="/images/brands/skoda.png" alt="Skoda">
-                <span>Skoda</span>
-            </a>
-            <a href="/marketplace?marca=Tesla" class="brand-item">
-                <img src="/images/brands/tesla.png" alt="Tesla">
-                <span>Tesla</span>
-            </a>
-            <a href="/marketplace?marca=Toyota" class="brand-item">
-                <img src="/images/brands/toyota.png" alt="Toyota">
-                <span>Toyota</span>
-            </a>
-            <a href="/marketplace?marca=Volvo" class="brand-item">
-                <img src="/images/brands/volvo.png" alt="Volvo">
-                <span>Volvo</span>
-            </a>
-            <a href="/marketplace?marca=Volkswagen" class="brand-item">
-                <img src="/images/brands/vw.png" alt="Volkswagen">
-                <span>Volkswagen</span>
-            </a>
-
-            <a href="/marketplace?marca=Dacia" class="brand-item">
-                <img src="/images/brands/dacia.png" alt="Dacia">
-                <span>Dacia</span>
-            </a>
-            <a href="/marketplace?marca=BYD" class="brand-item">
-                <img src="/images/brands/byd.png" alt="BYD">
-                <span>BYD</span>
-            </a>
-            <a href="/marketplace?marca=Porsche" class="brand-item">
-                <img src="/images/brands/porsche.png" alt="Porsche">
-                <span>Porsche</span>
-            </a>
-            <a href="/marketplace?marca=Land Rover" class="brand-item">
-                <img src="/images/brands/land-rover.png" alt="Land Rover">
-                <span>Land Rover</span>
-            </a>
-        </div>
-    </div>
 
     <div th:if="${#lists.isEmpty(masini)}" class="empty">
         Nu există anunțuri încă.
