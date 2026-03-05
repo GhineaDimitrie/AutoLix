@@ -17,7 +17,7 @@ public interface  MasinaRepository extends JpaRepository<Masina,String>, JpaSpec
 
     List<Masina> findByUtilizatorUsername(String username);
 
-
+    List<Masina> findByMarcaIgnoreCase(String marca);
 
 
 }
