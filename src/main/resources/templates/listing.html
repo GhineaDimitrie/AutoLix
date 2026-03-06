@@ -362,6 +362,16 @@
                     </div>
 
                     <div class="tech-row">
+                        <div class="tech-k">Tip Caroserie</div>
+                        <div class="tech-v" th:text="${m.tip}">—</div>
+                    </div>
+                    <div class="tech-row">
+                        <div class="tech-k">Categorie</div>
+                        <div class="tech-v" th:text="${m.categoria}">—</div>
+                    </div>
+
+
+                    <div class="tech-row">
                         <div class="tech-k">Model</div>
                         <div class="tech-v" th:text="${m.modelul}">—</div>
                     </div>
@@ -494,32 +504,32 @@
             <div class="details">
                 <div class="detail-grid">
                     <div class="kv">
-                        <div class="k">Kilometraj</div>
+                        <div class="k">Kilometraj ⏲</div>
                         <div class="v" th:text="${m.kilometraj != null ? #numbers.formatInteger(m.kilometraj, 0, 'POINT') + ' km' : '—'}">—</div>
                     </div>
 
                     <div class="kv">
-                        <div class="k">Cuplu</div>
+                        <div class="k">Cuplu 📉</div>
                         <div class="v" th:text="${m.cuplul != null ? m.cuplul + ' Nm' : '—'}">—</div>
                     </div>
 
                     <div class="kv">
-                        <div class="k">Culoare</div>
+                        <div class="k">Culoare 🎨</div>
                         <div class="v" th:text="${m.culoarea}">—</div>
                     </div>
 
                     <div class="kv">
-                        <div class="k">Combustibil</div>
+                        <div class="k">Combustibil ⛽</div>
                         <div class="v" th:text="${m.combustibil}">—</div>
                     </div>
 
                     <div class="kv">
-                        <div class="k">Putere</div>
+                        <div class="k">Putere 🚀</div>
                         <div class="v" th:text="${m.puterea != null ? m.puterea + ' CP' : '—'}">—</div>
                     </div>
 
                     <div class="kv">
-                        <div class="k">An</div>
+                        <div class="k">An 📅</div>
                         <div class="v" th:text="${m.anul}">—</div>
                     </div>
                 </div>

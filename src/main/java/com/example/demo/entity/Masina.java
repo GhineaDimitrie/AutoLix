@@ -22,6 +22,10 @@ public class Masina {
     private  Utilizator utilizator;
     @NotBlank(message = "Nu ati introdus marca masinii!")
     private String marca;
+
+    private String categoria;
+
+    private String tip;
     @NotBlank(message = "Nu ati introdus modelul masinii!")
     private String modelul;
     @NotBlank(message = "Nu ati introdus culoarea masinii!" )
@@ -46,6 +50,8 @@ public class Masina {
     private Integer anul;
     @NotNull (message = "Nu ati introdus nr de kilometrii!")@Positive(message = "Ati introdus o valoare negativa!")
     private Double kilometraj;
+
+
 
 
 
