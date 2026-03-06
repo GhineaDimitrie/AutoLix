@@ -277,21 +277,12 @@
 
             <div class="field">
                 <label>Nr înmatriculare</label>
-                <div class="control readonly">
-                    <span class="icon">🔒</span>
-                    <input type="text" th:field="*{nr_inmatriculare}" readonly />
+                <div class="control">
+                    <span class="icon">🔤</span>
+                    <input type="text" th:field="*{nr_inmatriculare}" placeholder="ex: TM 12 ABC"/>
                 </div>
                 <span class="error" th:if="${#fields.hasErrors('nr_inmatriculare')}" th:errors="*{nr_inmatriculare}"></span>
-                <div class="hint">Nu se poate modifica după creare.</div>
-            </div>
-
-            <div class="field">
-                <label>Anul</label>
-                <div class="control">
-                    <span class="icon">📅</span>
-                    <input type="number" min="1950" max="2100" th:field="*{anul}" placeholder="ex: 2017"/>
-                </div>
-                <span class="error" th:if="${#fields.hasErrors('anul')}" th:errors="*{anul}"></span>
+                <div class="hint">Folosește formatul exact din acte.</div>
             </div>
 
             <div class="field">
@@ -302,6 +293,19 @@
                 </div>
                 <span class="error" th:if="${#fields.hasErrors('kilometraj')}" th:errors="*{kilometraj}"></span>
             </div>
+
+            <div class="field">
+                <label>Anul</label>
+                <div class="control">
+                    <span class="icon">📅</span>
+                    <input type="number" min="1950" max="2100" th:field="*{anul}" placeholder="ex: 2017"/>
+                </div>
+                <span class="error" th:if="${#fields.hasErrors('anul')}" th:errors="*{anul}"></span>
+                <div class="hint">Doar numere (ex: 2017).</div>
+            </div>
+
+
+
 
             <div class="field">
                 <label>Preț</label>
@@ -331,12 +335,30 @@
             </div>
 
             <div class="field">
+                <label>Tip Caroserie</label>
+                <div class="control">
+                    <span class="icon">📐</span>
+                    <input type="text" th:field="*{tip}" placeholder="ex: Sedan / SUV / Break"/>
+                </div>
+                <span class="error" th:if="${#fields.hasErrors('tip')}" th:errors="*{tip}"></span>
+            </div>
+
+            <div class="field">
                 <label>Culoare</label>
                 <div class="control">
                     <span class="icon">🎨</span>
                     <input type="text" th:field="*{culoarea}" placeholder="ex: Negru"/>
                 </div>
                 <span class="error" th:if="${#fields.hasErrors('culoarea')}" th:errors="*{culoarea}"></span>
+            </div>
+
+            <div class="field">
+                <label>Categorie</label>
+                <div class="control">
+                    <span class="icon">🗂️</span>
+                    <input type="text" th:field="*{categoria}" placeholder="ex: Personală / Off-road"/>
+                </div>
+                <span class="error" th:if="${#fields.hasErrors('categoria')}" th:errors="*{categoria}"></span>
             </div>
 
             <div class="field">

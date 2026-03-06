@@ -268,7 +268,7 @@
 
     <div class="header">
         <div class="title-wrap">
-            <h1>Adaugă mașină</h1>
+            <h1>Add new Car</h1>
             <p>Completează detaliile corect. Câmpurile numerice sunt validate mai ușor și îți scad șansele de erori la salvare.</p>
         </div>
         <div class="badge">Marketplace • Add listing</div>
@@ -289,6 +289,15 @@
             </div>
 
             <div class="field">
+                <label>Kilometraj</label>
+                <div class="control">
+                    <span class="icon">🧭</span>
+                    <input type="number" min="0" step="1" th:field="*{kilometraj}" placeholder="ex: 152000"/>
+                </div>
+                <span class="error" th:if="${#fields.hasErrors('kilometraj')}" th:errors="*{kilometraj}"></span>
+            </div>
+
+            <div class="field">
                 <label>Anul</label>
                 <div class="control">
                     <span class="icon">📅</span>
@@ -298,14 +307,8 @@
                 <div class="hint">Doar numere (ex: 2017).</div>
             </div>
 
-            <div class="field">
-                <label>Kilometraj</label>
-                <div class="control">
-                    <span class="icon">🧭</span>
-                    <input type="number" min="0" step="1" th:field="*{kilometraj}" placeholder="ex: 152000"/>
-                </div>
-                <span class="error" th:if="${#fields.hasErrors('kilometraj')}" th:errors="*{kilometraj}"></span>
-            </div>
+
+
 
             <div class="field">
                 <label>Preț</label>
@@ -335,12 +338,30 @@
             </div>
 
             <div class="field">
+                <label>Tip Caroserie</label>
+                <div class="control">
+                    <span class="icon">📐</span>
+                    <input type="text" th:field="*{tip}" placeholder="ex: Sedan / SUV / Break"/>
+                </div>
+                <span class="error" th:if="${#fields.hasErrors('tip')}" th:errors="*{tip}"></span>
+            </div>
+
+            <div class="field">
                 <label>Culoare</label>
                 <div class="control">
                     <span class="icon">🎨</span>
                     <input type="text" th:field="*{culoarea}" placeholder="ex: Negru"/>
                 </div>
                 <span class="error" th:if="${#fields.hasErrors('culoarea')}" th:errors="*{culoarea}"></span>
+            </div>
+
+            <div class="field">
+                <label>Categorie</label>
+                <div class="control">
+                    <span class="icon">🗂️</span>
+                    <input type="text" th:field="*{categoria}" placeholder="ex: Personală / Off-road"/>
+                </div>
+                <span class="error" th:if="${#fields.hasErrors('categoria')}" th:errors="*{categoria}"></span>
             </div>
 
             <div class="field">
