@@ -60,6 +60,8 @@ public class MasinaService {
     public Page<Masina> filtrarePagini(
             String marca,
             String modelul,
+            String tip,
+            String categoria,
             Double pretMin,
             Double pretMax,
             String combustibil,
@@ -84,6 +86,12 @@ public class MasinaService {
 
         if (modelul != null && !modelul.isBlank()) {
             spec = spec.and((root, query, cb) -> cb.equal(root.get("modelul"), modelul));
+        }
+        if (tip != null && !tip.isBlank()) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("tip"), tip));
+        }
+        if (categoria != null && !categoria.isBlank()) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("categoria"), categoria));
         }
 
         // PREȚ
