@@ -64,6 +64,8 @@ public class MasinaController {
     public String showMasini(
             Model model,
             @RequestParam(required = false) String marca,
+            @RequestParam(required = false) String tip,
+            @RequestParam(required = false) String categoria,
             @RequestParam(required = false) String culoarea,
             @RequestParam(required = false) String combustibil,
             @RequestParam(required = false) Double pretMin,
@@ -80,7 +82,7 @@ public class MasinaController {
     ) {
         Sort s = sortFromParam(sort); // <- ADAUGĂ
         Page<Masina> masiniPage = masinaService.filtrarePagini(
-                marca, modelul, pretMin, pretMax, combustibil, culoarea,
+                marca, modelul,tip,categoria, pretMin, pretMax, combustibil, culoarea,
                 anMin, anMax, putMin, putMax,
                 kmMin, kmMax,s
                 ,page, size
@@ -173,6 +175,8 @@ public class MasinaController {
         existing.setAnul(masina.getAnul());
         existing.setKilometraj(masina.getKilometraj());
         existing.setMarca(masina.getMarca());
+        existing.setTip(masina.getTip());
+        existing.setCategoria(masina.getCategoria());
         existing.setModelul(masina.getModelul());
         existing.setCuloarea(masina.getCuloarea());
         existing.setCapacitatea_cilindrica(masina.getCapacitatea_cilindrica());
@@ -215,7 +219,7 @@ public class MasinaController {
         }else {
             ra.addFlashAttribute("errorMessage", "Masina nu a fost gasita!");
         }
-        return "redirect:/masini";
+        return "redirect:/my-profile";
 
 
     }
@@ -234,6 +238,9 @@ public class MasinaController {
     public String showMasiniMarket(
             Model model,
             @RequestParam(required = false) String marca,
+            @RequestParam(required = false) String tip,
+            @RequestParam(required = false) String categoria,
+
             @RequestParam(required = false) String culoarea,
             @RequestParam(required = false) String combustibil,
             @RequestParam(required = false) Double pretMin,
@@ -253,7 +260,7 @@ public class MasinaController {
 
 
         Page<Masina> masiniPage = masinaService.filtrarePagini(
-                marca, modelul, pretMin, pretMax, combustibil, culoarea,
+                marca, modelul, tip,categoria,pretMin, pretMax, combustibil, culoarea,
                 anMin, anMax, putMin, putMax,
                 kmMin, kmMax,s,
                 page, size
@@ -263,6 +270,8 @@ public class MasinaController {
         model.addAttribute("masini", masiniPage.getContent());
 
         model.addAttribute("marca", marca);
+        model.addAttribute("tip",tip);
+        model.addAttribute("categoria", categoria);
         model.addAttribute("culoarea", culoarea);
         model.addAttribute("combustibil", combustibil);
         model.addAttribute("pretMin", pretMin);
