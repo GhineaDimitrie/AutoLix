@@ -78,8 +78,11 @@ public class MasinaController {
             @RequestParam(required = false) Double kmMin,
             @RequestParam(required = false) Double kmMax,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "9") int size,@RequestParam(required = false) String sort
-    ) {
+            @RequestParam(defaultValue = "9") int size,@RequestParam(required = false) String sort)
+    {
+
+
+
         Sort s = sortFromParam(sort); // <- ADAUGĂ
         Page<Masina> masiniPage = masinaService.filtrarePagini(
                 marca, modelul,tip,categoria, pretMin, pretMax, combustibil, culoarea,
@@ -91,6 +94,7 @@ public class MasinaController {
         model.addAttribute("masiniPage", masiniPage);
         model.addAttribute("masini", masiniPage.getContent());
 
+        model.addAttribute("tip", tip);
         model.addAttribute("marca", marca);
         model.addAttribute("culoarea", culoarea);
         model.addAttribute("combustibil", combustibil);

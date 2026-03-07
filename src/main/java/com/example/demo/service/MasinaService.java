@@ -46,6 +46,11 @@ public class MasinaService {
     }
 
 
+    public long getCountByVehicleType(String tip) {
+        return repository.countByTipIgnoreCase(tip);
+    }
+
+
 
 
     public boolean deleteMasina(String nr_inmatriculare) {
@@ -80,18 +85,28 @@ public class MasinaService {
 
         Specification<Masina> spec = (root, query, cb) -> cb.conjunction();
 
+        // MARCA
         if (marca != null && !marca.isBlank()) {
-            spec = spec.and((root, query, cb) -> cb.equal(root.get("marca"), marca));
+            spec = spec.and((root, query, cb) ->
+                    cb.equal(cb.lower(root.get("marca")), marca.trim().toLowerCase()));
         }
 
+// MODELUL
         if (modelul != null && !modelul.isBlank()) {
-            spec = spec.and((root, query, cb) -> cb.equal(root.get("modelul"), modelul));
+            spec = spec.and((root, query, cb) ->
+                    cb.equal(cb.lower(root.get("modelul")), modelul.trim().toLowerCase()));
         }
+
+// TIP (Aici e buba ta principală)
         if (tip != null && !tip.isBlank()) {
-            spec = spec.and((root, query, cb) -> cb.equal(root.get("tip"), tip));
+            spec = spec.and((root, query, cb) ->
+                    cb.equal(cb.lower(root.get("tip")), tip.trim().toLowerCase()));
         }
+
+// CATEGORIA
         if (categoria != null && !categoria.isBlank()) {
-            spec = spec.and((root, query, cb) -> cb.equal(root.get("categoria"), categoria));
+            spec = spec.and((root, query, cb) ->
+                    cb.equal(cb.lower(root.get("categoria")), categoria.trim().toLowerCase()));
         }
 
         // PREȚ
