@@ -736,6 +736,40 @@
 .prev { left: 0; }
 .next { right: 0; }
 
+
+
+        /* Stil specific pentru caruselul de tipuri */
+.type-card .card-dark {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+    min-height: 200px;
+}
+
+.type-img {
+    width: 100%;
+    max-width: 180px; /* Ajustează în funcție de pozele tale */
+    height: auto;
+    margin-bottom: 15px;
+    filter: brightness(1.1); /* Face mașinile albe să iasă în evidență */
+}
+
+.type-name {
+    font-size: 18px;
+    font-weight: 800;
+    margin: 5px 0;
+    color: white;
+}
+
+.type-listings {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+}
+
     </style>
 </head>
 
@@ -868,7 +902,7 @@
         <h2 class="brands-title">Today's Offers</h2>
 
         <div class="carousel-wrapper">
-            <button class="carousel-nav prev" onclick="moveSlide(-1)">&#10094;</button>
+            <button class="carousel-nav prev" onclick="moveSlide(-1, 'carouselTrack')">&#10094;</button>
 
             <div class="carousel-track-container">
                 <div class="carousel-track" id="carouselTrack">
@@ -895,9 +929,74 @@
                 </div>
             </div>
 
-            <button class="carousel-nav next" onclick="moveSlide(1)">&#10095;</button>
+            <button class="carousel-nav next" onclick="moveSlide(1,'carouselTrack')">&#10095;</button>
         </div>
     </div>
+
+
+
+
+    <div class="carousel-container" th:if="${not #lists.isEmpty(favoriteMasini)}">
+        <h2 class="brands-title">My Favorites</h2>
+        <div class="carousel-wrapper">
+            <button class="carousel-nav prev" onclick="moveSlide(-1, 'trackFavs')">&#10094;</button>
+            <div class="carousel-track-container">
+                <div class="carousel-track" id="trackFavs">
+                    <div class="carousel-card" th:each="m : ${favoriteMasini}">
+                        <div class="card-dark">
+                            <img th:src="@{'/uploads/' + ${m.imageName}}" class="card-img" alt="Car">
+                            <div class="card-body">
+                                <h3 class="card-name" th:text="${m.marca + ' ' + m.modelul}">Mașină Favorite</h3>
+                                <div class="card-price" th:text="${#numbers.formatInteger(m.pretul, 0, 'POINT')} + ' €'">0 €</div>
+                                <div class="card-details">
+                                    <p>KM: <span th:text="${#numbers.formatInteger(m.kilometraj, 0, 'POINT')}"></span></p>
+                                    <p>Combustibil: <span th:text="${m.combustibil}"></span></p>
+                                </div>
+                                <div class="card-footer">
+                                    <span class="year-badge" th:text="${m.anul}">2024</span>
+                                    <a th:href="@{'/listing/' + ${m.nr_inmatriculare}}" class="btn-view">View details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-nav next" onclick="moveSlide(1, 'trackFavs')">&#10095;</button>
+        </div>
+    </div>
+
+
+
+    <div class="carousel-container">
+        <h2 class="brands-title">Vehicle types</h2>
+        <div class="carousel-wrapper">
+            <button class="carousel-nav prev" onclick="moveSlide(-1, 'trackTypes')">&#10094;</button>
+
+            <div class="carousel-track-container">
+                <div class="carousel-track" id="trackTypes">
+
+                    <div class="carousel-card type-card" th:each="t : ${vehicleTypes}">
+                        <a th:href="@{/masini(tip=${t.nume})}" style="text-decoration: none; color: inherit;">
+                            <div class="card-dark centered" style="cursor: pointer;">
+                                <img th:src="@{'/images/types/' + ${#strings.toLowerCase(t.nume)} + '.png'}"
+                                     th:alt="${t.nume}" class="type-img">
+
+                                <h3 class="type-name" th:text="${t.nume}">Nume Tip</h3>
+
+                                <p class="type-listings">
+                                    <span th:text="${#numbers.formatInteger(t.count, 0, 'POINT')}">0</span> listings
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <button class="carousel-nav next" onclick="moveSlide(1, 'trackTypes')">&#10095;</button>
+        </div>
+    </div>
+
 
     <div class="brands-container">
         <h2 class="brands-title">Popular Car Brands</h2>
@@ -973,59 +1072,63 @@
 
 
 </div>
-
 <script>
-    function setFavBtnState(btn, isFav) {
-        btn.classList.toggle("is-fav", !!isFav);
-        btn.textContent = isFav ? "♥ Favorite" : "♡ Favorite";
+    window.carouselsPositions = window.carouselsPositions || {};
+
+    function moveSlide(direction, trackId) {
+        // 1. Siguranță pentru ID: dacă trackId lipsește, folosim default-ul primului carusel
+        const id = trackId || 'carouselTrack';
+        const track = document.getElementById(id);
+
+        if (!track) return;
+
+        const cards = track.querySelectorAll('.carousel-card');
+        if (cards.length === 0) return;
+
+        // 2. INIȚIALIZARE: Dacă e prima dată când mișcăm acest carusel, setăm poziția la 0
+        if (window.carouselsPositions[id] === undefined) {
+            window.carouselsPositions[id] = 0;
+        }
+
+        const cardWidth = cards[0].offsetWidth + 20; // Lățime + Gap
+        const containerWidth = track.parentElement.offsetWidth;
+        const cardsVisible = Math.floor(containerWidth / cardWidth);
+
+        // Calculăm maxIndex: câte "sărituri" poate face caruselul
+        const maxIndex = Math.max(0, cards.length - cardsVisible);
+
+        // 3. Modificăm poziția
+        window.carouselsPositions[id] += direction;
+
+        // 4. LOGICA INFINITĂ
+        if (window.carouselsPositions[id] < 0) {
+            window.carouselsPositions[id] = maxIndex;
+        } else if (window.carouselsPositions[id] > maxIndex) {
+            window.carouselsPositions[id] = 0;
+        }
+
+        // 5. Aplicăm mișcarea
+        const offset = window.carouselsPositions[id] * cardWidth;
+        track.style.transform = `translateX(-${offset}px)`;
     }
 
     function toggleFavCard(btn) {
         const nr = btn.getAttribute("data-nr");
         if (!nr) return;
-
         btn.disabled = true;
 
         fetch(`/favorites/toggle/${encodeURIComponent(nr)}`, {
             method: "POST",
             headers: { "Accept": "application/json" }
         })
-        .then(r => {
-            if (!r.ok) throw new Error("HTTP " + r.status);
-            return r.json();
-        })
+        .then(r => r.json())
         .then(data => {
-            setFavBtnState(btn, data.favorite);
+            btn.textContent = data.favorite ? "♥ Favorite" : "♡ Favorite";
+            btn.classList.toggle("is-fav", data.favorite);
         })
-        .catch(err => {
-            console.error(err);
-            alert("Nu s-a putut salva la favorite. (Ești logat?)");
-        })
-        .finally(() => {
-            btn.disabled = false;
-        });
+        .catch(err => console.error(err))
+        .finally(() => btn.disabled = false);
     }
-
-
-
-
-
-
-    let currentIdx = 0;
-
-function moveSlide(direction) {
-    const track = document.getElementById('carouselTrack');
-    const cards = document.querySelectorAll('.carousel-card');
-    const cardWidth = cards[0].offsetWidth + 20; // lățime + gap
-    const maxIndex = cards.length - 3; // presupunând că afișăm 3 carduri
-
-    currentIdx += direction;
-
-    if (currentIdx < 0) currentIdx = 0;
-    if (currentIdx > maxIndex) currentIdx = maxIndex;
-
-    track.style.transform = `translateX(-${currentIdx * cardWidth}px)`;
-}
 </script>
 
 </body>
