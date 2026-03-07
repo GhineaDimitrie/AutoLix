@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.Masina;
+import com.example.demo.entity.Utilizator;
 import com.example.demo.entity.Favorite;
 import com.example.demo.repository.FavoriteRepository;
 import com.example.demo.repository.MasinaRepository;
@@ -8,10 +10,12 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 @Service
 @RequiredArgsConstructor
-public class FavoriteService {
+public class FavoriteService
+{
 
 
     private final FavoriteRepository favoriteRepository;
@@ -41,4 +45,15 @@ public class FavoriteService {
 
 
     }
+
+
+
+    public List<Masina>getFavoriteCarsByUser(String username)
+    {
+        Utilizator user=utilizatorRepository.findByUsername(username);
+        List <Favorite> favorites=favoriteRepository.findAllByUserId(user.getId_utilizator());
+        return favorites.stream().map(Favorite::getMasina).toList();
+
+    }
+
 }
