@@ -19,4 +19,6 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
     boolean existsFav(@Param("userId") Long userId, @Param("nr") String nr);
     @Query("select f from Favorite f where f.utilizator.id_utilizator = :userId")
     List<Favorite> findAllByUserId(@Param("userId") Long userId);
+
+
 }

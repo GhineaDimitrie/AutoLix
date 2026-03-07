@@ -19,5 +19,9 @@ public interface  MasinaRepository extends JpaRepository<Masina,String>, JpaSpec
 
     List<Masina> findByMarcaIgnoreCase(String marca);
 
+    long countByTipIgnoreCase(String tip);
+
+
+
 
 }
