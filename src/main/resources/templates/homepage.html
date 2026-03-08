@@ -976,7 +976,7 @@
                 <div class="carousel-track" id="trackTypes">
 
                     <div class="carousel-card type-card" th:each="t : ${vehicleTypes}">
-                        <a th:href="@{/masini(tip=${t.nume})}" style="text-decoration: none; color: inherit;">
+                        <a th:href="@{/tip/{nume}(nume=${t.nume})}" style="text-decoration: none; color: inherit;">
                             <div class="card-dark centered" style="cursor: pointer;">
                                 <img th:src="@{'/images/types/' + ${#strings.toLowerCase(t.nume)} + '.png'}"
                                      th:alt="${t.nume}" class="type-img">
