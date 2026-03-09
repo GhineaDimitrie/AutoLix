@@ -770,6 +770,188 @@
     margin: 0;
 }
 
+        /* ABOUT US PREMIUM SECTION */
+.about-us-section {
+    width: 100%;
+    max-width: 1200px;
+    margin: 80px 0; /* Spațiu generos sus/jos */
+    padding: 60px 40px;
+    background: linear-gradient(145deg, rgba(28, 35, 49, 0.8) 0%, rgba(15, 19, 28, 0.9) 100%);
+    backdrop-filter: blur(20px);
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+    box-sizing: border-box; /* IMPORTANT: previne overflow-ul */
+}
+
+.about-container {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 50px;
+    align-items: center;
+}
+
+@media (max-width: 992px) {
+    .about-container { grid-template-columns: 1fr; text-align: center; }
+}
+
+.about-title {
+    font-size: 42px;
+    font-weight: 800;
+    margin-bottom: 25px;
+    letter-spacing: -1px;
+}
+
+.accent-blue { color: #2fa4f5; }
+
+.about-description {
+    font-size: 17px;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 40px;
+}
+
+/* STATS */
+.about-stats {
+    display: flex;
+    gap: 40px;
+}
+
+@media (max-width: 992px) { .about-stats { justify-content: center; } }
+
+.stat-item { display: flex; flex-direction: column; }
+
+.stat-number {
+    font-size: 32px;
+    font-weight: 800;
+    color: white;
+}
+
+.stat-label {
+    font-size: 13px;
+    text-transform: uppercase;
+    color: #2fa4f5;
+    letter-spacing: 1px;
+    margin-top: 5px;
+}
+
+/* FEATURE CARDS */
+.about-features {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.feature-card-premium {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 25px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.feature-card-premium:hover {
+    background: rgba(47, 164, 245, 0.1);
+    border-color: rgba(47, 164, 245, 0.3);
+    transform: translateX(10px);
+}
+
+.feature-card-premium i {
+    font-size: 24px;
+    color: #2fa4f5;
+    margin-bottom: 5px;
+}
+
+.feature-card-premium h4 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.feature-card-premium p {
+    margin: 0;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+
+.marketplace-hero {
+        width: 100%;
+        margin: 0 0 30px 0; /* Anuleaza padding-ul containerului pentru lipire */
+        padding: 140px 0 80px 0;
+        text-align: center;
+        position: relative;
+        background-image: url("/images/hero.png"); /* Imaginea Transfagarasan */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 15px 15px 0 0;
+        overflow: hidden;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        /* Contrast crescut: 0.4 sus la 0.8 jos pentru vizibilitate text */
+        background: linear-gradient(180deg, rgba(15, 18, 25, 0.5) 0%, rgba(15, 18, 25, 0.8) 100%);
+        z-index: 1;
+    }
+
+    .hero-inner {
+        position: relative;
+        z-index: 2;
+        padding: 0 40px;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(47, 164, 245, 0.25);
+        backdrop-filter: blur(5px);
+        color: #2fa4f5;
+        padding: 10px 22px;
+        border-radius: 99px;
+        font-size: 13px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 25px;
+        border: 1px solid rgba(47, 164, 245, 0.5);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .hero-title {
+        font-size: 62px;
+        font-weight: 800;
+        margin: 0 0 20px 0;
+        letter-spacing: -2px;
+        line-height: 1.1;
+        color: white;
+        /* Umbra dubla pentru a "taia" prin imaginea de fundal */
+        text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8), 0 2px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .accent-blue { color: #2fa4f5; }
+
+    .hero-subtitle {
+        font-size: 20px;
+        color: rgba(255, 255, 255, 0.95);
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.7;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    }
+@media (max-width: 768px) {
+    .hero-title { font-size: 36px; }
+    .hero-subtitle { font-size: 16px; }
+}
+
+
+
     </style>
 </head>
 
@@ -780,7 +962,18 @@
     <!-- NAVBAR (nu o atingem) -->
     <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-    <h1>Marketplace</h1>
+    <header class="marketplace-hero">
+        <div class="hero-inner">
+            <div class="hero-badge">
+                <i class="fa-solid fa-car-side"></i> Premium Fleet
+            </div>
+            <h1 class="hero-title">Discover Your <span class="accent-blue">Dream Ride</span></h1>
+            <p class="hero-subtitle">
+                Explore our curated selection of verified vehicles. Quality meets transparency
+                in every listing.
+            </p>
+        </div>
+    </header>
 
     <!-- ADVANCED FILTER -->
     <div class="advanced-filter">
@@ -789,7 +982,7 @@
             <div class="filter-grid">
 
                 <div class="filter-group">
-                    <label>Marcă</label>
+                    <label>Make</label>
                     <div class="filter-control">
                         <input type="text" name="marca" placeholder="Oricare" th:value="${marca}">
                     </div>
@@ -803,7 +996,7 @@
                 </div>
 
                 <div class="filter-group">
-                    <label>Preț</label>
+                    <label>Price</label>
                     <div class="range">
                         <div class="filter-control">
                             <input type="number" step="1" name="pretMin" placeholder="Min" th:value="${pretMin}">
@@ -815,7 +1008,7 @@
                 </div>
 
                 <div class="filter-group">
-                    <label>Kilometraj</label>
+                    <label>Kilometers</label>
                     <div class="range">
                         <div class="filter-control">
                             <input type="number" step="1" name="kmMin" placeholder="Min" th:value="${kmMin}">
@@ -827,21 +1020,21 @@
                 </div>
 
                 <div class="filter-group">
-                    <label>Combustibil</label>
+                    <label>Fuel</label>
                     <div class="filter-control">
                         <input type="text" name="combustibil" placeholder="Oricare" th:value="${combustibil}">
                     </div>
                 </div>
 
                 <div class="filter-group">
-                    <label>Culoare</label>
+                    <label>Color</label>
                     <div class="filter-control">
                         <input type="text" name="culoarea" placeholder="Oricare" th:value="${culoarea}">
                     </div>
                 </div>
 
                 <div class="filter-group">
-                    <label>Putere</label>
+                    <label>Power</label>
                     <div class="range">
                         <div class="filter-control">
                             <input type="number" step="1" name="putMin" placeholder="Min" th:value="${putMin}">
@@ -853,7 +1046,7 @@
                 </div>
 
                 <div class="filter-group">
-                    <label>An</label>
+                    <label>Year</label>
                     <div class="range">
                         <div class="filter-control">
                             <input type="number" step="1" name="anMin" placeholder="Min" th:value="${anMin}">
@@ -1070,8 +1263,53 @@
     </div>
 
 
+    <section class="about-us-section">
+        <div class="about-container">
+            <div class="about-content">
+                <h2 class="about-title">About <span class="accent-blue">AutoLix</span></h2>
+                <p class="about-description">
+                    Welcome to the next generation of automotive marketplace. We've redefined the car buying and selling experience by combining high-end technology with a user-centric approach.
+                    Whether you're looking for your dream sports car or a reliable family SUV, we provide the platform where trust meets transparency.
+                </p>
 
+                <div class="about-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">10k+</span>
+                        <span class="stat-label">Verified Cars</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">5k+</span>
+                        <span class="stat-label">Happy Clients</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Support</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="about-features">
+                <div class="feature-card-premium">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h4>Secure Transactions</h4>
+                    <p>Advanced security protocols for every deal you make.</p>
+                </div>
+                <div class="feature-card-premium">
+                    <i class="fa-solid fa-gem"></i>
+                    <h4>Premium Selection</h4>
+                    <p>Only the best vehicles meet our marketplace standards.</p>
+                </div>
+                <div class="feature-card-premium">
+                    <i class="fa-solid fa-bolt"></i>
+                    <h4>Instant Process</h4>
+                    <p>Sell or buy faster than ever with our streamlined system.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
+
+
 <script>
     window.carouselsPositions = window.carouselsPositions || {};
 
