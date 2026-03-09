@@ -44,17 +44,14 @@ public class MasinaController {
     private final RatingService ratingService;
 
 
-
-
-
     public MasinaController(MasinaService masinaService, UtilizatorRepository utilizatorRepository, MasinaRepository masinaRepository, FileStorageService fileStorageService, FavoriteRepository favoriteRepository, UtilizatorService utilizatorService, PasswordEncoder passwordEncoder, RatingService ratingService) {
         this.masinaService = masinaService;
         this.utilizatorRepository = utilizatorRepository;
-        this.masinaRepository=masinaRepository;
+        this.masinaRepository = masinaRepository;
         this.fileStorageService = fileStorageService;
         this.utilizatorService = utilizatorService;
         this.passwordEncoder = passwordEncoder;
-        this.ratingService=ratingService;
+        this.ratingService = ratingService;
 
 
         this.favoriteRepository = favoriteRepository;
@@ -78,17 +75,15 @@ public class MasinaController {
             @RequestParam(required = false) Double kmMin,
             @RequestParam(required = false) Double kmMax,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "9") int size,@RequestParam(required = false) String sort)
-    {
-
+            @RequestParam(defaultValue = "9") int size, @RequestParam(required = false) String sort) {
 
 
         Sort s = sortFromParam(sort); // <- ADAUGĂ
         Page<Masina> masiniPage = masinaService.filtrarePagini(
-                marca, modelul,tip,categoria, pretMin, pretMax, combustibil, culoarea,
+                marca, modelul, tip, categoria, pretMin, pretMax, combustibil, culoarea,
                 anMin, anMax, putMin, putMax,
-                kmMin, kmMax,s
-                ,page, size
+                kmMin, kmMax, s
+                , page, size
         );
 
         model.addAttribute("masiniPage", masiniPage);
@@ -111,6 +106,7 @@ public class MasinaController {
 
         return "masini";
     }
+
     @GetMapping("/masini/add")
     public String showAddForm(Model model) {
         model.addAttribute("masina", new Masina());
@@ -121,7 +117,7 @@ public class MasinaController {
     @PostMapping("/masini/add")
     public String saveMasina(@Valid @ModelAttribute Masina masina,
                              BindingResult bindingResult,
-                             @RequestParam(value="imageFiles", required=false) MultipartFile[] imageFiles,
+                             @RequestParam(value = "imageFiles", required = false) MultipartFile[] imageFiles,
                              Principal principal) throws IOException {
 
         if (bindingResult.hasErrors()) {
@@ -155,7 +151,6 @@ public class MasinaController {
     }
 
 
-
     @GetMapping("/masini/edit/{nr_inmatriculare}")
     public String showUpdateForm(Model model, @PathVariable String nr_inmatriculare) {
         Masina masina = masinaService.getMasina(nr_inmatriculare);
@@ -166,7 +161,7 @@ public class MasinaController {
     @PostMapping("/masini/edit")
     public String updateMasina(@Valid @ModelAttribute("masina") Masina masina,
                                BindingResult bindingResult,
-                               @RequestParam(value="imageFiles", required=false) MultipartFile[] imageFiles)
+                               @RequestParam(value = "imageFiles", required = false) MultipartFile[] imageFiles)
             throws IOException {
 
         if (bindingResult.hasErrors()) {
@@ -215,12 +210,11 @@ public class MasinaController {
 
     @PostMapping("masini/delete/{nr_inmatriculare}")
     public String deleteMasina(@PathVariable String nr_inmatriculare, RedirectAttributes ra) {
-        boolean deleted=masinaService.deleteMasina(nr_inmatriculare);
+        boolean deleted = masinaService.deleteMasina(nr_inmatriculare);
 
-        if(deleted)
-        {
-            ra.addFlashAttribute("successMessage","Masina a fost stearsa!");
-        }else {
+        if (deleted) {
+            ra.addFlashAttribute("successMessage", "Masina a fost stearsa!");
+        } else {
             ra.addFlashAttribute("errorMessage", "Masina nu a fost gasita!");
         }
         return "redirect:/my-profile";
@@ -257,16 +251,16 @@ public class MasinaController {
             @RequestParam(required = false) Double kmMin,
             @RequestParam(required = false) Double kmMax,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "9") int size,Principal principal,@RequestParam(required = false) String sort
+            @RequestParam(defaultValue = "9") int size, Principal principal, @RequestParam(required = false) String sort
     ) {
 
         Sort s = sortFromParam(sort);
 
 
         Page<Masina> masiniPage = masinaService.filtrarePagini(
-                marca, modelul, tip,categoria,pretMin, pretMax, combustibil, culoarea,
+                marca, modelul, tip, categoria, pretMin, pretMax, combustibil, culoarea,
                 anMin, anMax, putMin, putMax,
-                kmMin, kmMax,s,
+                kmMin, kmMax, s,
                 page, size
         );
 
@@ -274,7 +268,7 @@ public class MasinaController {
         model.addAttribute("masini", masiniPage.getContent());
 
         model.addAttribute("marca", marca);
-        model.addAttribute("tip",tip);
+        model.addAttribute("tip", tip);
         model.addAttribute("categoria", categoria);
         model.addAttribute("culoarea", culoarea);
         model.addAttribute("combustibil", combustibil);
@@ -306,25 +300,25 @@ public class MasinaController {
     }
 
 
-
     @GetMapping("/my-profile")
     public String myProfile(Model model, Principal principal) {
         String username = principal.getName();
         model.addAttribute("masini", masinaRepository.findByUtilizatorUsername(username));
         return "my-profile";
     }
+
     @GetMapping("/listing/{nr_inmatriculare}")
-    public String listing(@PathVariable String nr_inmatriculare, Model model, CsrfToken csrfToken,Principal principal) {
+    public String listing(@PathVariable String nr_inmatriculare, Model model, CsrfToken csrfToken, Principal principal) {
         Masina m = masinaService.getMasina(nr_inmatriculare);
 
         model.addAttribute("medie", ratingService.getMedie(m));
         model.addAttribute("totalVoturi", ratingService.getTotalVoturi(m));
         if (principal != null) {
             Utilizator user = utilizatorRepository.findByUsername(principal.getName());
-            int notaUser = ratingService.getNotaDeLaUser(user,m); // Creează metoda asta în Service
+            int notaUser = ratingService.getNotaDeLaUser(user, m); // Creează metoda asta în Service
             model.addAttribute("userRating", notaUser);
         }
-        List<String> images= Collections.emptyList();
+        List<String> images = Collections.emptyList();
         String csv = m.getImageNames();
         if (csv != null && !csv.isBlank()) {
             images = java.util.Arrays.stream(csv.split(","))
@@ -333,11 +327,10 @@ public class MasinaController {
                     .toList();
         }
 
-        boolean isFavorite=false;
-        if(principal!=null)
-        {
-            Utilizator u=utilizatorRepository.findByUsername(principal.getName());
-            isFavorite=favoriteRepository.existsFav(u.getId_utilizator(),nr_inmatriculare);
+        boolean isFavorite = false;
+        if (principal != null) {
+            Utilizator u = utilizatorRepository.findByUsername(principal.getName());
+            isFavorite = favoriteRepository.existsFav(u.getId_utilizator(), nr_inmatriculare);
         }
 
         model.addAttribute("m", m);
@@ -349,24 +342,19 @@ public class MasinaController {
     }
 
 
-
-
-
-
-    private Sort sortFromParam(String sort)
-    {
+    private Sort sortFromParam(String sort) {
         if (sort == null || sort.isBlank())
-            return  Sort.unsorted();
+            return Sort.unsorted();
 
 
         return switch (sort) {
-            case "price_asc"  -> Sort.by("pretul").ascending();
+            case "price_asc" -> Sort.by("pretul").ascending();
             case "price_desc" -> Sort.by("pretul").descending();
             case "year_asc" -> Sort.by("anul").ascending();
             case "year_desc" -> Sort.by("anul").descending();
             case "km_asc" -> Sort.by("kilometraj").ascending();
             case "km_desc" -> Sort.by("kilometraj").descending();
-            case"pwr_asc" -> Sort.by("puterea").ascending();
+            case "pwr_asc" -> Sort.by("puterea").ascending();
             case "pwr_desc" -> Sort.by("puterea").descending();
 
             default -> Sort.unsorted();
@@ -375,25 +363,23 @@ public class MasinaController {
 
 
     @GetMapping("my-profile/edit-profile")
-    public String editProfileForm(Model model,Principal principal)
-    {
-        String currentUsername=principal.getName();
-        Utilizator user=utilizatorRepository.findByUsername(currentUsername);
+    public String editProfileForm(Model model, Principal principal) {
+        String currentUsername = principal.getName();
+        Utilizator user = utilizatorRepository.findByUsername(currentUsername);
 
-        EditProfileForm form =new EditProfileForm();
+        EditProfileForm form = new EditProfileForm();
         form.setNume(user.getNume());
         form.setUsername(user.getUsername());
         form.setPhoneNumber(user.getNrTelefon());
 
-        model.addAttribute("form",form);
+        model.addAttribute("form", form);
         return "edit-profile";
     }
 
 
     @PostMapping("my-profile/edit-profile")
-    public String editProfile(@ModelAttribute("form") EditProfileForm form,Principal principal)
-    {
-        Utilizator user=utilizatorRepository.findByUsername(principal.getName());
+    public String editProfile(@ModelAttribute("form") EditProfileForm form, Principal principal) {
+        Utilizator user = utilizatorRepository.findByUsername(principal.getName());
 
         user.setNume(form.getNume());
         user.setUsername(form.getUsername());
@@ -422,8 +408,22 @@ public class MasinaController {
     }
 
 
+    @GetMapping("/electric")
+    public String showElectricCars(Model model, @RequestParam(defaultValue = "0") int page) {
 
+        Page<Masina> masiniPage = masinaService.filtrarePagini(
+                null, null, null, null, null, null,
+                "Electric",
+                null, null, null, null, null, null, null,
+                Sort.by("anul").descending(), page, 20
+        );
 
+        model.addAttribute("listaMasini", masiniPage.getContent());
+        model.addAttribute("totalMasini", masiniPage.getTotalElements());
+        model.addAttribute("marcaSelectata", "Vehicule Electrice"); // Titlu pentru Hero
+        model.addAttribute("heroImage", "/images/electric-hero.jpg"); // Imagine opțională dedicată
 
+        return "electric-cars";
 
+    }
 }

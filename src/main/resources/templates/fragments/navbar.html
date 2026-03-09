@@ -137,6 +137,11 @@
             width:20px;
             text-align:center;
         }
+
+        .electric-btn:hover i {
+    color: #2fa4f5;
+    filter: drop-shadow(0 0 5px rgba(47,164,245,0.8));
+}
     </style>
 
     <div class="navbar">
@@ -145,12 +150,19 @@
                 <img src="/images/logo3.png" alt="AutoLix Logo" class="logo">
                 <div class="brand-text">
                     <div class="brand-name">Auto<span class="brand-accent">Lix</span></div>
-                    <div class="brand-tagline">Marketplace auto • anunțuri verificate</div>
+                    <div class="brand-tagline">Marketplace auto • verified listings!</div>
                 </div>
             </a>
         </div>
 
         <div class="nav-right">
+
+            <a th:href="@{/electric}"
+               class="nav-link icon-btn electric-btn"
+               title="Vehicule Electrice">
+                <i class="fa-solid fa-bolt"></i>
+            </a>
+
             <div sec:authorize="hasAnyRole('ADMIN','EDITOR')">
                 <a class="nav-link icon-btn" th:href="@{/masini}" title="Database">
                     <i class="fa-solid fa-database"></i>

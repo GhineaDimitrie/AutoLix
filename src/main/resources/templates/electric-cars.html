@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <title>AutoLix - Electric Hub</title>
+
+    <style>
+        /* Reutilizăm stilurile globale pentru consistență */
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background-image: url("/images/login.jpg");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: block;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 25px;
+            padding-top: 85px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+            color: white;
+            position: relative;
+        }
+
+        /* HERO SECTION - ELECTRIC VARIANT */
+        .electric-hero {
+            width: 100%;
+            margin: 0 0 40px 0;
+            padding: 120px 0;
+            text-align: center;
+            position: relative;
+            background-image: url("/images/electric2.png"); /* Imagine cu vibe tech/electric */
+            background-size: cover;
+            background-position: center;
+            border-radius: 15px 15px 0 0;
+            overflow: hidden;
+            border-bottom: 2px solid #2fa4f5;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(180deg, rgba(10, 15, 30, 0.4) 0%, rgba(10, 15, 30, 0.9) 100%);
+            z-index: 1;
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 2;
+        }
+
+        .electric-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(47, 164, 245, 0.2);
+            color: #2fa4f5;
+            padding: 10px 20px;
+            border-radius: 99px;
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: 1px solid #2fa4f5;
+            box-shadow: 0 0 15px rgba(47, 164, 245, 0.4);
+            margin-bottom: 20px;
+        }
+
+        .electric-title {
+            font-size: 68px;
+            font-weight: 900;
+            margin: 0;
+            letter-spacing: -2px;
+            text-shadow: 0 0 20px rgba(47, 164, 245, 0.6);
+        }
+
+        .electric-subtitle {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 15px;
+        }
+
+        /* GRID & ELECTRIC CARDS */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card-electric {
+            background: rgba(255, 255, 255, 0.95);
+            color: #111;
+            border-radius: 15px;
+            padding: 15px;
+            border: 1px solid rgba(47, 164, 245, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .card-electric:hover {
+            transform: translateY(-10px);
+            border-color: #2fa4f5;
+            box-shadow: 0 15px 35px rgba(47, 164, 245, 0.3);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .price-tag {
+            font-size: 24px;
+            font-weight: 800;
+            color: #2fa4f5;
+        }
+
+        .eco-badge {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: #27ae60;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin: 40px 0;
+            color: #2fa4f5;
+            text-decoration: none;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <header class="electric-hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-inner">
+            <div class="electric-badge">
+                <i class="fa-solid fa-bolt"></i> Zero Emissions
+            </div>
+            <h1 class="electric-title">Electric <span style="color: #2fa4f5;">Hub</span></h1>
+            <p class="electric-subtitle">Discover the future of mobility with our curated electric fleet.</p>
+        </div>
+    </header>
+
+    <div th:if="${#lists.isEmpty(listaMasini)}" style="text-align: center; padding: 50px;">
+        <h3>No electric vehicles available at the moment.</h3>
+        <a th:href="@{/marketplace}" class="back-link">← Back to Marketplace</a>
+    </div>
+
+    <div class="grid" th:if="${not #lists.isEmpty(listaMasini)}">
+        <div class="card-electric" th:each="m : ${listaMasini}">
+            <span class="eco-badge"><i class="fa-solid fa-leaf"></i> 100% Electric</span>
+
+            <img th:if="${m.imageName != null}"
+                 th:src="@{'/uploads/' + ${m.imageName}}" class="card-img">
+
+            <div style="padding: 5px;">
+                <h3 th:text="${m.marca + ' ' + m.modelul}" style="margin: 0 0 8px 0;">Car Name</h3>
+                <div class="price-tag" th:text="${#numbers.formatInteger(m.pretul, 0, 'POINT')} + ' €'"></div>
+
+                <div style="margin: 15px 0; font-size: 14px; color: #555;">
+                    <div><i class="fa-solid fa-gauge-high"></i> <span th:text="${#numbers.formatInteger(m.kilometraj, 0, 'POINT')}"></span> km</div>
+                    <div><i class="fa-solid fa-charging-station"></i> Battery Verified</div>
+                </div>
+
+                <a th:href="@{'/listing/' + ${m.nr_inmatriculare}}"
+                   style="display: block; text-align: center; background: #111; color: white; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: 700; margin-top: 10px;">
+                    View Details
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <a th:href="@{/homepage}" class="back-link">← Return to Main Page</a>
+</div>
+
+</body>
+</html>
