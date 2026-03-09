@@ -37,7 +37,7 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/marketplace", true)
+                        .defaultSuccessUrl("/homepage", true)
                         .permitAll()
                 )
 
