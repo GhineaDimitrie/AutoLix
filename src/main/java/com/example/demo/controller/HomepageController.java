@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class HomepageController {
@@ -36,32 +38,64 @@ public class HomepageController {
     }
 
     @GetMapping("/homepage")
-    public String index(Model model, Principal principal)
-    {
+    public String index(Model model, Principal principal) {
+        // 1. Obținem mașinile pentru carusel (Featured)
         List<Masina> featuredMasini = masinaRepository.findAll(
                 PageRequest.of(0, 6, Sort.by("anul").descending())
         ).getContent();
 
+        // 2. Gestionăm favoritele
         if (principal != null) {
             String username = principal.getName();
-            model.addAttribute("favoriteMasini",favoriteService.getFavoriteCarsByUser(username));
-
+            model.addAttribute("favoriteMasini", favoriteService.getFavoriteCarsByUser(username));
         }
 
+        // 3. Tipuri de vehicule pentru caruselul de jos
         List<String> tipuri = List.of("Sedan", "SUV", "Hatchback", "Coupe", "Convertible", "Compact");
-
-
         var vehicleTypes = tipuri.stream().map(t -> Map.of(
                 "nume", t,
                 "count", masinaRepository.countByTipIgnoreCase(t))).toList();
 
         model.addAttribute("featuredMasini", featuredMasini);
-        model.addAttribute("totalMasini", masinaRepository.count());
         model.addAttribute("vehicleTypes", vehicleTypes);
+
+        // 4. CALCULE PENTRU ANALYTICS PREVIEW
+        List<Masina> toate = masinaService.getMasini();
+
+        long totalAnunturi = toate.size();
+        long totalElectric = toate.stream()
+                .filter(m -> m.getCombustibil() != null && "Electric".equalsIgnoreCase(m.getCombustibil()))
+                .count();
+        double pretMediu = toate.stream()
+                .mapToDouble(Masina::getPretul).average().orElse(0.0);
+
+        // 5. DATE PENTRU GRAFIC (Aceasta este partea care îți lipsea)
+        Map<String, Long> combustibilData = toate.stream()
+                .filter(m -> m.getCombustibil() != null && !m.getCombustibil().isEmpty())
+                .collect(Collectors.groupingBy(Masina::getCombustibil, Collectors.counting()));
+
+
+        Map<String, Long> marciData = toate.stream()
+                .collect(Collectors.groupingBy(Masina::getMarca, Collectors.counting()))
+                .entrySet().stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .limit(10)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+
+
+        // 6. TRIMITE TOTUL CĂTRE MODEL
+        model.addAttribute("totalAnunturi", totalAnunturi);
+        model.addAttribute("totalElectric", totalElectric);
+        model.addAttribute("pretMediu", Math.round(pretMediu));
+        model.addAttribute("labelsMarci", marciData.keySet());
+        model.addAttribute("valuesMarci", marciData.values());
+
+        // Fără aceste două rânduri, graficul circular rămâne gol
+        model.addAttribute("labelsCombustibil", combustibilData.keySet());
+        model.addAttribute("valuesCombustibil", combustibilData.values());
 
         return "homepage";
     }
-
 
 
     @GetMapping("/tip/{numeTip}")
@@ -198,6 +232,9 @@ public class HomepageController {
 
         return "brand_results";
     }
+
+
+
 
 
 
