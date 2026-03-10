@@ -71,33 +71,46 @@
             gap: 15px;
         }
 
-        .card {
-            background: rgba(255,255,255,0.95);
-            color: #111;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            overflow: hidden;
-        }
+       .card {
+    /* Fundal închis cu gradient, similar cu Analytics */
+    background: linear-gradient(145deg, rgba(28, 35, 49, 0.9) 0%, rgba(15, 19, 28, 0.95) 100%) !important;
 
-        .card-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
+    /* Border fin pentru evidențiere */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 18px; /* Colțuri mai rotunjite pentru un look modern */
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    overflow: hidden;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
 
-        .price {
-            font-size: 20px;
-            font-weight: 800;
-            color: #2fa4f5;
-            margin-bottom: 10px;
-        }
+.card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(47, 164, 245, 0.5); /* Glow albastru la hover */
+}
 
-        .meta {
-            font-size: 14px;
-            color: #333;
-            margin: 4px 0;
-        }
+/* Trebuie să schimbăm și culoarea textului în interior, deoarece acum fundalul e închis */
+.card-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #ffffff; /* Text alb */
+}
+
+.meta {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7); /* Text gri deschis pentru detalii */
+    margin: 4px 0;
+}
+
+/* Prețul să rămână vibrant */
+.price {
+    font-size: 22px;
+    font-weight: 800;
+    color: #2fa4f5;
+    margin-bottom: 12px;
+    text-shadow: 0 0 10px rgba(47, 164, 245, 0.3);
+}
 
         .tag {
             display: inline-block;

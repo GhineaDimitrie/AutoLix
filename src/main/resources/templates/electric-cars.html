@@ -35,18 +35,20 @@
 
         /* HERO SECTION - ELECTRIC VARIANT */
         .electric-hero {
-            width: 100%;
-            margin: 0 0 40px 0;
-            padding: 120px 0;
-            text-align: center;
-            position: relative;
-            background-image: url("/images/electric2.png"); /* Imagine cu vibe tech/electric */
-            background-size: cover;
-            background-position: center;
-            border-radius: 15px 15px 0 0;
-            overflow: hidden;
-            border-bottom: 2px solid #2fa4f5;
-        }
+    width: 100%;
+    margin: 0 0 30px 0;
+    /* Am redus de la 120px la 60px pentru a economisi spațiu */
+    padding: 60px 0;
+    text-align: center;
+    position: relative;
+    background-image: url("/images/electric2.png");
+    background-size: cover;
+    background-position: center;
+    border-radius: 15px 15px 0 0;
+    overflow: hidden;
+    /* Eliminăm linia albastră de jos dacă există */
+    border-bottom: none !important;
+}
 
         .hero-overlay {
             position: absolute;
@@ -61,29 +63,20 @@
         }
 
         .electric-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(47, 164, 245, 0.2);
-            color: #2fa4f5;
-            padding: 10px 20px;
-            border-radius: 99px;
-            font-size: 13px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border: 1px solid #2fa4f5;
-            box-shadow: 0 0 15px rgba(47, 164, 245, 0.4);
-            margin-bottom: 20px;
-        }
+    /* Padding redus și font mai mic pentru badge */
+    padding: 8px 16px;
+    font-size: 11px;
+    margin-bottom: 15px;
+}
 
         .electric-title {
-            font-size: 68px;
-            font-weight: 900;
-            margin: 0;
-            letter-spacing: -2px;
-            text-shadow: 0 0 20px rgba(47, 164, 245, 0.6);
-        }
+    /* Am redus de la 68px la 48px pentru a fi mai discretă */
+    font-size: 48px;
+    font-weight: 900;
+    margin: 0;
+    letter-spacing: -1.5px;
+    text-shadow: 0 0 15px rgba(47, 164, 245, 0.5);
+}
 
         .electric-subtitle {
             font-size: 20px;
