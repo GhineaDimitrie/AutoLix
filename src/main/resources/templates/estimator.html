@@ -1,0 +1,464 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <title>AutoLix - Smart Estimator</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: url("/images/login.jpg") no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .estimator-container {
+            width: 90%;
+            max-width: 900px;
+            /* Am mărit padding-top la 120px ca să nu se mai bată cu Navbar-ul */
+            padding: 120px 40px 40px 40px;
+            background: rgba(15, 20, 30, 0.8); /* Fundal mai închis pentru contrast mai bun */
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+            color: white;
+            position: relative;
+        }
+
+        .header-text {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header-text h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #fff, #2fa4f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .estimator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .input-group label {
+            font-size: 11px;
+            font-weight: 800;
+            color: #2fa4f5;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-left: 5px;
+        }
+
+        .input-group input, .input-group select {
+            padding: 14px 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            /* Fundal uniformizat pentru toate input-urile */
+            background: rgba(255, 255, 255, 0.05) !important;
+            color: white !important;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            border-color: #2fa4f5;
+            background: rgba(47, 164, 245, 0.1) !important;
+            box-shadow: 0 0 15px rgba(47, 164, 245, 0.2);
+        }
+
+        /* Fix pentru opțiunile din select (să nu fie negre pe negru) */
+        select option {
+            background: #1a1f2b;
+            color: white;
+        }
+
+        .btn-estimate {
+            grid-column: span 2;
+            margin-top: 20px;
+            padding: 18px;
+            background: #2fa4f5;
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-weight: 800;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-estimate:hover {
+            background: #1e88e5;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(47, 164, 245, 0.4);
+        }
+
+        #resultArea {
+            margin-top: 40px;
+            padding: 35px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            border: 1px solid rgba(47, 164, 245, 0.2);
+            text-align: center;
+            display: none;
+        }
+
+        .price-range {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        #pMin, #pMax {
+            font-size: 48px;
+            font-weight: 900;
+            text-shadow: 0 0 20px rgba(47, 164, 245, 0.3);
+        }
+
+        .btn-sell {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 14px 40px;
+            background: #2fa4f5;
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+
+
+        .preview-card {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border: 1px dashed rgba(47, 164, 245, 0.4); /* Efect de "draft" / schiță */
+    border-radius: 20px;
+    padding: 30px;
+    position: relative;
+    text-align: left;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.preview-badge {
+    position: absolute;
+    top: -12px;
+    left: 20px;
+    background: #2fa4f5;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+#previewTitle {
+    font-size: 28px;
+    margin: 0 0 10px 0;
+    color: white;
+}
+
+.preview-price-range {
+    font-size: 36px;
+    font-weight: 900;
+    color: #2fa4f5;
+    margin-bottom: 20px;
+}
+
+.preview-specs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 20px;
+}
+
+.preview-specs-grid span {
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+}
+
+.preview-specs-grid i {
+    color: #2fa4f5;
+    margin-right: 8px;
+}
+
+.btn-publish {
+    display: block;
+    width: 100%;
+    background: #27ae60; /* Verde pentru a sugera "Succes/Publică" */
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    padding: 15px;
+    border-radius: 12px;
+    font-weight: 800;
+    transition: 0.3s;
+    box-shadow: 0 10px 20px rgba(39, 174, 96, 0.2);
+}
+
+.btn-publish:hover {
+    background: #219150;
+    transform: scale(1.02);
+}
+    </style>
+</head>
+<body>
+
+<div class="estimator-container">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div style="text-align: center;">
+        <h1 style="margin: 0; font-size: 32px;"><i class="fa-solid fa-calculator" style="color: #2fa4f5;"></i> Smart Price Estimator</h1>
+        <p style="opacity: 0.7; margin-top: 10px;">Obține un interval de preț realist în mai puțin de un minut.</p>
+    </div>
+
+    <form id="estimatorForm" class="estimator-grid">
+        <div class="input-group">
+            <label>Marcă</label>
+            <input type="text" id="marca" required placeholder="ex: BMW">
+        </div>
+
+        <div class="input-group">
+            <label>Model</label>
+            <input type="text" id="model" required placeholder="ex:G30">
+        </div>
+
+
+        <div class="input-group">
+            <label>Tip Caroserie</label>
+            <input type="text" id="tip" required placeholder="ex:Sedan">
+        </div>
+
+
+
+        <div class="input-group">
+            <label>Categorie</label>
+            <select id="categoria" required>
+                <option value="Economic">Economic</option>
+                <option value="City">City Car</option>
+                <option value="Familie">Familie</option>
+                <option value="Lux">Premium</option>
+                <option value="Sport">Sport</option>
+                <option value="Electric">Electric</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>An Fabricație</label>
+            <input type="number" id="an" required min="2000" max="2026" value="2018">
+        </div>
+        <div class="input-group">
+            <label>Kilometraj (KM)</label>
+            <input type="number" id="km" required placeholder="ex: 150000">
+        </div>
+        <div class="input-group">
+            <label>Putere (CP)</label>
+            <input type="number" id="putere" required placeholder="ex: 150">
+        </div>
+        <div class="input-group">
+            <label>Capacitate Cilindrică (cm³)</label>
+            <input type="number" id="capacitate" required placeholder="ex: 1995">
+        </div>
+
+        <button type="button" class="btn-estimate" onclick="calculatePrice()">EVALUEAZĂ ACUM</button>
+    </form>
+
+    <div id="resultArea">
+        <h2 style="color: #2fa4f5; margin-bottom: 25px;"><i class="fa-solid fa-wand-magic-sparkles"></i> Evaluare Finalizată!</h2>
+
+        <div class="preview-card">
+            <div class="preview-badge">PREVIEW ANUNȚ</div>
+
+            <div class="preview-content">
+                <div class="preview-info">
+                    <h3 id="previewTitle">MARCĂ MODEL</h3>
+                    <div class="preview-price-range">
+                        <span id="pMin">0</span> € - <span id="pMax">0</span> €
+                    </div>
+
+                    <div class="preview-specs-grid">
+                        <span><i class="fa-solid fa-calendar"></i> <span id="specAn">2018</span></span>
+                        <span><i class="fa-solid fa-road"></i> <span id="specKm">0</span> km</span>
+                        <span><i class="fa-solid fa-bolt"></i> <span id="specCp">0</span> CP</span>
+                        <span><i class="fa-solid fa-car-side"></i> <span id="specTip">Sedan</span></span>
+                    </div>
+                </div>
+
+                <div class="preview-cta">
+                    <p id="advice" style="font-size: 13px; opacity: 0.8; margin-bottom: 20px;"></p>
+                    <a th:href="@{/masini/add}" class="btn-publish">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> PUBLICĂ ANUNȚUL ACUM
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function calculatePrice() {
+     const preturiReferinta = {
+         "dacia": 18000,
+         "volkswagen": 35000, "vw": 32000,
+         "bmw": 58000,
+         "mercedes": 65000, "mercedes-benz": 65000,
+         "audi": 55000,
+         "ford": 28000,
+         "toyota": 35000,
+         "renault": 26000,
+         "skoda": 30000,
+         "tesla": 48000,
+         "porsche": 110000,
+         "opel": 28000,
+         "hyundai": 29000,
+         "cupra": 42000,
+         "volvo": 52000,
+         "land rover": 85000
+     };
+
+     // 1. COLECTARE DATE
+     const marcaInput = document.getElementById('marca').value.toLowerCase().trim();
+     const modelInput = document.getElementById('model').value.trim();
+     const tipCaroserie = document.getElementById('tip').value.toLowerCase().trim();
+     const cat = document.getElementById('categoria').value.toLowerCase();
+     const an = parseInt(document.getElementById('an').value);
+     const km = parseInt(document.getElementById('km').value);
+     const cp = parseInt(document.getElementById('putere').value);
+
+     if (!an || isNaN(km) || isNaN(cp)) {
+         alert("Te rugăm să completezi toate câmpurile numerice!");
+         return;
+     }
+
+     // 2. STABILIRE BASE PRICE (ECHILIBRU MARCĂ + CATEGORIE)
+     let basePrice = preturiReferinta[marcaInput] || 0;
+
+     // Căutare parțială dacă nu e găsit exact (ex: "Mercedes")
+     if (basePrice === 0) {
+         for (let key in preturiReferinta) {
+             if (marcaInput.includes(key) || key.includes(marcaInput)) {
+                 basePrice = preturiReferinta[key];
+                 break;
+             }
+         }
+     }
+
+     // DACĂ MARCA EXISTĂ: Categoria ajustează prețul mărcii pentru precizie
+     if (basePrice !== 0) {
+         if (cat === 'lux') basePrice *= 1.8;      // Ex: BMW Seria 7 vs media BMW
+         else if (cat === 'sport') basePrice *= 1.5; // Ex: Audi RS vs media Audi
+         else if (cat === 'economic') basePrice *= 0.75;
+     }
+     // FALLBACK: Dacă marca NU există, folosim prețuri de categorie echilibrate
+     else {
+         switch (cat) {
+             case 'lux': basePrice = 120000; break;
+             case 'sport': basePrice = 75000; break;
+             case 'familie': basePrice = 40000; break;
+             case 'city': basePrice = 50000; break;
+             case 'economic': basePrice = 18000; break;
+             default: basePrice = 25000; break;
+         }
+     }
+
+     // 3. ALGORITM DEPRECIERE (VECHIME)
+     let vechime = Math.max(0, 2026 - an);
+     if (vechime > 18) vechime = 18;
+     let depreciereAnuala = (cat === 'lux' || cat === 'electric') ? 0.85 : 0.88;
+     let ageFactor = Math.pow(depreciereAnuala, vechime);
+
+     // 4. FACTOR KM (PRAGURI PSIHOLOGICE)
+     let kmFactor = 1.0;
+     if (km < 10000) kmFactor = 1.05;
+     else if (km <= 50000) kmFactor = 0.95;
+     else if (km <= 100000) kmFactor = 0.85;
+     else if (km <= 150000) kmFactor = 0.75;
+     else if (km <= 200000) kmFactor = 0.65;
+     else if (km <= 300000) kmFactor = 0.50;
+     else kmFactor = 0.35;
+
+     // 5. FACTOR CAROSERIE
+     let bodyFactor = 1.0;
+     if (tipCaroserie.includes("suv")) bodyFactor = 1.15;
+     else if (tipCaroserie.includes("coupe") || tipCaroserie.includes("convertible")) bodyFactor = 1.10;
+     else if (tipCaroserie.includes("hatchback")) bodyFactor = 0.92;
+
+     // 6. CALCUL FINAL
+     let midPrice = basePrice * ageFactor * kmFactor * bodyFactor;
+     if (cp > 190) midPrice *= 1.12; // Bonus putere
+
+     // 7. INTERVAL ȘI ROTUNJIRE
+     let min = Math.round((midPrice * 0.90) / 100) * 100;
+     let max = Math.round((midPrice * 1.10) / 100) * 100;
+     if (min < 800) min = 800;
+     if (max < 1200) max = 1200;
+
+     // 8. MAPPING PE PREVIEW CARD (AFIȘARE)
+     document.getElementById('previewTitle').innerText = `${marcaInput.toUpperCase()} ${modelInput.toUpperCase()}`;
+     document.getElementById('specAn').innerText = an;
+     document.getElementById('specKm').innerText = km.toLocaleString('ro-RO');
+     document.getElementById('specCp').innerText = cp;
+     document.getElementById('specTip').innerText = tipCaroserie.charAt(0).toUpperCase() + tipCaroserie.slice(1);
+
+     document.getElementById('pMin').innerText = min.toLocaleString('ro-RO');
+     document.getElementById('pMax').innerText = max.toLocaleString('ro-RO');
+
+     // SFAT PERSONALIZAT
+     let kmAdvice = km < 50000 ? "Kilometrajul scăzut este un mare avantaj!" : (km > 200000 ? "Prețul reflectă rulajul ridicat." : "");
+     document.getElementById('advice').innerText = `Estimarea pentru ${marcaInput.toUpperCase()} indică un interval corect. ${kmAdvice}`;
+
+     // AFIȘARE REZULTAT & SCROLL
+     document.getElementById('resultArea').style.display = 'block';
+     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+ }
+
+
+
+
+
+
+
+
+
+
+    window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('action') === 'start') {
+        // Dacă utilizatorul a venit din reclamă, facem scroll la formular
+        const formSection = document.getElementById('estimatorForm');
+        if (formSection) {
+            formSection.scrollIntoView({ behavior: 'smooth' });
+            // Putem chiar să adăugăm un efect de luminiță pe formular ca să știe unde să se uite
+            formSection.style.boxShadow = "0 0 30px rgba(47, 164, 245, 0.5)";
+            setTimeout(() => { formSection.style.boxShadow = "none"; }, 2000);
+        }
+    }
+}
+
+</script>
+
+</body>
+</html>
