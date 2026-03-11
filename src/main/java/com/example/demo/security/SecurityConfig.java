@@ -20,7 +20,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers("/","/marketplace","/images/**","/login", "/signup", "/signup/**","/uploads/**").permitAll()
+                        .requestMatchers("/","/marketplace","/estimate","/images/**","/login", "/signup", "/signup/**","/uploads/**").permitAll()
                         .requestMatchers("/my-profile/**").hasAnyRole("USER","ADMIN","EDITOR")
                         // USER + EDITOR pot vedea lista și filtra
                         .requestMatchers("/masini", "/masini/filtru").hasAnyRole( "EDITOR","ADMIN")
