@@ -887,7 +887,7 @@
         padding: 140px 0 80px 0;
         text-align: center;
         position: relative;
-        background-image: url("/images/hero.png"); /* Imaginea Transfagarasan */
+        background-image: url("/images/home.png");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -1203,6 +1203,251 @@
     transition: background-color 5000s ease-in-out 0s;
 }
 
+
+/* ============================================================
+   AUTOLIX VERSUS ENGINE - PREMIUM GLASS-UI
+   ============================================================ */
+
+.compare-dashboard-premium {
+    background: linear-gradient(160deg, #0f1219 0%, #080a0f 100%);
+    border: 1px solid rgba(255, 165, 0, 0.2);
+    border-radius: 28px;
+    padding: 35px;
+    margin: 40px auto;
+    width: 100%;
+    max-width: 1200px;
+    box-sizing: border-box;
+    color: white;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+}
+
+.compare-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 35px;
+    margin-top: 30px;
+    align-items: stretch; /* Face coloanele egale pe înălțime */
+}
+
+/* PANOU SELECTOR (STÂNGA) */
+.fav-selector-panel {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 22px;
+    padding: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.fav-scroll-grid {
+    height: auto;
+    overflow-y: visible; /* Am eliminat scroll-ul conform cerinței */
+    flex-grow: 1;
+}
+
+.compare-item-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 14px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.compare-item-card:hover {
+    border-color: #ffa500;
+    background: rgba(255, 165, 0, 0.08);
+    transform: translateX(5px);
+}
+
+.compare-item-card img {
+    width: 65px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.mini-info span { font-weight: 700; font-size: 14px; display: block; }
+.mini-info small { color: #ffa500; font-weight: 800; font-size: 12px; }
+
+/* ARENA (DREAPTA) */
+.comparison-arena {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.arena-slots {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    align-items: center;
+    gap: 20px;
+    min-height: 320px;
+}
+
+.arena-slot {
+    background: rgba(255, 255, 255, 0.01);
+    border: 2px dashed rgba(255, 165, 0, 0.15);
+    border-radius: 24px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    transition: all 0.4s ease;
+}
+
+.arena-slot.active {
+    border: 1px solid rgba(255, 165, 0, 0.4);
+    background: rgba(255, 165, 0, 0.02);
+}
+
+.vs-circle {
+    width: 55px;
+    height: 55px;
+    background: #ffa500;
+    color: #000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 18px;
+    box-shadow: 0 0 25px rgba(255, 165, 0, 0.4);
+    z-index: 2;
+}
+
+/* VERDICT ADVANCED CARD */
+.verdict-advanced-card {
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 165, 0, 0.2);
+    border-radius: 24px;
+    padding: 30px;
+    margin-top: 10px;
+    animation: fadeIn 0.6s ease-out;
+}
+
+.verdict-header-premium {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: rgba(255, 165, 0, 0.7);
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pro-contra-grid {
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+    gap: 40px;
+    margin-bottom: 30px;
+}
+
+.analysis-box {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 18px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.analysis-box h5 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #fff;
+}
+
+/* PRO & CONTRA ITEMS */
+.pros-item, .cons-item {
+    padding: 10px 14px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pros-item {
+    background: rgba(46, 204, 113, 0.08);
+    color: #2ecc71;
+    border-left: 3px solid #2ecc71;
+}
+
+.cons-item {
+    background: rgba(231, 76, 60, 0.08);
+    color: #e74c3c;
+    border-left: 3px solid #e74c3c;
+}
+
+.vs-line {
+    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.1), transparent);
+    width: 1px;
+}
+
+/* FOOTER & BANNER */
+.final-verdict-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.final-verdict-banner {
+    flex: 1;
+    background: linear-gradient(90deg, rgba(255, 165, 0, 0.1) 0%, transparent 100%);
+    padding: 18px 25px;
+    border-radius: 14px;
+    border-left: 4px solid #ffa500;
+    margin-right: 25px;
+}
+
+.final-verdict-banner p {
+    margin: 0;
+    font-size: 14px;
+    color: #fff;
+    line-height: 1.5;
+}
+
+.btn-reset-compare {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 12px 22px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+
+.btn-reset-compare:hover {
+    background: #e74c3c;
+    border-color: #e74c3c;
+    transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+
     </style>
 </head>
 
@@ -1468,6 +1713,84 @@
             <button class="carousel-nav next" onclick="moveSlide(1, 'trackFavs')">&#10095;</button>
         </div>
     </div>
+
+
+    <section id="compareDashboard" class="compare-dashboard-premium">
+        <div class="compare-header">
+            <h2 class="accent-orange"><i class="fa-solid fa-code-compare"></i> AutoLix Versus Engine</h2>
+            <p>Alege două mașini din colecția ta de favorite pentru o analiză comparativă detaliată.</p>
+        </div>
+
+        <div class="compare-layout">
+            <div class="fav-selector-panel">
+                <h4 class="panel-title">Colecția ta de Favorite</h4>
+                <div class="fav-scroll-grid">
+                    <div th:each="m : ${favoriteMasini}"
+                         class="compare-item-card"
+                         onclick="selectCar(this)"
+                         th:data-nr="${m.nr_inmatriculare}"
+                         th:data-marca="${m.marca}"
+                         th:data-model="${m.modelul}"
+                         th:data-pret="${m.pretul}"
+                         th:data-km="${m.kilometraj}"
+                         th:data-putere="${m.puterea}"
+                         th:data-an="${m.anul}"
+                         th:data-img="${m.imageName}">
+
+                        <img th:src="@{'/uploads/' + ${m.imageName}}" class="mini-img">
+
+                        <div class="mini-info">
+                            <span th:text="${m.marca} + ' ' + ${m.modelul}"></span>
+                            <small th:text="${#numbers.formatInteger(m.pretul, 0, 'POINT')} + ' €'"></small>
+                        </div>
+                    </div>
+                    <div th:if="${#lists.isEmpty(favoriteMasini)}" class="empty-fav-msg">
+                        Nu ai mașini la favorite.
+                    </div>
+                </div>
+            </div>
+
+            <div class="comparison-arena">
+                <div class="arena-slots">
+                    <div id="slotA" class="arena-slot empty">Slot 1</div>
+                    <div class="vs-circle">VS</div>
+                    <div id="slotB" class="arena-slot empty">Slot 2</div>
+                </div>
+
+                <div id="verdictDisplay" class="verdict-advanced-card" style="display: none;">
+                    <div class="verdict-header-premium">
+                        <i class="fa-solid fa-microchip"></i> ANALIZĂ SMART 1v1
+                    </div>
+
+                    <div class="pro-contra-grid">
+                        <div class="analysis-box">
+                            <h5 id="v-name-1" class="accent-orange">---</h5>
+                            <div id="pros-1" class="list-pros"></div>
+                            <div id="cons-1" class="list-cons"></div>
+                        </div>
+
+                        <div class="vs-line"></div>
+
+                        <div class="analysis-box">
+                            <h5 id="v-name-2" class="accent-orange">---</h5>
+                            <div id="pros-2" class="list-pros"></div>
+                            <div id="cons-2" class="list-cons"></div>
+                        </div>
+                    </div>
+
+
+                    <div class="final-verdict-footer">
+                        <div class="final-verdict-banner">
+                            <p id="finalRecommendation" style="margin:0;"></p>
+                        </div>
+                        <button class="btn-reset-compare" onclick="clearArena()" style="white-space: nowrap;">
+                            <i class="fa-solid fa-rotate-left"></i> Reset Arena
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 
 
@@ -1812,6 +2135,7 @@ function closeEstimator() {
     document.getElementById('previewTitle').innerText = `${marca.toUpperCase()} ${model.toUpperCase()}`;
     document.getElementById('pMin').innerText = min.toLocaleString('ro-RO');
     document.getElementById('pMax').innerText = max.toLocaleString('ro-RO');
+    document.getElementById('specAn').innerText = an;
     document.getElementById('specKm').innerText = km.toLocaleString('ro-RO');
     document.getElementById('specCp').innerText = cp;
     document.getElementById('specTip').innerText = document.getElementById('tip').value;
@@ -1822,7 +2146,183 @@ function closeEstimator() {
 
 
 
+let slotAData = null;
+let slotBData = null;
 
+function selectCar(element) {
+    // Extragem datele din atributele data-* ale elementului
+    const carData = {
+        nr: element.getAttribute('data-nr'),
+        marca: element.getAttribute('data-marca'),
+        model: element.getAttribute('data-model'),
+        pret: parseFloat(element.getAttribute('data-pret')),
+        km: parseInt(element.getAttribute('data-km')),
+        putere: parseInt(element.getAttribute('data-putere')),
+        an: parseInt(element.getAttribute('data-an')),
+        imgName: element.getAttribute('data-img')
+    };
+
+    console.log("Mașină selectată:", carData.marca, carData.model);
+
+    // Verificăm dacă mașina e deja selectată
+    if ((slotAData && slotAData.nr === carData.nr) || (slotBData && slotBData.nr === carData.nr)) {
+        return;
+    }
+
+    if (!slotAData) {
+        slotAData = carData;
+        updateSlotUI('slotA', carData);
+    } else if (!slotBData) {
+        slotBData = carData;
+        updateSlotUI('slotB', carData);
+        generateVerdict();
+    }
+}
+
+function updateSlotUI(slotId, data) {
+    const slot = document.getElementById(slotId);
+    if (!slot) return;
+
+    slot.classList.remove('empty');
+    slot.style.border = '2px solid #ffa500';
+    slot.style.background = 'rgba(255, 165, 0, 0.05)';
+
+    slot.innerHTML = `
+        <img src="/uploads/${data.imgName}" alt="Car" style="max-width: 100%; max-height: 140px; object-fit: contain; margin-bottom: 15px; border-radius: 10px;">
+        <h4 style="margin: 5px 0; color: #ffa500;">${data.marca} ${data.model}</h4>
+        <div style="font-size: 18px; font-weight: 800; color: #fff;">${Number(data.pret).toLocaleString('ro-RO')} €</div>
+        <div style="font-size: 12px; opacity: 0.6; color: #fff;">${Number(data.km).toLocaleString('ro-RO')} km | ${data.an}</div>
+    `;
+}
+
+function clearArena() {
+    slotAData = null;
+    slotBData = null;
+
+    const sA = document.getElementById('slotA');
+    const sB = document.getElementById('slotB');
+
+    sA.innerHTML = "Slot 1";
+    sB.innerHTML = "Slot 2";
+    sA.className = "arena-slot empty";
+    sB.className = "arena-slot empty";
+    sA.style.border = '2px dashed rgba(255, 165, 0, 0.2)';
+    sB.style.border = '2px dashed rgba(255, 165, 0, 0.2)';
+
+    document.getElementById('verdictDisplay').style.display = 'none';
+}
+
+
+
+    function generateVerdict() {
+    if (!slotAData || !slotBData) return;
+
+    let analysis = {
+        carA: { pros: [], cons: [], score: 0 },
+        carB: { pros: [], cons: [], score: 0 }
+    };
+
+    // 1. ANALIZĂ PREȚ (Greutate mare în scor)
+    const diffPret = Math.abs(slotAData.pret - slotBData.pret);
+    if (slotAData.pret < slotBData.pret) {
+        analysis.carA.pros.push(`Mai accesibilă cu ${diffPret.toLocaleString()} €`);
+        analysis.carA.score += 3;
+    } else if (slotBData.pret < slotAData.pret) {
+        analysis.carB.pros.push(`Mai accesibilă cu ${diffPret.toLocaleString()} €`);
+        analysis.carB.score += 3;
+    }
+
+    // 2. ANALIZĂ KILOMETRAJ
+    if (slotAData.km < slotBData.km) {
+        analysis.carA.pros.push(`Rulaj mai mic: ${slotAData.km.toLocaleString()} km`);
+        analysis.carB.cons.push(`Rulaj mai mare: ${slotBData.km.toLocaleString()} km`);
+        analysis.carA.score += 2;
+    } else {
+        analysis.carB.pros.push(`Rulaj mai mic: ${slotBData.km.toLocaleString()} km`);
+        analysis.carA.cons.push(`Rulaj mai mare: ${slotAData.km.toLocaleString()} km`);
+        analysis.carB.score += 2;
+    }
+
+    // 3. ANALIZĂ PUTERE (Performanță)
+    if (slotAData.putere > slotBData.putere) {
+        analysis.carA.pros.push(`Performanță superioară: ${slotAData.putere} CP`);
+        analysis.carB.cons.push(`Putere mai mică: ${slotBData.putere} CP`);
+        analysis.carA.score += 2;
+    } else {
+        analysis.carB.pros.push(`Performanță superioară: ${slotBData.putere} CP`);
+        analysis.carA.cons.push(`Putere mai mică: ${slotAData.putere} CP`);
+        analysis.carB.score += 2;
+    }
+
+    // 4. ANALIZĂ VECHIME (AN)
+    if (slotAData.an > slotBData.an) {
+        analysis.carA.pros.push(`Mai nouă (${slotAData.an}) - Tehnologie recentă`);
+        analysis.carB.cons.push(`Mai veche (${slotBData.an}) - Depreciere mai mare`);
+        analysis.carA.score += 2;
+    } else if (slotBData.an > slotAData.an) {
+        analysis.carB.pros.push(`Mai nouă (${slotBData.an}) - Tehnologie recentă`);
+        analysis.carA.cons.push(`Mai veche (${slotAData.an}) - Depreciere mai mare`);
+        analysis.carB.score += 2;
+    }
+
+    // 5. CALCUL SMART: MEDIA DE KM PE AN (Uzura reală)
+    const varstaA = new Date().getFullYear() - slotAData.an || 1;
+    const varstaB = new Date().getFullYear() - slotBData.an || 1;
+    const kmAnA = slotAData.km / varstaA;
+    const kmAnB = slotBData.km / varstaB;
+
+    if (kmAnA < kmAnB) {
+        analysis.carA.pros.push(`Utilizare mai rară: medie de ${Math.round(kmAnA)} km/an`);
+    } else {
+        analysis.carB.pros.push(`Utilizare mai rară: medie de ${Math.round(kmAnB)} km/an`);
+    }
+
+    // 6. CALCUL SMART: EFICIENȚĂ PREȚ / PUTERE
+    const pretPerCPA = slotAData.pret / slotAData.putere;
+    const pretPerCPB = slotBData.pret / slotBData.putere;
+
+    if (pretPerCPA < pretPerCPB) {
+        analysis.carA.pros.push("Raport Preț/Putere mai eficient");
+    } else {
+        analysis.carB.pros.push("Raport Preț/Putere mai eficient");
+    }
+
+    displayAdvancedVerdict(analysis);
+}
+
+
+    function displayAdvancedVerdict(analysis) {
+    // Setăm numele mașinilor
+    document.getElementById('v-name-1').innerText = `${slotAData.marca} ${slotAData.model}`;
+    document.getElementById('v-name-2').innerText = `${slotBData.marca} ${slotBData.model}`;
+
+    const fillList = (id, items, className) => {
+        const el = document.getElementById(id);
+        el.innerHTML = items.map(text => `<div class="${className}">${text}</div>`).join('');
+    };
+
+    // Umplem listele de Pro și Contra
+    fillList('pros-1', analysis.carA.pros, 'pros-item');
+    fillList('cons-1', analysis.carA.cons, 'cons-item');
+    fillList('pros-2', analysis.carB.pros, 'pros-item');
+    fillList('cons-2', analysis.carB.cons, 'cons-item');
+
+    // Generăm Recomandarea Finală bazată pe scor
+    let recommendation = "";
+    if (analysis.carA.score > analysis.carB.score) {
+        recommendation = `🏆 <strong>Verdictul AutoLix:</strong> Recomandăm <strong>${slotAData.marca}</strong>. Deși alegerea depinde de bugetul tău, datele tehnice indică un echilibru mai bun între vârstă, uzură și performanță.`;
+    } else if (analysis.carB.score > analysis.carA.score) {
+        recommendation = `🏆 <strong>Verdictul AutoLix:</strong> Recomandăm <strong>${slotBData.marca}</strong>. Raportul tehnic indică faptul că această mașină oferă mai multă valoare pentru investiția cerută.`;
+    } else {
+        recommendation = `⚖️ <strong>Verdictul AutoLix:</strong> Egalitate tehnică. Diferențele sunt subiective (design/brand). Alege mașina care îți place mai mult!`;
+    }
+
+    document.getElementById('finalRecommendation').innerHTML = recommendation;
+    document.getElementById('verdictDisplay').style.display = 'block';
+
+    // Auto-scroll către rezultat
+    document.getElementById('verdictDisplay').scrollIntoView({ behavior: 'smooth' });
+}
 
 
 
@@ -1855,7 +2355,7 @@ function closeEstimator() {
                     <option value="sport" style="background:#121620">Sport</option>
                 </select>
             </div>
-            <div class="filter-group"><label>An</label><input type="number" id="an" class="modal-field" value="2020"></div>
+            <div class="filter-group"><label>An</label><input type="number" id="an" class="modal-field"  placeholder="ex: 2016"></div>
             <div class="filter-group"><label>KM</label><input type="number" id="km" class="modal-field" placeholder="ex: 80000"></div>
             <div class="filter-group" ><label>Putere (CP)</label><input type="number" id="putere" class="modal-field" placeholder="ex: 190"></div>
             <div class="filter-group"><label>Capacitate Cilindrică (cm³)</label><input type="number" id="capacitate"  class="modal-field"  placeholder="ex: 1995"></div>
@@ -1874,7 +2374,7 @@ function closeEstimator() {
                 </div>
 
                 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
-                    <span><i class="fa-solid fa-calendar" style="color: #00e1ff; margin-right: 8px;"></i> <span id="specAn" style="color:#ffffff">2018</span></span>
+                    <span><i class="fa-solid fa-calendar" style="color: #00e1ff; margin-right: 8px;"></i> <span id="specAn" style="color:#ffffff"></span></span>
                     <span><i class="fa-solid fa-road" style="color: #00e1ff; margin-right: 8px;"></i> <span id="specKm" style="color:#ffffff">0</span > <span style="color: #00e1ff;">km</span> </span>
                     <span><i class="fa-solid fa-bolt" style="color: #00e1ff; margin-right: 8px;"></i> <span id="specCp" style="color:#ffffff">0</span> <span style="color: #00e1ff;">cp</span> </span>
                     <span><i class="fa-solid fa-car-side" style="color:#00e1ff; margin-right: 8px;"></i> <span id="specTip" style="color:#ffffff">Sedan</span></span>
@@ -1888,5 +2388,11 @@ function closeEstimator() {
             </div>
         </div>
 </div>
+
+
+
+
+
+
 </body>
 </html>
