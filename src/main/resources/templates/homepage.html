@@ -4,8 +4,9 @@
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" type="image/png" href="/images/tab-logo.png">
     <meta charset="UTF-8">
-    <title>Marketplace</title>
+    <title>AutoLix-Homepage</title>
 
     <style>
         body {
@@ -1204,9 +1205,7 @@
 }
 
 
-/* ============================================================
-   AUTOLIX VERSUS ENGINE - PREMIUM GLASS-UI
-   ============================================================ */
+
 
 .compare-dashboard-premium {
     background: linear-gradient(160deg, #0f1219 0%, #080a0f 100%);
@@ -1448,6 +1447,49 @@
 
 
 
+        .carousel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding: 0 10px;
+}
+
+.brands-title {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+}
+
+
+
+
+
+.btn-scroll-compare {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 165, 0, 0.1);
+    color: #ffa500;
+    border: 1px solid rgba(255, 165, 0, 0.3);
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-scroll-compare:hover {
+    background: #ffa500;
+    color: #000;
+    box-shadow: 0 0 15px rgba(255, 165, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+
     </style>
 </head>
 
@@ -1559,7 +1601,7 @@
             <div class="sort-box">
                 <label class="sort-label">Sortare</label>
                 <div class="sort-select">
-                    <select name="sort" required onchange="this.form.submit()">
+                    <select name="sort"  onchange="this.form.submit()">
                         <option value=""
                                 th:selected="${sort == null || sort == ''}">
                             Recommended
@@ -1604,7 +1646,14 @@
 
 
     <div class="carousel-container">
-        <h2 class="brands-title">Today's Offers</h2>
+        <div class="carousel-header">
+            <h2 class="brands-title">Today's Offers</h2>
+
+            <button class="btn-scroll-compare" onclick="scrollToCompare()">
+                <i class="fa-solid fa-code-compare"></i>
+                <span>Versus Engine</span>
+            </button>
+        </div>
 
         <div class="carousel-wrapper">
             <button class="carousel-nav prev" onclick="moveSlide(-1, 'carouselTrack')">&#10094;</button>
@@ -1637,6 +1686,121 @@
             <button class="carousel-nav next" onclick="moveSlide(1,'carouselTrack')">&#10095;</button>
         </div>
     </div>
+
+
+    <div class="carousel-container">
+        <h2 class="brands-title">Vehicle types</h2>
+        <div class="carousel-wrapper">
+            <button class="carousel-nav prev" onclick="moveSlide(-1, 'trackTypes')">&#10094;</button>
+
+            <div class="carousel-track-container">
+                <div class="carousel-track" id="trackTypes">
+
+                    <div class="carousel-card type-card" th:each="t : ${vehicleTypes}">
+                        <a th:href="@{/tip/{nume}(nume=${t.nume})}" style="text-decoration: none; color: inherit;">
+                            <div class="card-dark centered" style="cursor: pointer;">
+                                <img th:src="@{'/images/types/' + ${#strings.toLowerCase(t.nume)} + '.png'}"
+                                     th:alt="${t.nume}" class="type-img">
+
+                                <h3 class="type-name" th:text="${t.nume}">Nume Tip</h3>
+
+                                <p class="type-listings">
+                                    <span th:text="${#numbers.formatInteger(t.count, 0, 'POINT')}">0</span> listings
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <button class="carousel-nav next" onclick="moveSlide(1, 'trackTypes')">&#10095;</button>
+        </div>
+    </div>
+
+
+    <div class="brands-container">
+        <h2 class="brands-title">Popular Car Brands</h2>
+        <div class="brands-grid">
+            <a href="/brand/Audi" class="brand-item">
+                <img src="/images/brands/audi.png" alt="Audi">
+                <span>Audi</span>
+            </a>
+            <a href="/brand/BMW" class="brand-item">
+                <img src="/images/brands/bmw.png" alt="BMW">
+                <span>BMW</span>
+            </a>
+            <a href="/brand/Cupra" class="brand-item">
+                <img src="/images/brands/cupra.png" alt="Cupra">
+                <span>Cupra</span>
+            </a>
+            <a href="/brand/Ford" class="brand-item">
+                <img src="/images/brands/ford.png" alt="Ford">
+                <span>Ford</span>
+            </a>
+            <a href="/brand/Mercedes-Benz" class="brand-item">
+                <img src="/images/brands/mercedes.png" alt="Mercedes-Benz">
+                <span>Mercedes-Benz</span>
+            </a>
+            <a href="/brand/Opel" class="brand-item">
+                <img src="/images/brands/opel.png" alt="Opel">
+                <span>Opel</span>
+            </a>
+            <a href="/brand/Renault" class="brand-item">
+                <img src="/images/brands/renault.png" alt="Renault">
+                <span>Renault</span>
+            </a>
+            <a href="/brand/Skoda" class="brand-item">
+                <img src="/images/brands/skoda.png" alt="Skoda">
+                <span>Skoda</span>
+            </a>
+            <a href="/brand/Tesla" class="brand-item">
+                <img src="/images/brands/tesla.png" alt="Tesla">
+                <span>Tesla</span>
+            </a>
+            <a href="/brand/Toyota" class="brand-item">
+                <img src="/images/brands/toyota.png" alt="Toyota">
+                <span>Toyota</span>
+            </a>
+            <a href="/brand/Volvo" class="brand-item">
+                <img src="/images/brands/volvo.png" alt="Volvo">
+                <span>Volvo</span>
+            </a>
+            <a href="/brand/Volkswagen" class="brand-item">
+                <img src="/images/brands/vw.png" alt="Volkswagen">
+                <span>Volkswagen</span>
+            </a>
+
+            <a href="/brand/Dacia" class="brand-item">
+                <img src="/images/brands/dacia.png" alt="Dacia">
+                <span>Dacia</span>
+            </a>
+            <a href="/brand/BYD" class="brand-item">
+                <img src="/images/brands/byd.png" alt="BYD">
+                <span>BYD</span>
+            </a>
+            <a href="/brand/Porsche" class="brand-item">
+                <img src="/images/brands/porsche.png" alt="Porsche">
+                <span>Porsche</span>
+            </a>
+            <a href="/brand/Land Rover" class="brand-item">
+                <img src="/images/brands/land-rover.png" alt="Land Rover">
+                <span>Land Rover</span>
+            </a>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
 
     <section class="analytics-preview-section">
         <div class="analytics-preview-card-full">
@@ -1794,107 +1958,7 @@
 
 
 
-    <div class="carousel-container">
-        <h2 class="brands-title">Vehicle types</h2>
-        <div class="carousel-wrapper">
-            <button class="carousel-nav prev" onclick="moveSlide(-1, 'trackTypes')">&#10094;</button>
 
-            <div class="carousel-track-container">
-                <div class="carousel-track" id="trackTypes">
-
-                    <div class="carousel-card type-card" th:each="t : ${vehicleTypes}">
-                        <a th:href="@{/tip/{nume}(nume=${t.nume})}" style="text-decoration: none; color: inherit;">
-                            <div class="card-dark centered" style="cursor: pointer;">
-                                <img th:src="@{'/images/types/' + ${#strings.toLowerCase(t.nume)} + '.png'}"
-                                     th:alt="${t.nume}" class="type-img">
-
-                                <h3 class="type-name" th:text="${t.nume}">Nume Tip</h3>
-
-                                <p class="type-listings">
-                                    <span th:text="${#numbers.formatInteger(t.count, 0, 'POINT')}">0</span> listings
-                                </p>
-                            </div>
-                        </a>
-                    </div>
-
-                </div>
-            </div>
-
-            <button class="carousel-nav next" onclick="moveSlide(1, 'trackTypes')">&#10095;</button>
-        </div>
-    </div>
-
-
-    <div class="brands-container">
-        <h2 class="brands-title">Popular Car Brands</h2>
-        <div class="brands-grid">
-            <a href="/brand/Audi" class="brand-item">
-                <img src="/images/brands/audi.png" alt="Audi">
-                <span>Audi</span>
-            </a>
-            <a href="/brand/BMW" class="brand-item">
-                <img src="/images/brands/bmw.png" alt="BMW">
-                <span>BMW</span>
-            </a>
-            <a href="/brand/Cupra" class="brand-item">
-                <img src="/images/brands/cupra.png" alt="Cupra">
-                <span>Cupra</span>
-            </a>
-            <a href="/brand/Ford" class="brand-item">
-                <img src="/images/brands/ford.png" alt="Ford">
-                <span>Ford</span>
-            </a>
-            <a href="/brand/Mercedes-Benz" class="brand-item">
-                <img src="/images/brands/mercedes.png" alt="Mercedes-Benz">
-                <span>Mercedes-Benz</span>
-            </a>
-            <a href="/brand/Opel" class="brand-item">
-                <img src="/images/brands/opel.png" alt="Opel">
-                <span>Opel</span>
-            </a>
-            <a href="/brand/Renault" class="brand-item">
-                <img src="/images/brands/renault.png" alt="Renault">
-                <span>Renault</span>
-            </a>
-            <a href="/brand/Skoda" class="brand-item">
-                <img src="/images/brands/skoda.png" alt="Skoda">
-                <span>Skoda</span>
-            </a>
-            <a href="/brand/Tesla" class="brand-item">
-                <img src="/images/brands/tesla.png" alt="Tesla">
-                <span>Tesla</span>
-            </a>
-            <a href="/brand/Toyota" class="brand-item">
-                <img src="/images/brands/toyota.png" alt="Toyota">
-                <span>Toyota</span>
-            </a>
-            <a href="/brand/Volvo" class="brand-item">
-                <img src="/images/brands/volvo.png" alt="Volvo">
-                <span>Volvo</span>
-            </a>
-            <a href="/brand/Volkswagen" class="brand-item">
-                <img src="/images/brands/vw.png" alt="Volkswagen">
-                <span>Volkswagen</span>
-            </a>
-
-            <a href="/brand/Dacia" class="brand-item">
-                <img src="/images/brands/dacia.png" alt="Dacia">
-                <span>Dacia</span>
-            </a>
-            <a href="/brand/BYD" class="brand-item">
-                <img src="/images/brands/byd.png" alt="BYD">
-                <span>BYD</span>
-            </a>
-            <a href="/brand/Porsche" class="brand-item">
-                <img src="/images/brands/porsche.png" alt="Porsche">
-                <span>Porsche</span>
-            </a>
-            <a href="/brand/Land Rover" class="brand-item">
-                <img src="/images/brands/land-rover.png" alt="Land Rover">
-                <span>Land Rover</span>
-            </a>
-        </div>
-    </div>
 
 
     <section class="about-us-section">
@@ -2217,113 +2281,139 @@ function clearArena() {
     function generateVerdict() {
     if (!slotAData || !slotBData) return;
 
+    // 1. Colectăm toate diferențele posibile într-un array de obiecte
+    let diffs = [];
+
+    // Verificăm Prețul
+    diffs.push({
+        label: "Preț",
+        valA: slotAData.pret, valB: slotBData.pret,
+        textA: `${slotAData.pret.toLocaleString()} €`, textB: `${slotBData.pret.toLocaleString()} €`,
+        betterA: slotAData.pret < slotBData.pret, // Mai ieftin e mai bine
+        importance: Math.abs(slotAData.pret - slotBData.pret) / Math.max(slotAData.pret, slotBData.pret)
+    });
+
+    // Verificăm Kilometrajul
+    diffs.push({
+        label: "Rulaj",
+        valA: slotAData.km, valB: slotBData.km,
+        textA: `${slotAData.km.toLocaleString()} km`, textB: `${slotBData.km.toLocaleString()} km`,
+        betterA: slotAData.km < slotBData.km,
+        importance: Math.abs(slotAData.km - slotBData.km) / 200000 // Normalizare pondere
+    });
+
+    // Verificăm Puterea (CP)
+    diffs.push({
+        label: "Performanță",
+        valA: slotAData.putere, valB: slotBData.putere,
+        textA: `${slotAData.putere} CP`, textB: `${slotBData.putere} CP`,
+        betterA: slotAData.putere > slotBData.putere,
+        importance: Math.abs(slotAData.putere - slotBData.putere) / 500
+    });
+
+    // Verificăm Vechimea (Anul)
+    diffs.push({
+        label: "An fabricație",
+        valA: slotAData.an, valB: slotBData.an,
+        textA: `An ${slotAData.an}`, textB: `An ${slotBData.an}`,
+        betterA: slotAData.an > slotBData.an,
+        importance: Math.abs(slotAData.an - slotBData.an) / 10
+    });
+
+    // 2. Sortăm diferențele după importanță (cele mai mari diferențe primele)
+    diffs.sort((a, b) => b.importance - a.importance);
+
+    // 3. Extragem 3 avantaje și 3 dezavantaje pentru fiecare
     let analysis = {
-        carA: { pros: [], cons: [], score: 0 },
-        carB: { pros: [], cons: [], score: 0 }
+        carA: { pros: [], cons: [] },
+        carB: { pros: [], cons: [] }
     };
 
-    // 1. ANALIZĂ PREȚ (Greutate mare în scor)
-    const diffPret = Math.abs(slotAData.pret - slotBData.pret);
-    if (slotAData.pret < slotBData.pret) {
-        analysis.carA.pros.push(`Mai accesibilă cu ${diffPret.toLocaleString()} €`);
-        analysis.carA.score += 3;
-    } else if (slotBData.pret < slotAData.pret) {
-        analysis.carB.pros.push(`Mai accesibilă cu ${diffPret.toLocaleString()} €`);
-        analysis.carB.score += 3;
-    }
+    // Luăm primele 3 cele mai relevante atribute pentru a popula listele
+    // Pentru a garanta 3 PRO și 3 CONTRA, folosim primele 3 atribute din lista sortată
+    diffs.slice(0, 3).forEach(d => {
+        if (d.betterA) {
+            analysis.carA.pros.push(`${d.label}: ${d.textA}`);
+            analysis.carB.cons.push(`${d.label}: ${d.textB} (Dezavantaj)`);
+        } else {
+            analysis.carA.cons.push(`${d.label}: ${d.textA} (Dezavantaj)`);
+            analysis.carB.pros.push(`${d.label}: ${d.textB}`);
+        }
+    });
 
-    // 2. ANALIZĂ KILOMETRAJ
-    if (slotAData.km < slotBData.km) {
-        analysis.carA.pros.push(`Rulaj mai mic: ${slotAData.km.toLocaleString()} km`);
-        analysis.carB.cons.push(`Rulaj mai mare: ${slotBData.km.toLocaleString()} km`);
-        analysis.carA.score += 2;
-    } else {
-        analysis.carB.pros.push(`Rulaj mai mic: ${slotBData.km.toLocaleString()} km`);
-        analysis.carA.cons.push(`Rulaj mai mare: ${slotAData.km.toLocaleString()} km`);
-        analysis.carB.score += 2;
-    }
-
-    // 3. ANALIZĂ PUTERE (Performanță)
-    if (slotAData.putere > slotBData.putere) {
-        analysis.carA.pros.push(`Performanță superioară: ${slotAData.putere} CP`);
-        analysis.carB.cons.push(`Putere mai mică: ${slotBData.putere} CP`);
-        analysis.carA.score += 2;
-    } else {
-        analysis.carB.pros.push(`Performanță superioară: ${slotBData.putere} CP`);
-        analysis.carA.cons.push(`Putere mai mică: ${slotAData.putere} CP`);
-        analysis.carB.score += 2;
-    }
-
-    // 4. ANALIZĂ VECHIME (AN)
-    if (slotAData.an > slotBData.an) {
-        analysis.carA.pros.push(`Mai nouă (${slotAData.an}) - Tehnologie recentă`);
-        analysis.carB.cons.push(`Mai veche (${slotBData.an}) - Depreciere mai mare`);
-        analysis.carA.score += 2;
-    } else if (slotBData.an > slotAData.an) {
-        analysis.carB.pros.push(`Mai nouă (${slotBData.an}) - Tehnologie recentă`);
-        analysis.carA.cons.push(`Mai veche (${slotAData.an}) - Depreciere mai mare`);
-        analysis.carB.score += 2;
-    }
-
-    // 5. CALCUL SMART: MEDIA DE KM PE AN (Uzura reală)
-    const varstaA = new Date().getFullYear() - slotAData.an || 1;
-    const varstaB = new Date().getFullYear() - slotBData.an || 1;
-    const kmAnA = slotAData.km / varstaA;
-    const kmAnB = slotBData.km / varstaB;
-
-    if (kmAnA < kmAnB) {
-        analysis.carA.pros.push(`Utilizare mai rară: medie de ${Math.round(kmAnA)} km/an`);
-    } else {
-        analysis.carB.pros.push(`Utilizare mai rară: medie de ${Math.round(kmAnB)} km/an`);
-    }
-
-    // 6. CALCUL SMART: EFICIENȚĂ PREȚ / PUTERE
-    const pretPerCPA = slotAData.pret / slotAData.putere;
-    const pretPerCPB = slotBData.pret / slotBData.putere;
-
-    if (pretPerCPA < pretPerCPB) {
-        analysis.carA.pros.push("Raport Preț/Putere mai eficient");
-    } else {
-        analysis.carB.pros.push("Raport Preț/Putere mai eficient");
-    }
+    // Dacă avem nevoie de încă 3 rânduri (pentru a ajunge la totalul de 6 puncte per mașină)
+    // folosim următoarele 3 atribute sau inversăm logica pe cele rămase
+    diffs.slice(3, 6).forEach(d => {
+        if (d) { // Verificăm dacă există al 4-lea, al 5-lea atribut etc.
+            if (d.betterA) {
+                analysis.carA.pros.push(`${d.label} mai bun`);
+                analysis.carB.cons.push(`${d.label} mai slab`);
+            } else {
+                analysis.carA.cons.push(`${d.label} mai slab`);
+                analysis.carB.pros.push(`${d.label} mai bun`);
+            }
+        }
+    });
 
     displayAdvancedVerdict(analysis);
 }
 
 
-    function displayAdvancedVerdict(analysis) {
-    // Setăm numele mașinilor
+ function displayAdvancedVerdict(analysis) {
     document.getElementById('v-name-1').innerText = `${slotAData.marca} ${slotAData.model}`;
     document.getElementById('v-name-2').innerText = `${slotBData.marca} ${slotBData.model}`;
 
-    const fillList = (id, items, className) => {
-        const el = document.getElementById(id);
-        el.innerHTML = items.map(text => `<div class="${className}">${text}</div>`).join('');
+    const renderItems = (id, items, type) => {
+        const icon = type === 'pros' ? 'fa-circle-check' : 'fa-circle-xmark';
+        const className = type === 'pros' ? 'pros-item' : 'cons-item';
+
+        return items.map(text =>
+            `<div class="${className}"><i class="fa-solid ${icon}"></i> ${text}</div>`
+        ).join('');
     };
 
-    // Umplem listele de Pro și Contra
-    fillList('pros-1', analysis.carA.pros, 'pros-item');
-    fillList('cons-1', analysis.carA.cons, 'cons-item');
-    fillList('pros-2', analysis.carB.pros, 'pros-item');
-    fillList('cons-2', analysis.carB.cons, 'cons-item');
+    // Populăm listele 3v3
+    document.getElementById('pros-1').innerHTML = renderItems('pros-1', analysis.carA.pros, 'pros');
+    document.getElementById('cons-1').innerHTML = renderItems('cons-1', analysis.carA.cons, 'cons');
+    document.getElementById('pros-2').innerHTML = renderItems('pros-2', analysis.carB.pros, 'pros');
+    document.getElementById('cons-2').innerHTML = renderItems('cons-2', analysis.carB.cons, 'cons');
 
-    // Generăm Recomandarea Finală bazată pe scor
-    let recommendation = "";
-    if (analysis.carA.score > analysis.carB.score) {
-        recommendation = `🏆 <strong>Verdictul AutoLix:</strong> Recomandăm <strong>${slotAData.marca}</strong>. Deși alegerea depinde de bugetul tău, datele tehnice indică un echilibru mai bun între vârstă, uzură și performanță.`;
-    } else if (analysis.carB.score > analysis.carA.score) {
-        recommendation = `🏆 <strong>Verdictul AutoLix:</strong> Recomandăm <strong>${slotBData.marca}</strong>. Raportul tehnic indică faptul că această mașină oferă mai multă valoare pentru investiția cerută.`;
+    // --- LOGICA PENTRU CONCLUZIE (Câștigător) ---
+    // Calculăm cine are mai multe puncte Pro
+    const scoreA = analysis.carA.pros.length;
+    const scoreB = analysis.carB.pros.length;
+
+    let concluzieText = "";
+
+    if (scoreA > scoreB) {
+        concluzieText = `🏆 <strong>Verdict AutoLix:</strong> Recomandăm <strong>${slotAData.marca}</strong>,in functie de bugetul dvs. Aceasta domină duelul prin specificații superioare în majoritatea punctelor cheie analizate.`;
+    } else if (scoreB > scoreA) {
+        concluzieText = `🏆 <strong>Verdict AutoLix:</strong> Recomandăm <strong>${slotBData.marca}</strong>,in functie de bugetul dvs. Raportul tehnic indică faptul că această variantă oferă mai multe avantaje competitive.`;
     } else {
-        recommendation = `⚖️ <strong>Verdictul AutoLix:</strong> Egalitate tehnică. Diferențele sunt subiective (design/brand). Alege mașina care îți place mai mult!`;
+        // Dacă scorul e egal (ex: 3 pros la ambele), ne uităm la preț sau an ca tie-breaker
+        const tieBreaker = slotAData.pret < slotBData.pret ? slotAData.marca : slotBData.marca;
+        concluzieText = `⚖️ <strong>Verdict AutoLix:</strong> Duelul este extrem de strâns. Totuși, <strong>${tieBreaker}</strong> înclină balanța ca fiind o opțiune ușor mai rațională.`;
     }
 
-    document.getElementById('finalRecommendation').innerHTML = recommendation;
-    document.getElementById('verdictDisplay').style.display = 'block';
+    // Afișăm textul în bannerul de concluzie
+    document.getElementById('finalRecommendation').innerHTML = concluzieText;
 
-    // Auto-scroll către rezultat
-    document.getElementById('verdictDisplay').scrollIntoView({ behavior: 'smooth' });
+    // Afișăm modalul/secțiunea
+    document.getElementById('verdictDisplay').style.display = 'block';
+    document.getElementById('verdictDisplay').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
+
+
+    function scrollToCompare() {
+    const target = document.getElementById('compareDashboard');
+    if (target) {
+        target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+}
 
 
 
