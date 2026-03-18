@@ -45,20 +45,56 @@ Whether you're a buyer hunting your next dream ride or a seller looking to get t
 
 ## ✨ Features
 
+### 🔐 Login & Authentication
+Secure login screen with branded background. Supports registration via the Sign Up flow.
+
+<div align="center">
+<img src="docs/screenshots/login.png" width="700" alt="Login Page"/>
+</div>
+
+<br/>
+
+---
+
 ### 🏠 Homepage & Discovery
 - Dynamic hero banner with curated vehicle spotlights.
 - **Today's Offers** — rotating carousel of the freshest listings.
 - **Vehicle Types** browser — filter by Sedan, SUV, Hatchback, Coupe, and more.
 - Smart search bar with multi-parameter filtering: brand, model, price range, mileage, fuel, color, power, year.
 
+<div align="center">
+<img src="docs/screenshots/home.png" width="700" alt="Homepage"/>
+</div>
+
+<br/>
+
 ---
 
 ### 🛒 Marketplace
 - Paginated, filterable vehicle grid with full card previews.
-- Listing detail page with image gallery, technical specs table, seller info, and price badge.
 - Price quality indicator *(e.g., "Preț foarte bun")*.
-- Star rating system per listing with average score display.
 - One-click **Favorites** toggle directly from listing cards.
+
+<div align="center">
+<img src="docs/screenshots/market.png" width="700" alt="Marketplace"/>
+</div>
+
+<br/>
+
+---
+
+### 📋 Listing Detail Page
+- Full image gallery with thumbnail navigation.
+- Complete technical specs table (brand, body type, year, KM, fuel, power, torque, color).
+- Seller info card with contact button.
+- Star rating system with average score display.
+- Price badge with quality indicator.
+
+<div align="center">
+<img src="docs/screenshots/rating.png" width="700" alt="Listing Detail"/>
+</div>
+
+<br/>
 
 ---
 
@@ -80,6 +116,12 @@ Power: 150 CP     Engine: 1995 ccm
   ✅ Ready to publish your listing
 ```
 
+<div align="center">
+<img src="docs/screenshots/price.png" width="600" alt="Smart Price Estimator"/>
+</div>
+
+<br/>
+
 ---
 
 ### ⚔️ AutoLix Versus Engine
@@ -88,12 +130,24 @@ Power: 150 CP     Engine: 1995 ccm
 - **AutoLix Verdict** — smart recommendation based on technical metrics.
 - Reset the arena and pick new contenders anytime.
 
+<div align="center">
+<img src="docs/screenshots/versus.png" width="700" alt="Versus Engine"/>
+</div>
+
+<br/>
+
 ---
 
 ### ❤️ My Favorites
 - Persistent favorites list tied to your account.
 - Saved listings with thumbnail, key specs, and price at a glance.
 - Direct links to the full listing or one-click removal.
+
+<div align="center">
+<img src="docs/screenshots/favorite.png" width="700" alt="My Favorites"/>
+</div>
+
+<br/>
 
 ---
 
@@ -103,11 +157,11 @@ Power: 150 CP     Engine: 1995 ccm
 - Paginated data table with all technical fields.
 - Inline **Edit** and **Delete** actions per record.
 
----
+<div align="center">
+<img src="docs/screenshots/analists.png" width="700" alt="Cars Database Admin"/>
+</div>
 
-### 📊 Analytics Dashboard *(Admin)*
-- Platform-level statistics and listing performance insights.
-- Tracks views, interactions, and marketplace activity over time.
+<br/>
 
 ---
 
@@ -240,21 +294,21 @@ autolix/
 │   ├── application.properties
 │   └── data.sql
 │
+├── docs/
+│   └── screenshots/
+│       ├── login.png
+│       ├── home.png
+│       ├── market.png
+│       ├── rating.png
+│       ├── price.png
+│       ├── versus.png
+│       ├── favorite.png
+│       └── analists.png
+│
 ├── uploads/
 ├── pom.xml
 └── README.md
 ```
-
-### Key Files
-
-| File | Description |
-|------|-------------|
-| `MasinaController.java` | Handles listing CRUD, search, filtering, and detail pages |
-| `EstimateController.java` | Powers the Smart Price Estimator modal logic |
-| `FavoriteService.java` | Manages per-user favorites: add, remove, list |
-| `DataInitializer.java` | Seeds the database with demo listings on first run |
-| `app_window.slint` → `app_window.slint` | *N/A — Thymeleaf templates handle UI server-side* |
-| `data.sql` | Initial vehicle and user data for demo purposes |
 
 ---
 
