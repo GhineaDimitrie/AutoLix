@@ -2,9 +2,9 @@
 
 <br/>
 
-```
+
 <img src="src/main/resources/static/images/logo3.png" width="300" alt="AutoLix Logo"/>
-```
+
 
 <br/>
 
