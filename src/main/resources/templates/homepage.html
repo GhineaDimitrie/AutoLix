@@ -98,23 +98,44 @@
         }
 
         .filter-control input,
-        .filter-control select {
-            width: 100%;
-            border: none;
-            outline: none;
-            background: transparent;
-            color: white;
-            font-size: 14px;
-        }
+.filter-control select {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent !important; /* Adăugat !important */
+    color: white !important;           /* Adăugat !important */
+    font-size: 14px;
+}
 
-        .filter-control input::placeholder {
-            color: rgba(255,255,255,0.65);
-        }
+/* REPARAREA PENTRU CASETA ALBĂ LA CLICK (FOCUS) */
+.filter-control input:focus,
+.filter-control select:focus {
+    background-color: transparent !important;
+    background: transparent !important;
+    color: white !important;
+    outline: none;
+}
 
-        .filter-control:focus-within {
-            border-color: rgba(47,164,245,0.9);
-            box-shadow: 0 0 0 3px rgba(47,164,245,0.18);
-        }
+/* REPARAREA PENTRU AUTOFILL (Când browserul completează singur) */
+.filter-control input:-webkit-autofill,
+.filter-control input:-webkit-autofill:hover,
+.filter-control input:-webkit-autofill:focus,
+.filter-control select:-webkit-autofill {
+    -webkit-text-fill-color: white !important;
+    /* Înlocuiește #141823 cu culoarea ta de fundal de la .advanced-filter */
+    -webkit-box-shadow: 0 0 0px 1000px #141823 inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.filter-control input::placeholder {
+    color: rgba(255,255,255,0.65);
+}
+
+.filter-control:focus-within {
+    border-color: rgba(47,164,245,0.9);
+    box-shadow: 0 0 0 3px rgba(47,164,245,0.18);
+    background: rgba(255, 255, 255, 0.05); /* Feedback vizual subtil */
+}
 
         /* RANGE (min/max în aceeași casetă) */
         .range {
@@ -1621,7 +1642,7 @@
 
             <div class="filter-actions">
                 <div class="filter-right">
-                    <a class="filter-reset" th:href="@{/marketplace}">↺ Resetează</a>
+                    <a class="filter-reset" th:href="@{/homepage}">↺ Resetează</a>
                     <button type="submit" class="filter-btn">Caută</button>
                 </div>
             </div>
@@ -1635,10 +1656,10 @@
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
             </div>
             <div class="promo-text">
-                <h3>Cât valorează mașina ta?</h3>
-                <p>Află prețul corect de vânzare în 60 de secunde cu noul nostru algoritm Smart.</p>
+                <h3>How much is your car worth?</h3>
+                <p>Find out the correct selling price in 60 seconds with our new Smart algorithm.</p>
             </div>
-            <button onclick="openEstimator()" class="btn-promo" style="border: none; cursor: pointer;">EVALUEAZĂ GRATUIT</button>
+            <button onclick="openEstimator()" class="btn-promo" style="border: none; cursor: pointer;">FREE EVALUATION</button>
         </div>
     </div>
 
@@ -1882,7 +1903,7 @@
     <section id="compareDashboard" class="compare-dashboard-premium">
         <div class="compare-header">
             <h2 class="accent-orange"><i class="fa-solid fa-code-compare"></i> AutoLix Versus Engine</h2>
-            <p>Alege două mașini din colecția ta de favorite pentru o analiză comparativă detaliată.</p>
+            <p>Choose two cars from your collection of favorites for a detailed comparative analysis.</p>
         </div>
 
         <div class="compare-layout">
