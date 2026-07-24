@@ -7,6 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.nio.file.Path;
 
+
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
