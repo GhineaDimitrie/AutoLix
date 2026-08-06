@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <path d="M6 42
+             C6 37, 9 34, 14 33
+             L20 32
+             C24 24, 32 19, 41 19
+             C47 19, 52 22, 55 27
+             L58 28
+             C61 29, 62 32, 62 35
+             L62 38
+             C62 40.5, 60 42, 57.5 42
+             L6 42 Z"
+          fill="#ffffff"/>
+    <path d="M25 32 C28 26, 34 22, 40 22 C44 22, 47.5 24, 50 27 L34 27 Z"
+          fill="#141c2b" opacity="0.55"/>
+    <circle cx="18" cy="43" r="6" fill="#141c2b"/>
+    <circle cx="18" cy="43" r="2.6" fill="#ffffff"/>
+    <circle cx="50" cy="43" r="6" fill="#141c2b"/>
+    <circle cx="50" cy="43" r="2.6" fill="#ffffff"/>
+    <path d="M49 10 L51 15 L56 17 L51 19 L49 24 L47 19 L42 17 L47 15 Z" fill="#ffffff"/>
+    <path d="M57 22 L58 24.5 L60.5 25.5 L58 26.5 L57 29 L56 26.5 L53.5 25.5 L56 24.5 Z" fill="#ffffff"/>
+</svg>

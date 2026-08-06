@@ -20,19 +20,19 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers("/","/marketplace","/estimate","/images/**","/login", "/signup", "/signup/**","/uploads/**").permitAll()
+                        .requestMatchers("/","/marketplace","/estimate","/images/**","/js/**","/login", "/signup", "/signup/**","/uploads/**","/chat","/chat/**").permitAll()
                         .requestMatchers("/my-profile/**").hasAnyRole("USER","ADMIN","EDITOR")
-                        // USER + EDITOR pot vedea lista și filtra
+                        
                         .requestMatchers("/masini", "/masini/filtru").hasAnyRole( "EDITOR","ADMIN")
 
-                        // doar EDITOR poate face CRUD
+                      
                         .requestMatchers("/masini/add", "/masini/edit/**", "/masini/delete/**")
                         .hasAnyRole("EDITOR","USER")
 
-                        // doar ADMIN (opțional)
+                        
                         .requestMatchers("/admin/**").hasRole("ADMIN")
 
-                        // restul trebuie să fie logați
+                        
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

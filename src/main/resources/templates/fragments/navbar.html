@@ -187,13 +187,16 @@
 
             <a class="nav-link" th:href="@{/marketplace}">Marketplace</a>
 
+            <a class="nav-link" th:href="@{/chat}">Chat</a>
+
             <a class="nav-link-green" sec:authorize="isAuthenticated()" th:href="@{/masini/add}">+ Sell now</a>
 
             <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/login}">Login</a>
 
             <a class="nav-link secondary" sec:authorize="isAnonymous()" th:href="@{/signup}">Sign up</a>
 
-            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" style="margin:0;">
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" style="margin:0;"
+                  onsubmit="sessionStorage.removeItem('autolix_chat_history'); sessionStorage.removeItem('autolix_chat_open');">
                 <button type="submit" class="nav-btn">Logout</button>
             </form>
         </div>

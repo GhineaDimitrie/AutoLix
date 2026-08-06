@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>AutoLix AI Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: url("/images/login.jpg") no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Same dark glass card recipe as estimator.html's .estimator-container */
+        .autolix-chat-container {
+            width: 92%;
+            max-width: 1300px;
+            height: 85vh;
+            padding: 25px;
+            padding-top: 140px;
+            box-sizing: border-box;
+
+            background: rgba(15, 20, 30, 0.85);
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+            color: white;
+            position: relative;
+
+            display: flex;
+            flex-direction: column;
+        }
+
+        .autolix-chat-app {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+        }
+
+        /* ---------- ONBOARDING (left, 40%) ---------- */
+        .autolix-onboarding {
+            flex: 0 0 40%;
+            width: 40%;
+            padding: 20px 30px 20px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-right: 1px solid rgba(255,255,255,0.08);
+            overflow-y: auto;
+        }
+        .autolix-onboarding-title {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin: 0 0 10px 0;
+            background: linear-gradient(to right, #fff, #2fa4f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .autolix-onboarding-subtitle {
+            font-size: 14.5px;
+            color: rgba(255,255,255,0.65);
+            margin: 0 0 28px 0;
+        }
+        .autolix-suggestions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .autolix-suggestion-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 14px;
+            padding: 16px;
+            text-align: left;
+            cursor: pointer;
+            color: white;
+            font-family: inherit;
+            font-size: 13px;
+            line-height: 1.4;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: all 0.25s ease;
+        }
+        .autolix-suggestion-card:hover {
+            border-color: #2fa4f5;
+            background: rgba(47,164,245,0.1);
+            box-shadow: 0 0 15px rgba(47,164,245,0.2);
+        }
+        .autolix-suggestion-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: #2fa4f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: white;
+            flex: 0 0 auto;
+        }
+
+        /* ---------- CHAT MAIN (right, 60%; expands to 100% once messages exist) ---------- */
+        .autolix-chat-main {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            padding-left: 30px;
+        }
+        .autolix-chat-app.has-messages .autolix-onboarding { display: none; }
+        .autolix-chat-app.has-messages .autolix-chat-main { padding-left: 0; }
+
+        .autolix-page-messages {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            padding: 4px 4px 16px 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+
+            scrollbar-width: thin;
+            scrollbar-color: transparent transparent;
+            -ms-overflow-style: none;
+        }
+        .autolix-page-messages::-webkit-scrollbar { width: 6px; background: transparent; }
+        .autolix-page-messages::-webkit-scrollbar-thumb { background: transparent; }
+        .autolix-page-messages::-webkit-scrollbar-track { background: transparent; }
+
+        /* Same input recipe as estimator.html's .input-group input */
+        .autolix-page-form {
+            display: flex;
+            gap: 10px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .autolix-page-input {
+            flex: 1;
+            padding: 14px 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05) !important;
+            color: white !important;
+            font-size: 14.5px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .autolix-page-input:focus {
+            border-color: #2fa4f5;
+            background: rgba(47,164,245,0.1) !important;
+            box-shadow: 0 0 15px rgba(47,164,245,0.2);
+        }
+        .autolix-page-input::placeholder { color: rgba(255,255,255,0.5); }
+        .autolix-page-send {
+            width: 48px;
+            border-radius: 14px;
+            border: none;
+            background: #2fa4f5;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.2s ease;
+        }
+        .autolix-page-send:hover { background: #1e88e5; }
+
+        @media (max-width: 860px) {
+            .autolix-chat-container { padding-top: 170px; height: 90vh; }
+            .autolix-chat-app { flex-direction: column; }
+            .autolix-onboarding {
+                width: 100%;
+                flex: 0 0 auto;
+                max-height: 38vh;
+                border-right: none;
+                border-bottom: 1px solid rgba(255,255,255,0.08);
+                padding: 0 0 16px 0;
+            }
+            .autolix-onboarding-title { font-size: 24px; }
+            .autolix-suggestions-grid { grid-template-columns: 1fr; }
+            .autolix-chat-main { padding-left: 0; padding-top: 16px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="autolix-chat-container">
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="autolix-chat-app" id="autolix-chat-app">
+
+        <aside class="autolix-onboarding" id="autolix-onboarding">
+            <h1 class="autolix-onboarding-title">Welcome to AutoLix AI</h1>
+            <p class="autolix-onboarding-subtitle">Find your perfect car with AI assistance</p>
+
+            <div class="autolix-suggestions-grid">
+                <button type="button" class="autolix-suggestion-card" data-suggestion="Find me a cheap SUV under 20k">
+                    <div class="autolix-suggestion-icon"><i class="fa-solid fa-gauge-high"></i></div>
+                    Find me a cheap SUV under 20k
+                </button>
+                <button type="button" class="autolix-suggestion-card" data-suggestion="Show me electric cars available">
+                    <div class="autolix-suggestion-icon"><i class="fa-solid fa-bolt"></i></div>
+                    Show me electric cars available
+                </button>
+                <button type="button" class="autolix-suggestion-card" data-suggestion="What luxury cars do you have?">
+                    <div class="autolix-suggestion-icon"><i class="fa-solid fa-tag"></i></div>
+                    What luxury cars do you have?
+                </button>
+                <button type="button" class="autolix-suggestion-card" data-suggestion="Find cars with low mileage">
+                    <div class="autolix-suggestion-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+                    Find cars with low mileage
+                </button>
+            </div>
+        </aside>
+
+        <main class="autolix-chat-main">
+            <div id="autolix-page-messages" class="autolix-page-messages"></div>
+            <form id="autolix-page-form" class="autolix-page-form">
+                <input id="autolix-page-input" class="autolix-page-input" type="text"
+                       placeholder="Ask about cars, prices, features..." autocomplete="off">
+                <button type="submit" class="autolix-page-send" aria-label="Send">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+        </main>
+
+    </div>
+</div>
+
+<script src="/js/chat.js"></script>
+<script>
+    (function () {
+        var appEl = document.getElementById('autolix-chat-app');
+        var formEl = document.getElementById('autolix-page-form');
+        var inputEl = document.getElementById('autolix-page-input');
+
+        var existing = [];
+        try {
+            existing = JSON.parse(sessionStorage.getItem('autolix_chat_history') || '[]');
+        } catch (e) {}
+        if (existing.length > 0) {
+            appEl.classList.add('has-messages');
+        }
+
+        formEl.addEventListener('submit', function () {
+            appEl.classList.add('has-messages');
+        });
+
+        document.querySelectorAll('.autolix-suggestion-card').forEach(function (card) {
+            card.addEventListener('click', function () {
+                inputEl.value = card.getAttribute('data-suggestion');
+                inputEl.focus();
+            });
+        });
+
+        AutoLixChat.init({
+            messagesId: 'autolix-page-messages',
+            formId: 'autolix-page-form',
+            inputId: 'autolix-page-input'
+        });
+    })();
+</script>
+
+</body>
+</html>

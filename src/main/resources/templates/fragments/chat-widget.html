@@ -1,0 +1,239 @@
+<div th:fragment="chat-widget">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        /* AutoLix chat widget chrome - local in fragment so it's identical on every page.
+           Message bubble/typing/avatar styling is shared and injected by chat.js. */
+        .autolix-chat-fab {
+            position: fixed;
+            bottom: 22px;
+            right: 22px;
+            z-index: 1000;
+
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+
+            background: linear-gradient(135deg, #2fa4f5, #8a5cf6);
+            color: white;
+            font-size: 22px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            box-shadow: 0 8px 22px rgba(122,92,246,0.45);
+            transition: transform 0.15s ease;
+        }
+        .autolix-chat-fab:hover { transform: translateY(-2px) scale(1.04); }
+        .autolix-chat-fab.autolix-hidden { display: none; }
+        .autolix-chat-fab-icon { width: 30px; height: 30px; }
+
+        .autolix-chat-fab::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2fa4f5, #8a5cf6);
+            z-index: -1;
+            animation: autolix-fab-pulse 2.6s ease-out infinite;
+        }
+        @keyframes autolix-fab-pulse {
+            0%   { transform: scale(1);   opacity: 0.55; }
+            70%  { transform: scale(1.7); opacity: 0; }
+            100% { transform: scale(1.7); opacity: 0; }
+        }
+
+        .autolix-chat-panel {
+            position: fixed;
+            bottom: 22px;
+            right: 22px;
+            z-index: 1000;
+
+            width: 370px;
+            max-width: calc(100vw - 40px);
+            height: 520px;
+            max-height: calc(100vh - 120px);
+
+            background: rgba(18,20,28,0.97);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+
+            opacity: 0;
+            transform: translateY(12px) scale(0.98);
+            pointer-events: none;
+            transition: opacity 0.18s ease, transform 0.18s ease;
+        }
+        .autolix-chat-panel.open {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .autolix-chat-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 14px;
+            background: linear-gradient(135deg, rgba(47,164,245,0.25), rgba(138,92,246,0.25));
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            color: white;
+        }
+        .autolix-chat-header-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2fa4f5, #8a5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            flex: 0 0 auto;
+        }
+        .autolix-chat-header-avatar img { width: 18px; height: 18px; }
+        .autolix-chat-header-text { flex: 1; min-width: 0; }
+        .autolix-chat-header-title { font-weight: 700; font-size: 14.5px; }
+        .autolix-chat-header-status {
+            font-size: 11.5px;
+            color: #8be08b;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .autolix-chat-header-status::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #3ddc72;
+            box-shadow: 0 0 6px #3ddc72;
+        }
+        .autolix-chat-header-close {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.75);
+            font-size: 15px;
+            cursor: pointer;
+            padding: 6px;
+        }
+        .autolix-chat-header-close:hover { color: white; }
+
+        .autolix-widget-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            /* transparent but still scrollable, cross-browser */
+            scrollbar-width: thin;              /* Firefox */
+            scrollbar-color: transparent transparent; /* Firefox: thumb, track */
+            -ms-overflow-style: none;           /* IE / legacy Edge */
+        }
+        .autolix-widget-messages::-webkit-scrollbar {           /* Chrome/Safari/new Edge */
+            width: 6px;
+            background: transparent;
+        }
+        .autolix-widget-messages::-webkit-scrollbar-thumb {
+            background: transparent;
+        }
+        .autolix-widget-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .autolix-chat-form {
+            display: flex;
+            gap: 6px;
+            padding: 10px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .autolix-chat-input {
+            flex: 1;
+            padding: 9px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.06);
+            color: white;
+            font-size: 13.5px;
+        }
+        .autolix-chat-input::placeholder { color: rgba(255,255,255,0.5); }
+        .autolix-chat-send {
+            width: 38px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #2fa4f5, #8a5cf6);
+            color: white;
+            cursor: pointer;
+        }
+        .autolix-chat-send:hover { filter: brightness(1.1); }
+    </style>
+
+    <button id="autolix-chat-fab" class="autolix-chat-fab" type="button" aria-label="Open AutoLix AI Assistant">
+        <img src="/images/ai-assistant-icon.svg" alt="AutoLix AI" class="autolix-chat-fab-icon">
+    </button>
+
+    <div id="autolix-chat-panel" class="autolix-chat-panel">
+        <div class="autolix-chat-header">
+            <div class="autolix-chat-header-avatar"><img src="/images/ai-assistant-icon.svg" alt="AutoLix AI"></div>
+            <div class="autolix-chat-header-text">
+                <div class="autolix-chat-header-title">AutoLix AI</div>
+                <div class="autolix-chat-header-status">Online</div>
+            </div>
+            <button id="autolix-chat-header-close" class="autolix-chat-header-close" type="button" aria-label="Close chat">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div id="autolix-widget-messages" class="autolix-widget-messages"></div>
+        <form id="autolix-widget-form" class="autolix-chat-form">
+            <input id="autolix-widget-input" class="autolix-chat-input" type="text"
+                   placeholder="Ask about a car..." autocomplete="off">
+            <button type="submit" class="autolix-chat-send" aria-label="Send">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </form>
+    </div>
+
+    <script src="/js/chat.js"></script>
+    <script>
+        (function () {
+            var OPEN_KEY = 'autolix_chat_open';
+            var fab = document.getElementById('autolix-chat-fab');
+            var panel = document.getElementById('autolix-chat-panel');
+            var closeBtn = document.getElementById('autolix-chat-header-close');
+
+            function setOpen(open) {
+                panel.classList.toggle('open', open);
+                fab.classList.toggle('autolix-hidden', open);
+                sessionStorage.setItem(OPEN_KEY, open ? '1' : '0');
+            }
+
+            fab.addEventListener('click', function () {
+                setOpen(!panel.classList.contains('open'));
+            });
+            closeBtn.addEventListener('click', function () {
+                setOpen(false);
+            });
+
+            if (sessionStorage.getItem(OPEN_KEY) === '1') {
+                setOpen(true);
+            }
+
+            AutoLixChat.init({
+                messagesId: 'autolix-widget-messages',
+                formId: 'autolix-widget-form',
+                inputId: 'autolix-widget-input',
+                greeting: "Hi, I'm the AutoLix AI Assistant. Ask me to find a car, e.g. \"cheap SUV under 20k\"."
+            });
+        })();
+    </script>
+</div>
